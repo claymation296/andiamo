@@ -20,21 +20,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
 
 <dom-module id="my-app">
   <template>
-    <style>
+    <style include="shared-styles">
+    
       :host {
-        --app-primary-color: #4285f4;
-        --app-secondary-color: black;
-
         display: block;
       }
 
       app-header {
         color: #fff;
-        background-color: var(--app-primary-color);
+        background-color: var(--default-primary-color);
       }
       app-header paper-icon-button {
         --paper-icon-button-ink-color: white;
@@ -48,7 +47,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
         padding: 0 16px;
         text-decoration: none;
-        color: var(--app-secondary-color);
+        color: var(--light-primary-color);
         line-height: 40px;
       }
 
@@ -131,7 +130,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _pageChanged: function(page) {
         // Load page import on demand. Show 404 page if fails
-        var resolvedPageUrl = this.resolveUrl(page + '.html');
+        var resolvedPageUrl = this.resolveUrl(`${page}/${page}.html`);
         this.importHref(resolvedPageUrl, null, this._showPage404, true);
       },
 
