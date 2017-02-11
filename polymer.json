@@ -1,6 +1,6 @@
 {
   "entrypoint": "index.html",
-  "shell": "src/my-app.html",
+  "shell": "src/andiamo-app.html",
   "fragments": [
     "src/home-view.html",
     "src/out-of-office.html",

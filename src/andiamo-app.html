@@ -22,7 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="my-icons.html">
 
-<dom-module id="my-app">
+<dom-module id="andiamo-app">
   <template>
     <style>
       :host {
@@ -72,7 +72,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <a name="homeView" href="/home-view">Home</a>
           <a name="outOfOffice" href="/out-of-office">Out of Office</a>
-          <a name="workRequest" href="/work-request/work-request">Work Request</a>
+          <a name="workRequest" href="/work-request">Work Request</a>
           <a name="extraView" href="/extra-view">Extra</a>
         </iron-selector>
       </app-drawer>
@@ -106,7 +106,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <script>
     Polymer({
-      is: 'my-app',
+      is: 'andiamo-app',
 
       properties: {
         page: {
@@ -120,8 +120,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         '_routePageChanged(routeData.page)',
       ],
 
-        // Ben: was view1 changed to homeview to make default page didn't work
-      _routePageChanged: function(page) {
+        _routePageChanged: function(page) {
         this.page = page || 'home-view';
 
         if (!this.$.drawer.persistent) {
@@ -131,7 +130,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _pageChanged: function(page) {
         // Load page import on demand. Show 404 page if fails
-        var resolvedPageUrl = this.resolveUrl(page + '.html');
+        var resolvedPageUrl = this.resolveUrl(`${page}/${page}.html`);
         this.importHref(resolvedPageUrl, null, this._showPage404, true);
       },
 
