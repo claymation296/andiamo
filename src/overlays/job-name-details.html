@@ -1,30 +1,108 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/paper-styles/color.html">
-
+<link rel="import" href="../../behaviors/fullscreen-behavior.html">
+<link rel="import" href="../../behaviors/on-tap-behavior.html">
+<link rel="import" href="../shared-styles.html">
 <dom-module id="job-name-details">
-  <template>
-    <style>
-      :host {
-        display: block;
 
-        padding: 10px 20px;
+  <template>
+    <style include="shared-styles">
+      :host {
+        @apply(--fullscreen-overlays);
+        background-color: #eeeeee;
+        background-image: url("../../images/locationPics/backGround.jpg");
       }
+
+             .avatar {
+           
+                width: 80%;
+                border-radius: 20px;
+                box-sizing: border-box;
+                background-color: #ddd;
+                display: block;
+                margin: 10px auto;
+                border:4px solid  yellowgreen;
+                max-height: 400px;
+                max-width: 600px;
+            }
+
+            .item {
+                @apply(--layout-horizontal);
+                cursor: pointer;
+                padding: 16px 22px;
+                border-bottom: 1px solid #DDD;
+            }
+            
+
+            .secondary {
+                font-size: 12px;
+            }
+
+            .dim {
+                color: gray;
+            }
+
+            .jobUse {
+               font-size: 24px;
+            }
+
+            .jobName {
+          text-align: center;
+           font-weight: 900;
+           color: #5D4037;
+            }
+
+            .card{
+         border:2px solid  yellowgreen;
+         padding: 4px;
+         background-color: white;
+            }
     </style>
 
     <!-- 
       If deploying in a folder replace href="/" with the full path to your site.
       Such as: href=="http://polymerelements.github.io/polymer-starter-kit"
     -->
-    Oops you hit a 404. <a href="/">fick ypu</a>
+    <div on-tap="_closePage" >
+        
+          <img class="avatar" src="[[data.image]]"> 
+        
+     
+      <div class="jobName">[[data.name]]</div>
+          <div class="card">
+            <div class="secondary dim">[[data.location]]</div>
+            <div class="secondary dim">[[data.shortText]]</div>
+          </div>
+    
+        <div class="card">
+        <div class="jobUse">Use job name for:</div>
+
+          [[data.longText]]
+
+        </div>
+    </div>
   </template>
 
   <script>
     Polymer({
       is: 'job-name-details',
 
-      open() {
-  console.log('open bitch');
-      }
+    behaviors: [window.BCDEV.Behaviors.FullscreenBehavior,
+                window.BCDEV.Behaviors.OnTapBehavior,
+
+    ],
+
+    _closePage(){
+      this.close();
+    },
+
+
+ properties: {
+      data: Object,
+ },
+
+
+
+      
     });
   </script>
 </dom-module>

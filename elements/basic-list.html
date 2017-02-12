@@ -80,18 +80,9 @@
                 @apply(--layout-horizontal);
                 cursor: pointer;
                 padding: 16px 22px;
-                border-bottom: 1px solid #DDD;
+                border-bottom: 1px solid #D7CCC8;
             }
 
-                .item:focus,
-                .item.selected:focus {
-                    outline: 0;
-                    background-color: #ddd;
-                }
-
-                .item.selected .star {
-                    color: var(--paper-green-600);
-                }
 
             .avatar {
                 height: 50px;
@@ -119,10 +110,7 @@
                 color: gray;
             }
 
-            .star {
-                width: 24px;
-                height: 24px;
-            }
+ 
 
             paper-item {
                 white-space: nowrap;
@@ -157,9 +145,7 @@
             iron-list {
                 @apply(--layout-flex);
             }
-              .blue {
-    --paper-badge-background: var(--paper-green-300);
-  }
+
         </style>
         <!--BEN: url contacts lets you pass in contacts.json-->
         <iron-ajax url="{{contacts}}" last-response="{{data}}" auto></iron-ajax>
@@ -181,7 +167,7 @@
                                     </div>
                                     <div class="secondary dim">[[item.shortText]]</div>
                                 </div>
-                                <iron-icon icon$="[[iconForItem(selected)]]" class="star"></iron-icon>
+             
                             </div>
                             <div class="border"></div>
                         </div>
@@ -208,24 +194,12 @@
             }
           },
 
-          iconForItem: function(isSelected) {
-            return isSelected ? 'star' : 'star-border';
-          },
-
           _computedClass: function(isSelected) {
             var classes = 'item';
             if (isSelected) {
               classes += ' selected';
             }
             return classes;
-          },
-
-          _unselect: function(e) {
-            this.$.itemsList.deselectItem(e.model.item);
-          },
-
-          _getFormattedCount: function(count) {
-            return count > 0 ? '(' + count + ')' : '';
           },
 
           _selectedItemChanged: function(selected){
