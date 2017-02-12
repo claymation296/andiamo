@@ -108,8 +108,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </app-drawer-layout>
 
 
-    <job-name-details id="details"></job-name-details>
+
+    <job-name-details id="details" 
+                      data= "[[selectedItem]]"></job-name-details>
+
     <out-date-mediator id="outDate"></out-date-mediator>
+
 
 
   </template>
@@ -132,6 +136,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
 
+
+      listeners: {
+       'basic-list-selected-item' : '_basicListItemEvent'
+      },
+
+      _basicListItemEvent(event) {
+           console.log('this.details: ' , window.BCDEV.jobNameDetails.open);
+           this.selectedItem = event.detail.selected;
+          window.BCDEV.jobNameDetails.open();
+
+      },      
+
       ready() {
         // Grab a reference to our auto-binding template
         // and give it some initial binding values
@@ -141,6 +157,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // referenced by other elements for dom manipulation and api calls        
 
         const customElements = {
+          jobNameDetails: 'details',
           outDateOverlay: 'outDate',
         }; 
 
@@ -167,7 +184,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _showPage404: function() {
         this.page = 'my-view404';
-      }
+            }
       
     });
   </script>
