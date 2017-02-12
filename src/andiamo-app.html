@@ -23,9 +23,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
 
-<link rel="import" href="overlays/job-name-details.html" />
+<link rel="import" href="overlays/job-name-details.html">
 
-<link rel="import" href="overlays/date-picker-overlay.html">
+<link rel="import" href="overlays/out-date-overlay/out-date-mediator.html">
 
 
 <dom-module id="andiamo-app">
@@ -86,7 +86,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <app-header-layout has-scrolling-region>
 
           <!--BEN: need to mess with to get pink header-->
-        <app-header condenses effects fixed="waterfall"  >
+        <app-header condenses effects fixed="waterfall">
           <app-toolbar>
             <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
             <div main-title>Andiamo</div>
@@ -109,7 +109,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
     <job-name-details id="details"></job-name-details>
-    <data-picker-overlay id="datePicker"></data-picker-overlay>
+    <out-date-mediator id="outDate"></out-date-mediator>
 
 
   </template>
@@ -132,15 +132,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
 
-      listeners: {
-       'basic-list-selected-item' : '_basicListItemEvent'
-      },
-
-      _basicListItemEvent(event) {
-           console.log('basic list event: ' , event);
-           this.$.details.open();
-      },      
-
       ready() {
         // Grab a reference to our auto-binding template
         // and give it some initial binding values
@@ -150,7 +141,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // referenced by other elements for dom manipulation and api calls        
 
         const customElements = {
-          datePickerOverlay: 'datePicker',
+          outDateOverlay: 'outDate',
         }; 
 
         for (const key in customElements) {
