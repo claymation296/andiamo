@@ -22,6 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
+<link rel="import" href="overlays/date-picker-overlay.html">
 
 <dom-module id="andiamo-app">
   <template>
@@ -72,7 +73,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <a name="homeView" href="/home-view">Home</a>
           <a name="outOfOffice" href="/out-of-office">Out of Office</a>
           <a name="workRequest" href="/work-request">Work Request</a>
-          <a name="extraView" href="/extra-view">Extra</a>
+          <a name="jobNames" href="/job-names">Job Names</a>
         </iron-selector>
       </app-drawer>
 
@@ -96,11 +97,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <home-view name="home-view"></home-view>
           <out-of-office name="out-of-office"></out-of-office>
           <work-request name="work-request"></work-request>
-          <extra-view name="extra-view"></extra-view>
+          <job-names name="job-names"></job-names>
           <my-view404 name="view404"></my-view404>
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>
+
+    <data-picker-overlay id="datePicker"></data-picker-overlay>
+
   </template>
 
   <script>
@@ -115,11 +119,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
       },
 
+
       observers: [
         '_routePageChanged(routeData.page)',
       ],
 
-        _routePageChanged: function(page) {
+
+      ready() {
+        // Grab a reference to our auto-binding template
+        // and give it some initial binding values
+        // Learn more about auto-binding templates at http://goo.gl/Dx1u2g
+        const select = str => this.$[str];
+        // create a table of custom element objects that will be
+        // referenced by other elements for dom manipulation and api calls        
+
+        const customElements = {
+          datePickerOverlay: 'datePicker',
+        }; 
+
+        for (const key in customElements) {
+          window.BCDEV[key] = select(customElements[key]);
+        }
+      },
+
+
+      _routePageChanged: function(page) {
         this.page = page || 'home-view';
 
         if (!this.$.drawer.persistent) {
@@ -135,7 +159,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _showPage404: function() {
         this.page = 'my-view404';
-      },
+      }
+      
     });
   </script>
 </dom-module>

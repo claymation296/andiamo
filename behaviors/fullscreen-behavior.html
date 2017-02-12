@@ -1,0 +1,80 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<script>
+	(function() {
+		
+	  window.BCDEV.Behaviors = window.BCDEV.Behaviors || {}; // jshint ignore:line
+	  // unified fullscreen element opening and closing functionality
+	  const OpenCloseFullscreenImp = {
+	    properties: {
+	    	// ref to paper-scroll-header-panel for measureHeaderHeight() bug fix
+	    	panel: Object
+	    },
+
+	    listeners: {
+        // wait for content animation
+      	'neon-animation-finish': '_neonAnimationFinished'
+      },
+
+      attached() {
+      	this.async(() => {
+      		this.panel = this.$$('paper-scroll-header-panel');
+      	});
+      },
+      // if present, callback will be ran after animation
+      open(callback) {
+    		this.style.display = 'block';
+        this.style.zIndex = '50';
+        if (this.panel) {
+          this.panel.measureHeaderHeight();
+        }
+        this.cancelAnimation();
+        // playAnimation only passes two args so make second one an object
+        this.playAnimation('entry', {type: 'entry', callback});
+      },
+      // if present, callback will be ran after animation
+      close(callback) {
+        this.cancelAnimation();
+        // playAnimation only passes two args so make second one an object
+        this.playAnimation('exit', {type: 'exit', callback});
+      },
+
+      reset() {
+        this.style.display = 'none';
+        this.style.zIndex = '-1';
+      },
+      // animationType can be a string or object with a callback to run
+      _neonAnimationFinished(_, animationType) {
+        // reset after exit animations
+        if (typeof animationType === 'string' && animationType === 'exit') {
+          this.reset();
+        } else if (typeof animationType === 'object') {
+          const {type, callback} = animationType;
+          // reset after exit animations
+          if (type === 'exit') {
+            this.reset();
+          }
+          // run callback, if it exists, after animation
+          if (callback && typeof callback === 'function') {
+            callback();
+          }
+        }
+      }
+	  };
+
+	  window.BCDEV.Behaviors.FullscreenBehavior = [ 
+      Polymer.NeonAnimatableBehavior, 
+      Polymer.NeonAnimationRunnerBehavior,
+      OpenCloseFullscreenImp 
+    ]; 
+		
+	})();
+</script>
