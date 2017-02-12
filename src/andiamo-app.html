@@ -22,7 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
-
+<link rel="import" href="overlays/job-name-details.html" />
 <dom-module id="andiamo-app">
   <template>
     <style include="shared-styles">
@@ -72,7 +72,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <a name="homeView" href="/home-view">Home</a>
           <a name="outOfOffice" href="/out-of-office">Out of Office</a>
           <a name="workRequest" href="/work-request">Work Request</a>
-          <a name="extraView" href="/extra-view">Extra</a>
+          <a name="jobNames" href="/job-names">Job Names</a>
         </iron-selector>
       </app-drawer>
 
@@ -96,11 +96,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <home-view name="home-view"></home-view>
           <out-of-office name="out-of-office"></out-of-office>
           <work-request name="work-request"></work-request>
-          <extra-view name="extra-view"></extra-view>
+          <job-names name="job-names"></job-names>
           <my-view404 name="view404"></my-view404>
-        </iron-pages>
+          </iron-pages>
       </app-header-layout>
     </app-drawer-layout>
+
+    <job-name-details id="details"></job-name-details>
+
+  
+
   </template>
 
   <script>
@@ -119,6 +124,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         '_routePageChanged(routeData.page)',
       ],
 
+      listeners: {
+       'basic-list-selected-item' : '_basicListItemEvent'
+      }
+      ,
+
+      _basicListItemEvent(event) {
+           console.log('basic list event: ' , event);
+           this.$.details.open();
+      }
+      ,      
+
         _routePageChanged: function(page) {
         this.page = page || 'home-view';
 
@@ -134,7 +150,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _showPage404: function() {
-        this.page = 'my-view404';
+        this.page = '/my-view-404/my-view404';
       },
     });
   </script>

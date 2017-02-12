@@ -36,9 +36,8 @@
             }
 
             .pink-toolbar {
-                background: var(--paper-pink-500);
+                background: var(--paper-grey-500);
                 color: white;
-             
             }
 
             app-toolbar {
@@ -57,10 +56,12 @@
 
             paper-badge {
                 margin-top: 5px;
+             
             }
 
                 paper-badge[label="0"] {
                     opacity: 0;
+
                 }
 
             @media (min-width: 640px) {
@@ -89,7 +90,7 @@
                 }
 
                 .item.selected .star {
-                    color: var(--paper-blue-600);
+                    color: var(--paper-green-600);
                 }
 
             .avatar {
@@ -111,7 +112,7 @@
             }
 
             .secondary {
-                font-size: 14px;
+                font-size: 12px;
             }
 
             .dim {
@@ -156,29 +157,31 @@
             iron-list {
                 @apply(--layout-flex);
             }
+              .blue {
+    --paper-badge-background: var(--paper-green-300);
+  }
         </style>
         <!--BEN: url contacts lets you pass in contacts.json-->
         <iron-ajax url="{{contacts}}" last-response="{{data}}" auto></iron-ajax>
         <app-drawer-layout fullbleed>
             <div class="content">
-                <app-toolbar  reveals  effects="waterfall" class="pink-toolbar">
-                    <div main-title>Common Job Names</div>
-
+                <app-toolbar class="pink-toolbar">
+                    <div main-title>Active Job Names</div>
+  
                 </app-toolbar>
                 <!-- Main List for the items -->
-                <iron-list id="itemsList" items="[[data]]" >
+                <iron-list id="itemsList" items="[[data]]"  selected-item="{{selectedItem}}" selection-enabled>
                     <template>
                         <div>
-                            <div class$="[[_computedClass(selected)]]">
+                            <div tabindex$="[[tabIndex]]" aria-label$="Select/Deselect [[item.name]]" class$="[[_computedClass(selected)]]">
                                 <img class="avatar" src="[[item.image]]">
                                 <div class="pad">
                                     <div class="primary">
                                         [[item.name]]
                                     </div>
-                                    <div class="secondary dim">[[item.location]]</div>
                                     <div class="secondary dim">[[item.shortText]]</div>
                                 </div>
-                              
+                                <iron-icon icon$="[[iconForItem(selected)]]" class="star"></iron-icon>
                             </div>
                             <div class="border"></div>
                         </div>
@@ -198,8 +201,10 @@
           is: 'basic-list',
 
           properties: {
-            selectedItems: {
-              type: Object
+            selectedItem: {
+              type: Object,
+              observer: '_selectedItemChanged'
+
             }
           },
 
@@ -221,7 +226,14 @@
 
           _getFormattedCount: function(count) {
             return count > 0 ? '(' + count + ')' : '';
+          },
+
+          _selectedItemChanged: function(selected){
+            if (!selected) {return;} 
+            this.fire('basic-list-selected-item', {selected}); 
+            console.log('selected: ' , selected);
           }
+
         });
 
      });

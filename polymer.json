@@ -2,11 +2,11 @@
   "entrypoint": "index.html",
   "shell": "src/andiamo-app.html",
   "fragments": [
-    "src/home-view.html",
-    "src/out-of-office.html",
+    "src/home-view/home-view.html",
+    "src/out-of-office/out-of-office.html",
     "src/work-request/work-request.html",
-    "src/my-view404.html",
-    "src/extra-view.html"
+    "src/my-view404/my-view404.html",
+    "src/job-names/job-names.html"
   ],
   "sourceGlobs": [
     "src/**/*",
