@@ -22,12 +22,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
-<<<<<<< HEAD
+
 <link rel="import" href="overlays/job-name-details.html" />
-=======
+
 <link rel="import" href="overlays/date-picker-overlay.html">
 
->>>>>>> 16197c6dae838de58f272ff35fb1e5155f6ed10b
+
 <dom-module id="andiamo-app">
   <template>
     <style include="shared-styles">
@@ -107,13 +107,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </app-header-layout>
     </app-drawer-layout>
 
-<<<<<<< HEAD
-    <job-name-details id="details"></job-name-details>
 
-  
-=======
+    <job-name-details id="details"></job-name-details>
     <data-picker-overlay id="datePicker"></data-picker-overlay>
->>>>>>> 16197c6dae838de58f272ff35fb1e5155f6ed10b
+
 
   </template>
 
@@ -134,20 +131,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         '_routePageChanged(routeData.page)',
       ],
 
-<<<<<<< HEAD
+
       listeners: {
        'basic-list-selected-item' : '_basicListItemEvent'
-      }
-      ,
+      },
 
       _basicListItemEvent(event) {
            console.log('basic list event: ' , event);
            this.$.details.open();
-      }
-      ,      
-
-        _routePageChanged: function(page) {
-=======
+      },      
 
       ready() {
         // Grab a reference to our auto-binding template
@@ -168,7 +160,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
       _routePageChanged: function(page) {
->>>>>>> 16197c6dae838de58f272ff35fb1e5155f6ed10b
+
         this.page = page || 'home-view';
 
         if (!this.$.drawer.persistent) {
@@ -183,14 +175,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _showPage404: function() {
-<<<<<<< HEAD
-        this.page = '/my-view-404/my-view404';
-      },
-=======
         this.page = 'my-view404';
       }
       
->>>>>>> 16197c6dae838de58f272ff35fb1e5155f6ed10b
     });
   </script>
 </dom-module>
