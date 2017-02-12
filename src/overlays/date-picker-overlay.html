@@ -9,48 +9,51 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-date-picker/paper-date-picker.html">
 <link rel="import" href="../shared-styles.html">
+<link rel="import" href="../../behaviors/fullscreen-behavior.html">
 
-<dom-module id="out-of-office">
+
+<dom-module id="data-picker-overlay">
   <template>
     <style include="shared-styles">
 
       :host {
-        display: block;
-      }
-
-      paper-icon-button {
-        --paper-icon-button: {
-          background-color: var(--accent-color);
-        };
+      	@apply(--fullscreen-overlays);
+      	background-color: var(--primary-background-color);
       }
 
     </style>
 
-    <div class="card">
-      <h1>Out of Office</h1>
-      <p>Start here to notify concerned parties that you will be out of your office on upcoming dates</p>
-      <paper-icon-button id="goButton" 
-                         on-tap="_goButtonTapped">
-      </paper-icon-button>
-    </div>
-
-    
+    <div>
+	    <paper-date-picker date="{{date}}" 
+	    									 min-date="[[minDate]]">
+	    </paper-date-picker>
+	  </div>
 
   </template>
 
   <script>
     Polymer({
-      is: 'out-of-office',
+      is: 'data-picker-overlay',
+
+      behaviors: [window.BCDEV.Behaviors.FullscreenBehavior],
 
       properties: {
 
+        date: {
+          type: Date,
+          observer: '_dateChanged'
+        },
+
+        minDate: {
+          type: Date,
+          value: () => new Date
+        }
       },
 
-      _goButtonTapped(event) {
-        console.log('go button tapped: ', window.BCDEV);
-        window.BCDEV.datePickerOverlay.open();
+      _dateChanged(date) {
+        console.log('date changed: ', date);
       }
 
     });

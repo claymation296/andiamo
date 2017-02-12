@@ -54,6 +54,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         lazyRegister: true,
       };
 
+      window.BCDEV = window.BCDEV || {};
+
       // Load webcomponentsjs polyfill if browser does not support native
       // Web Components
       (function() {
@@ -107,7 +109,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
   </head>
   <body>
-    <andiamo-app></andiamo-app>
+    <andiamo-app id="app"></andiamo-app>
     <!-- Built with love using Polymer Starter Kit -->
   </body>
 </html>
