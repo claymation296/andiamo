@@ -2,9 +2,12 @@
 <link rel="import" href="../../behaviors/fullscreen-behavior.html">
 <link rel="import" href="../../behaviors/on-tap-behavior.html">
 <link rel="import" href="../shared-styles.html">
+<link rel="import" href="../../bower_components/paper-styles/color.html">
+
 <dom-module id="job-name-details">
 
   <template>
+
     <style include="shared-styles">
       :host {
         @apply(--fullscreen-overlays);
@@ -56,12 +59,14 @@
          padding: 4px;
          background-color: white;
             }
+
     </style>
 
     <!-- 
       If deploying in a folder replace href="/" with the full path to your site.
       Such as: href=="http://polymerelements.github.io/polymer-starter-kit"
     -->
+
     <div on-tap="_closePage" >
         
           <img class="avatar" src="[[data.image]]"> 
@@ -80,27 +85,25 @@
 
         </div>
     </div>
+
   </template>
 
   <script>
     Polymer({
       is: 'job-name-details',
 
+
     behaviors: [window.BCDEV.Behaviors.FullscreenBehavior,
                 window.BCDEV.Behaviors.OnTapBehavior,
-
     ],
 
     _closePage(){
       this.close();
     },
 
-
- properties: {
+    properties: {
       data: Object,
- },
-
-
+    },
 
       
     });

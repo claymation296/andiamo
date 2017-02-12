@@ -1,0 +1,83 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="../../shared-styles.html">
+<link rel="import" href="../../../behaviors/fullscreen-behavior.html">
+<link rel="import" href="../../../behaviors/utilities.html">
+<link rel="import" href="start-date.html">
+<link rel="import" href="end-date.html">
+
+
+
+
+<dom-module id="out-date-mediator">
+  <template>
+    <style include="shared-styles">
+
+      :host {
+      	@apply(--fullscreen-overlays);
+      }
+
+      neon-animated-pages {
+      	height: 100%;
+      }
+
+    </style>
+
+		<neon-animated-pages selected="[[selected]]" 
+    										 attr-for-selected="id"
+    										 animate-initial-selection>    										 
+
+	    <start-date id="start"></start-date>
+	    <end-date id="end"></end-date>
+
+	  </neon-animated-pages> 
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'out-date-mediator',
+
+      behaviors: [
+      	window.BCDEV.Behaviors.FullscreenBehavior,
+      	window.BCDEV.Behaviors.Utilities
+      ],
+
+      properties: {
+
+      	selected: String
+
+      },
+
+      listeners: {
+      	'neon-animation-finish': '_animationComplete'
+      },
+
+      // called by out-of-office.html as a callback to open()
+      init() {
+      	this.selected = 'start';
+
+      	const openStart = () => {
+      		this.$.start.init();
+      	};
+
+      	this.schedule(openStart);
+      },
+
+      _animationComplete(_, animationType) {
+      	console.log('animationType: ', animationType);
+      } 
+
+    });
+  </script>
+</dom-module>
