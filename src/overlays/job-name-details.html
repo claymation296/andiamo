@@ -1,30 +1,45 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
+<link rel="import" href="../../behaviors/fullscreen-behavior.html">
 
 <dom-module id="job-name-details">
   <template>
     <style>
+
       :host {
+        @apply(--fullscreen-overlays);
+        background-color: var(--primary-background-color);
+      }
+
+      /*:host {
         display: block;
 
         padding: 10px 20px;
-      }
+      }*/
     </style>
 
     <!-- 
       If deploying in a folder replace href="/" with the full path to your site.
       Such as: href=="http://polymerelements.github.io/polymer-starter-kit"
     -->
-    Oops you hit a 404. <a href="/">fick ypu</a>
+    <!-- Oops you hit a 404. <a href="/">fick ypu</a> -->
+
+    <p>This is the job name details page yo!</p>
+
+
   </template>
 
   <script>
     Polymer({
       is: 'job-name-details',
 
-      open() {
-  console.log('open bitch');
+      behaviors: [window.BCDEV.Behaviors.FullscreenBehavior],
+
+      properties: {
+        
       }
+
+      
     });
   </script>
 </dom-module>

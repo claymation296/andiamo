@@ -1,0 +1,191 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/paper-date-picker/paper-date-picker.html">
+<link rel="import" href="../../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animatable.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/fade-in-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/slide-left-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/transform-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/slide-from-right-animation.html">
+
+
+
+<link rel="import" href="../../shared-styles.html">
+<link rel="import" href="../../../behaviors/on-tap-behavior.html">
+
+
+
+<dom-module id="start-date">
+  <template>
+    <style include="shared-styles">
+
+      :host {
+      	background-color: var(--primary-background-color);
+      }
+
+      app-toolbar {
+        color: var(--light-text-color);
+        background-color: var(--dark-primary-color);
+      }
+
+      paper-fab {
+        --paper-fab: {
+          display: none;
+          position: fixed;
+          right: 16px;
+          bottom: 16px;
+        };
+        --paper-fab-keyboard-focus-background: var(--accent-color);
+      }
+
+    </style>
+
+    <app-header-layout has-scrolling-region>
+
+          <!--BEN: need to mess with to get pink header-->
+        <app-header condenses reveals>
+          <app-toolbar>
+            <paper-icon-button icon="my-icons:arrow-back"
+                               on-tap="_backButtonTapped">
+            </paper-icon-button>
+            <div main-title>Start Date</div>
+          </app-toolbar>
+        </app-header>
+
+        <paper-date-picker id="picker" 
+                           date="{{date}}" 
+                           min-date="[[minDate]]">
+        </paper-date-picker>
+        
+      </app-header-layout>
+    </app-drawer-layout>
+
+    <paper-fab id="fab" 
+               on-tap="_fabTapped" 
+               icon="my-icons:arrow-forward">
+    </paper-fab>
+
+    
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'start-date',
+
+      behaviors: [
+        Polymer.NeonAnimatableBehavior,
+        Polymer.NeonAnimationRunnerBehavior,
+        window.BCDEV.Behaviors.OnTapBehavior 
+      ],
+
+      properties: {
+
+      	animationConfig: {
+      		value() {
+      			return {
+      				'entry': [{
+                name: 'slide-from-right-animation',
+                node: this,
+                timing: {duration: 300, easing: 'ease-in'}
+              },{
+                name: 'fade-in-animation',
+                node: this,
+                timing: {duration: 200, delay: 100, easing: 'ease-in'}
+      				}],
+              'exit': [{
+                name: 'slide-left-animation',
+                node: this,
+                timing: {duration: 200, easing: 'ease-in'}
+              },{
+                name: 'fade-out-animation',
+                node: this,
+                timing: {duration: 100, delay: 100, easing: 'ease-in'}
+              }],
+              'fabEntry': [{
+                  name: 'transform-animation',
+                  node: this.$.fab,
+                  transformFrom: 'scale(0, 0)',
+                  transformTo: 'scale(1, 1)',
+                  timing: {duration: 200, easing: 'ease-out'}
+                }, {
+                  name: 'fade-in-animation',
+                  node: this.$.fab,
+                  timing: {duration: 100, delay: 100, easing: 'ease-out'}
+                 
+        				}],
+                'fabExit': [{
+                  name: 'slide-down-animation',
+                  node: this.$.fab,
+                  timing: {duration: 200, easing: 'ease-in'}
+                }, {
+                  name: 'fade-out-animation',
+                  node: this.$.fab,
+                  timing: {duration: 100, delay: 100, easing: 'ease-in'}
+                }],
+      			};
+      		}
+      	},
+
+        date: {
+          type: Date,
+          observer: '_dateChanged'
+        },
+
+        minDate: {
+          type: Date,
+          value: () => new Date
+        }
+      },
+
+      // called by out-of-office.html as a callback to open()
+      init() {
+        // corrects a styling bug in paper-date-picker when
+        // setting from display: none;
+        this.$.picker.set('hidden', false);
+        this.$.picker.fire('iron-resize');
+
+        console.log('init: ', Polymer.dom(this.$.picker));
+      },
+
+      
+      _dateChanged(_, oldDate) {
+        if (oldDate) {
+          this.$.fab.style.display = 'flex';
+          this.cancelAnimation();
+          this.playAnimation('fabEntry', 'fabEntry');
+        }
+      },
+
+
+      _backButtonTapped() {
+      	const back = () => {
+      		this.fire('start-date-back-button-tapped');
+      	};
+
+      	this.onTap = back;
+      },
+
+
+      _fabTapped() {
+        const next = () => {
+          this.fire('start-date-fab-tapped', {date: this.date});
+        };
+
+        this.onTap = next;
+      }
+
+    });
+  </script>
+</dom-module>
