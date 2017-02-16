@@ -19,26 +19,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <style include="shared-styles">
       :host {
-             @apply(--fullscreen-overlays);
-             background-color: white;
+        @apply(--fullscreen-overlays);
+        background-color: white;
       }
     </style>
 
 
-  <selection-list  contacts="../../../data/contacts.json"></selection-list>
+  <selection-list id="list"  contacts="../../../data/contacts.json"></selection-list>
 
   </template>
 
 
   <script>
     Polymer({
-        is: 'email-contacts',
+      is: 'email-contacts',
 
-    behaviors: [window.BCDEV.Behaviors.FullscreenBehavior,
-                    window.BCDEV.Behaviors.Utilities
-    ],
+      behaviors: [
+        window.BCDEV.Behaviors.FullscreenBehavior,
+        window.BCDEV.Behaviors.Utilities
+      ],
 
-
+      init() {
+        this.$.list.init();
+      }
 
     });
 

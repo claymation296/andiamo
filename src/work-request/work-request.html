@@ -19,6 +19,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../elements/selection-list.html" />
 <link rel="import" href="../../elements/basic-list.html" />
 <link rel="import" href="../../behaviors/on-tap-behavior.html"/>
+
+
 <dom-module id="work-request">
   <template>
     <style include="shared-styles">
@@ -29,60 +31,62 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-<paper-dropdown-menu label="Type of Work:">
-  <paper-listbox class="dropdown-content" selected="1" >
-    
-    <paper-item>Framing</paper-item>
-    <paper-item>Landscape</paper-item>
-    <paper-item>Roofing</paper-item>
-  </paper-listbox>
-</paper-dropdown-menu>
- 
- <paper-dropdown-menu label="Location:">
-  <paper-listbox class="dropdown-content" items="['bill', 'tom']">
+    <paper-dropdown-menu label="Type of Work:">
+      <paper-listbox class="dropdown-content" selected="1" >
+        
+        <paper-item>Framing</paper-item>
+        <paper-item>Landscape</paper-item>
+        <paper-item>Roofing</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
+     
+     <paper-dropdown-menu label="Location:">
+      <paper-listbox class="dropdown-content" items="['bill', 'tom']">
 
-  <paper-item>[[items]]</paper-item>
-  </paper-listbox>
-</paper-dropdown-menu>
+      <paper-item>[[items]]</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
 
- <paper-dropdown-menu label="Arrival Time:">
-  <paper-listbox class="dropdown-content" selected="1">
-    <paper-item>7:00Am</paper-item>
-    <paper-item>8:00Am</paper-item>
-    <paper-item>9:00Am</paper-item>
-    <paper-item>10:00Am</paper-item>
-  </paper-listbox>
-</paper-dropdown-menu>
+     <paper-dropdown-menu label="Arrival Time:">
+      <paper-listbox class="dropdown-content" selected="1">
+        <paper-item>7:00Am</paper-item>
+        <paper-item>8:00Am</paper-item>
+        <paper-item>9:00Am</paper-item>
+        <paper-item>10:00Am</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
 
-<paper-dropdown-menu label="Date:">
-  <paper-listbox class="dropdown-content" selected="1">
-    <paper-item>1/2/19</paper-item>
-    <paper-item>2/8/19</paper-item>
-    <paper-item>3/8/19</paper-item>
-    <paper-item>2/29/19</paper-item>
-  </paper-listbox>
-</paper-dropdown-menu>
+    <paper-dropdown-menu label="Date:">
+      <paper-listbox class="dropdown-content" selected="1">
+        <paper-item>1/2/19</paper-item>
+        <paper-item>2/8/19</paper-item>
+        <paper-item>3/8/19</paper-item>
+        <paper-item>2/29/19</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
 
-<paper-button raised id="contactsButton" on-tap="_contactsButtonTapped">Choose Contacts</paper-button>
+    <paper-button raised id="contactsButton" on-tap="_contactsButtonTapped">Choose Contacts</paper-button>
 
   </template>
 
 
   <script>
     Polymer({
-        is: 'work-request',
+      is: 'work-request',
+
       behaviors: [window.BCDEV.Behaviors.OnTapBehavior],
 
-      _contactsButtonTapped(event) {
+      _contactsButtonTapped() {
         const open = () => {
+          const callback = () => {
+            window.BCDEV.contactsOverlay.init();
+          };
       
-          window.BCDEV.contactsOverlay.open();
+          window.BCDEV.contactsOverlay.open(callback);
         };
 
         this.onTap = open;
       }
-
-
 
     });
 
