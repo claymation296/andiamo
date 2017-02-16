@@ -1,5 +1,4 @@
-﻿<script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-<link rel="import" href="../bower_components/polymer/polymer.html">
+﻿<link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../src/shared-styles.html">
@@ -15,6 +14,9 @@
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-badge/paper-badge.html" />
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../behaviors/utilities.html">
+
+
 
 <dom-module id="selection-list" >
     <template>
@@ -59,10 +61,10 @@
              
             }
 
-                paper-badge[label="0"] {
-                    opacity: 0;
+            paper-badge[label="0"] {
+                opacity: 0;
 
-                }
+            }
 
             @media (min-width: 640px) {
 
@@ -83,15 +85,15 @@
                 border-bottom: 1px solid #DDD;
             }
 
-                .item:focus,
-                .item.selected:focus {
-                    outline: 0;
-                    background-color: #ddd;
-                }
+            .item:focus,
+            .item.selected:focus {
+                outline: 0;
+                background-color: #ddd;
+            }
 
-                .item.selected .star {
-                    color: var(--paper-green-600);
-                }
+            .item.selected .star {
+                color: var(--paper-green-600);
+            }
 
             .avatar {
                 height: 50px;
@@ -130,23 +132,23 @@
                 position: relative;
             }
 
-                paper-item:hover::after {
-                    content: "－";
-                    width: 16px;
-                    height: 16px;
-                    display: block;
-                    border-radius: 50% 50%;
-                    background-color: var(--google-red-300);
-                    margin-left: 10px;
-                    line-height: 16px;
-                    text-align: center;
-                    color: white;
-                    font-weight: bold;
-                    text-decoration: none;
-                    position: absolute;
-                    right: 15px;
-                    top: calc(50% - 8px);
-                }
+            paper-item:hover::after {
+                content: "－";
+                width: 16px;
+                height: 16px;
+                display: block;
+                border-radius: 50% 50%;
+                background-color: var(--google-red-300);
+                margin-left: 10px;
+                line-height: 16px;
+                text-align: center;
+                color: white;
+                font-weight: bold;
+                text-decoration: none;
+                position: absolute;
+                right: 15px;
+                top: calc(50% - 8px);
+            }
 
             .no-selection {
                 color: #999;
@@ -157,9 +159,12 @@
             iron-list {
                 @apply(--layout-flex);
             }
-              .blue {
-    --paper-badge-background: var(--paper-green-300);
-  }
+
+
+            .blue {
+                --paper-badge-background: var(--paper-green-300);
+            }
+
         </style>
         <!--BEN: url contacts lets you pass in contacts.json-->
         <iron-ajax url="{{contacts}}" last-response="{{data}}" auto></iron-ajax>
@@ -212,40 +217,45 @@
 
     <script>
 
-      HTMLImports.whenReady(function() {
+      Polymer({
+        is: 'selection-list',
 
-        Polymer({
+        behaviors: [
+          window.BCDEV.Behaviors.Utilities
+        ],
 
-          is: 'selection-list',
-
-          properties: {
-            selectedItems: {
-              type: Object
-            }
-          },
-
-          iconForItem: function(isSelected) {
-            return isSelected ? 'star' : 'star-border';
-          },
-
-          _computedClass: function(isSelected) {
-            var classes = 'item';
-            if (isSelected) {
-              classes += ' selected';
-            }
-            return classes;
-          },
-
-          _unselect: function(e) {
-            this.$.itemsList.deselectItem(e.model.item);
-          },
-
-          _getFormattedCount: function(count) {
-            return count > 0 ? '(' + count + ')' : '';
+        properties: {
+          selectedItems: {
+            type: Object
           }
-        });
+        },
 
-     });
+       
+        init() {
+          this.$.itemsList.fire('iron-resize');
+        },
+
+
+        iconForItem: function(isSelected) {
+          return isSelected ? 'star' : 'star-border';
+        },
+
+        _computedClass: function(isSelected) {
+          var classes = 'item';
+          if (isSelected) {
+            classes += ' selected';
+          }
+          return classes;
+        },
+
+        _unselect: function(e) {
+          this.$.itemsList.deselectItem(e.model.item);
+        },
+
+        _getFormattedCount: function(count) {
+          return count > 0 ? '(' + count + ')' : '';
+        }
+      });
 
     </script>
 
