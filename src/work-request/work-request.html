@@ -19,6 +19,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../elements/selection-list.html" />
 <link rel="import" href="../../elements/basic-list.html" />
 <link rel="import" href="../../behaviors/on-tap-behavior.html"/>
+<link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-behavior.html"/>
+<link rel="import" href="../../bower_components/iron-dropdown/iron-dropdown.html"/>
 <dom-module id="work-request">
   <template>
     <style include="shared-styles">
@@ -38,12 +40,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </paper-listbox>
 </paper-dropdown-menu>
  
- <paper-dropdown-menu label="Location:">
-  <paper-listbox class="dropdown-content" items="['bill', 'tom']">
 
-  <paper-item>[[items]]</paper-item>
-  </paper-listbox>
-</paper-dropdown-menu>
 
  <paper-dropdown-menu label="Arrival Time:">
   <paper-listbox class="dropdown-content" selected="1">
@@ -63,7 +60,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </paper-listbox>
 </paper-dropdown-menu>
 
+<paper-dropdown-menu label="employee:">
+  <paper-listbox class="dropdown-content" selected="1">
+    <template is="dom-repeat" items="{{employees}}">
+      <paper-item value="{{item.first}}">{{item.first}}</paper-item>
+    </template>
+
+  </paper-listbox>
+</paper-dropdown-menu>
+
 <paper-button raised id="contactsButton" on-tap="_contactsButtonTapped">Choose Contacts</paper-button>
+
+
+
+
 
   </template>
 
@@ -71,7 +81,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     Polymer({
         is: 'work-request',
-      behaviors: [window.BCDEV.Behaviors.OnTapBehavior],
+      behaviors: [window.BCDEV.Behaviors.OnTapBehavior,
+   
+      ],
 
       _contactsButtonTapped(event) {
         const open = () => {
@@ -80,8 +92,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         };
 
         this.onTap = open;
-      }
 
+      },
+
+      ready: function() {
+        this.employees = [
+            {first: 'Bob', last: 'Smith'},
+            {first: 'Sally', last: 'Johnson'},
+     
+        ];
+      }
 
 
     });
