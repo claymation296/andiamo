@@ -24,7 +24,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="my-icons.html">
 
 <link rel="import" href="overlays/job-name-details.html">
-
+<link rel="import" href="overlays/email-overlay/email-contacts.html">
 <link rel="import" href="overlays/out-date-overlay/out-date-mediator.html">
 
 
@@ -113,7 +113,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                       data= "[[selectedItem]]"></job-name-details>
 
     <out-date-mediator id="outDate"></out-date-mediator>
-
+<email-contacts id="contacts"></email-contacts>
 
 
   </template>
@@ -159,6 +159,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         const customElements = {
           jobNameDetails: 'details',
           outDateOverlay: 'outDate',
+          contactsOverlay: 'contacts',
         }; 
 
         for (const key in customElements) {

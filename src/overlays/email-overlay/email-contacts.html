@@ -8,29 +8,36 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/iron-list/iron-list.html">
-<link rel="import" href="../shared-styles.html">
-<link rel="import" href="../../elements/selection-list.html" />
-<dom-module id="work-request">
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="../../shared-styles.html">
+<link rel="import" href="../../../behaviors/fullscreen-behavior.html">
+<link rel="import" href="../../../behaviors/utilities.html">
+<link rel="import" href="../../../elements/selection-list.html" />
+
+<dom-module id="email-contacts">
   <template>
     <style include="shared-styles">
       :host {
-        display: block;
-
-        padding: 10px;
+             @apply(--fullscreen-overlays);
+             background-color: white;
       }
     </style>
 
- 
-  <selection-list contacts="../../data/contacts.json"></selection-list>
+
+  <selection-list  contacts="../../../data/contacts.json"></selection-list>
 
   </template>
 
 
   <script>
     Polymer({
-        is: 'work-request',
+        is: 'email-contacts',
+
+    behaviors: [window.BCDEV.Behaviors.FullscreenBehavior,
+                    window.BCDEV.Behaviors.Utilities
+    ],
+
 
 
     });
