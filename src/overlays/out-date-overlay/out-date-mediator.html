@@ -33,9 +33,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </style>
 
-		<neon-animated-pages selected="[[selected]]" 
-    										 attr-for-selected="id"
-    										 animate-initial-selection>    										 
+    <neon-animated-pages selected="[[selected]]" 
+                         attr-for-selected="id">                            										 
 
 	    <start-date id="start"></start-date>
 	    <end-date id="end"></end-date>
@@ -55,28 +54,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       properties: {
 
-      	selected: String
+      	selected: {
+          type: String,
+          value: 'start'
+        }
+
 
       },
 
-      listeners: {
-      	'neon-animation-finish': '_animationComplete'
-      },
+      // listeners: {
+      // 	'neon-animation-finish': '_animationComplete'
+      // },
 
       // called by out-of-office.html as a callback to open()
       init() {
-      	this.selected = 'start';
-
-      	const openStart = () => {
-      		this.$.start.init();
-      	};
-
-      	this.schedule(openStart);
+      	this.$.start.init();
       },
 
-      _animationComplete(_, animationType) {
-      	console.log('animationType: ', animationType);
-      } 
+      // _animationComplete(_, animationType) {
+      // 	console.log('animationType: ', animationType);
+      // } 
 
     });
   </script>
