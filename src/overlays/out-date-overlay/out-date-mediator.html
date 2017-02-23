@@ -62,18 +62,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       },
 
-      // listeners: {
-      // 	'neon-animation-finish': '_animationComplete'
-      // },
+      listeners: {
+      	'start-date-back-button-tapped': '_startBackButtonTapped'
+      },
 
       // called by out-of-office.html as a callback to open()
       init() {
-      	this.$.start.init();
+        const callback = () => {
+          this.$.start.init();
+        };
+
+        this.open(callback);
       },
 
       // _animationComplete(_, animationType) {
       // 	console.log('animationType: ', animationType);
       // } 
+
+
+      _startBackButtonTapped() {
+        this.close();
+      }
 
     });
   </script>

@@ -99,11 +99,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               'startEntry': [{
                 name: 'slide-from-top-animation',
                 node: this,
-                timing: {duration: 300, easing: 'ease-out'}
+                timing: {duration: 200, easing: 'ease-out'}
               }, {
                 name: 'fade-in-animation',
                 node: this,
-                timing: {duration: 200, delay: 100, easing: 'ease-in'}
+                timing: {duration: 150, delay: 50, easing: 'ease-in'}
               }],
               'startCascade': [{
                 name: 'cascaded-animation',
@@ -144,8 +144,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 // node set imperitiveley -> this.rightChevronEl
                 timing: {duration: 300, delay: 600, easing: 'ease-in'}
               }],
-              'exit': [{
+              'back': [{
                 name: 'slide-left-animation',
+                node: this,
+                timing: {duration: 200, easing: 'ease-in'}
+              },{
+                name: 'fade-out-animation',
+                node: this,
+                timing: {duration: 100, delay: 100, easing: 'ease-in'}
+              }],
+              'exit': [{
+                name: 'slide-down-animation',
                 node: this,
                 timing: {duration: 200, easing: 'ease-in'}
               },{
@@ -234,6 +243,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
       },
 
+      _reset() {
+        Polymer.dom(this.$.backButton).classList.add('hiddenBeforeAnimation');
+        Polymer.dom(this.$.title).     classList.add('hiddenBeforeAnimation');
+        this.style.opacity                 = '0';
+        this.yearEl.style.opacity          = '0';
+        this.dayOfTheWeekEl.style.opacity  = '0';
+        this.dateEl.style.opacity          = '0';
+        this.monthsEl.style.opacity        = '0';
+        this.monthName.style.opacity       = '0';
+        this.leftChevronEl.style.opacity   = '0';
+        this.rightChevronEl.style.opacity  = '0';
+      },
+
       _startDateAnimationComplete(_, animationType) {
         switch (animationType) {
           case 'startEntry':
@@ -253,6 +275,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           case 'startCascade':
             console.log('start entry done');
             break;
+          case 'back':
+            this._reset();
+            this.fire('start-date-back-button-tapped');
           default:
             break;
         }
@@ -260,17 +285,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       // called by out-of-office.html as a callback to open()
       init() {
-        // corrects a styling bug in paper-date-picker when
-        // setting from display: none;
-        this.$.picker.set('hidden', false);
-        this.$.picker.fire('iron-resize');
-        
         const play = () => {
           this.style.opacity = '1';
           this.cancelAnimation();
           this.playAnimation('startEntry', 'startEntry');
         };
-
+        // corrects a styling bug in paper-date-picker when
+        // setting from display: none;
+        this.$.picker.fire('iron-resize');
         this.schedule(play);
       },
 
@@ -283,11 +305,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
       _backButtonTapped() {
-      	const back = () => {
-      		this.fire('start-date-back-button-tapped');
+      	const playBackAnimation = () => {
+          this.$.fab.exit();
+          this.cancelAnimation();
+          this.playAnimation('back', 'back');
       	};
 
-      	this.onTap = back;
+      	this.onTap = playBackAnimation;
       },
 
 

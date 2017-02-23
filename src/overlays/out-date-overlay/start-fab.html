@@ -14,7 +14,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../../bower_components/neon-animation/animations/fade-in-animation.html">
 <link rel="import" href="../../../bower_components/neon-animation/animations/fade-out-animation.html">
 <link rel="import" href="../../../bower_components/neon-animation/animations/transform-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/scale-down-animation.html">
 <link rel="import" href="../../../bower_components/paper-fab/paper-fab.html">
+
 
 
 <dom-module id="start-fab">
@@ -76,11 +78,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
          xml:space="preserve">
 
       <rect id="shaft" 
-        class="shaft" 
-        x="4" 
-        y="11" 
-        width="14" 
-        height="2"/>
+		        class="shaft" 
+		        x="4" 
+		        y="11" 
+		        width="14" 
+		        height="2"/>
 
 		  <rect id="topFin" 
 		        class="topFin topFinOut" 
@@ -120,8 +122,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	      				'fabEntry': [{
 	                name: 'transform-animation',
 	                node: this,
+	                transformOrigin: '50% 50%',
 	                transformFrom: 'scale(0, 0)',
-	                transformTo: 'scale(1.1, 1.1)',
+	                transformTo: 'scale(1.05, 1.05)',
 	                timing: {duration: 200, easing: 'ease-out'}
 	              }, {
 	                name: 'fade-in-animation',
@@ -131,60 +134,59 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	                name: 'transform-animation',
 	                node: this.$.icon,
 	                transformFrom: 'translate(-50%, -50%) rotate(-180deg)',
-	                transformTo: 'translate(-50%, -50%) rotate(20deg)',
+	                transformTo: 'translate(-50%, -50%) rotate(15deg)',
 	                timing: {duration: 200, delay: 50, easing: 'ease-out'}
 	              }, {
 	                name: 'transform-animation',
 	                node: this.$.topFin,
 	                transformFrom: 'rotate(-90deg)',
-	                transformTo: 'rotate(-30deg)',
+	                transformTo: 'rotate(-35deg)',
 	                timing: {duration: 200, delay: 100, easing: 'ease-out'}
 	              }, {
 	                name: 'transform-animation',
 	                node: this.$.bottomFin,
 	                transformFrom: 'rotate(90deg)',
-	                transformTo: 'rotate(30deg)',
+	                transformTo: 'rotate(35deg)',
 	                timing: {duration: 200, delay: 100, easing: 'ease-out'}
 	      				}],
 	      				'fabEntry2': [{
 	                name: 'transform-animation',
 	                node: this,
-	                transformFrom: 'scale(1.1, 1.1)',
+	                transformOrigin: '50% 50%',
+	                transformFrom: 'scale(1.05, 1.05)',
 	                transformTo: 'scale(1, 1)',
-	                timing: {duration: 200, easing: 'ease-in-out'}
+	                timing: {duration: 75, easing: 'ease-in'}
 	               }, {
 	                name: 'transform-animation',
 	                node: this.$.icon,
-	                transformFrom: 'translate(-50%, -50%) rotate(20deg)',
+	                transformFrom: 'translate(-50%, -50%) rotate(15deg)',
 	                transformTo: 'translate(-50%, -50%)',
-	                timing: {duration: 300, delay: 50, easing: 'ease-in-out'}
+	                timing: {duration: 200, delay: 50, easing: 'ease-in-out'}
 	              }, {
 	                name: 'transform-animation',
 	                node: this.$.topFin,
-	                transformFrom: 'rotate(-30deg)',
+	                transformFrom: 'rotate(-35deg)',
 	                transformTo: 'rotate(-45deg)',
-	                timing: {duration: 400, delay: 50, easing: 'ease-in'}
+	                timing: {duration: 250, delay: 50, easing: 'ease-in'}
 	              }, {
 	                name: 'transform-animation',
 	                node: this.$.bottomFin,
-	                transformFrom: 'rotate(30deg)',
+	                transformFrom: 'rotate(35deg)',
 	                transformTo: 'rotate(45deg)',
-	                timing: {duration: 400, delay: 50, easing: 'ease-in'}
+	                timing: {duration: 250, delay: 50, easing: 'ease-in'}
 	      				}],
 	              'fabExit': [{
-	                name: 'slide-down-animation',
+	                name: 'scale-down-animation',
 	                node: this,
-	                timing: {duration: 200, easing: 'ease-in'}
+	                timing: {duration: 150, easing: 'ease-in'}
 	              }, {
 	                name: 'fade-out-animation',
 	                node: this,
-	                timing: {duration: 100, delay: 100, easing: 'ease-in'}
+	                timing: {duration: 100, delay: 50, easing: 'ease-in'}
 	              }],
 	      			};
 	      		}
 	      	}
-
-
 	      },
 
 

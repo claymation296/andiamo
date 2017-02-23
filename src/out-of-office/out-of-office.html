@@ -60,15 +60,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       behaviors: [window.BCDEV.Behaviors.OnTapBehavior],
 
-      _goButtonTapped(event) {
-        const open = () => {
-          const callback = () => {
-            window.BCDEV.outDateOverlay.init();
-          };
-          window.BCDEV.outDateOverlay.open(callback);
-        };
-
-        this.onTap = open;
+      _goButtonTapped() {
+        this.onTap = window.BCDEV.outDateMediator.init();
       }
 
     });
