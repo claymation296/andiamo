@@ -10,7 +10,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../../bower_components/paper-date-picker/paper-date-picker.html">
-<link rel="import" href="../../../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../../../bower_components/neon-animation/neon-animatable.html">
 <link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
 <link rel="import" href="../../../bower_components/neon-animation/animations/fade-in-animation.html">
@@ -27,6 +26,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../../shared-styles.html">
 <link rel="import" href="../../../behaviors/on-tap-behavior.html">
+<link rel="import" href="start-fab.html">
 
 
 
@@ -42,19 +42,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app-toolbar {
         color: var(--light-text-color);
         background-color: var(--dark-primary-color);
-      }
-
-      paper-fab {
-        --paper-fab: {
-          display: none;
-          position: fixed;
-          right: 16px;
-          bottom: 16px;
-        };
-        --paper-fab-iron-icon: {
-          color: var(--dark-text-color);
-        };
-        --paper-fab-keyboard-focus-background: var(--accent-color);
       }
 
       .hiddenBeforeAnimation {
@@ -88,15 +75,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </app-header-layout>
     </app-drawer-layout>
 
-    <!-- <paper-fab id="fab" 
-               on-tap="_fabTapped" 
-               icon="my-icons:arrow-forward">
-    </paper-fab> -->
 
-
-    <paper-fab id="fab" on-tap="_fabTapped"></paper-fab>
-    <iron-icon icon="my-icons:arrow-forward"></iron-icon>
-
+    <start-fab id="fab" on-tap="_fabTapped"></start-fab>
     
 
   </template>
@@ -159,6 +139,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 name: 'fade-in-animation',
                 // node set imperitiveley -> this.rightChevronEl
                 timing: {duration: 200, delay: 500, easing: 'ease-in'}
+              }, {
+                name: 'fade-in-animation',
+                // node set imperitiveley -> this.rightChevronEl
+                timing: {duration: 300, delay: 600, easing: 'ease-in'}
               }],
               'exit': [{
                 name: 'slide-left-animation',
@@ -168,27 +152,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 name: 'fade-out-animation',
                 node: this,
                 timing: {duration: 100, delay: 100, easing: 'ease-in'}
-              }],
-              'fabEntry': [{
-                name: 'transform-animation',
-                node: this.$.fab,
-                transformFrom: 'scale(0, 0)',
-                transformTo: 'scale(1, 1)',
-                timing: {duration: 200, easing: 'ease-out'}
-              }, {
-                name: 'fade-in-animation',
-                node: this.$.fab,
-                timing: {duration: 100, delay: 100, easing: 'ease-out'}
-      				}],
-              'fabExit': [{
-                name: 'slide-down-animation',
-                node: this.$.fab,
-                timing: {duration: 200, easing: 'ease-in'}
-              }, {
-                name: 'fade-out-animation',
-                node: this.$.fab,
-                timing: {duration: 100, delay: 100, easing: 'ease-in'}
-              }],
+              }]
       			};
       		}
       	},
@@ -213,12 +177,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         leftChevronEl: Object, 
       
-        rightChevronEl: Object
+        rightChevronEl: Object,
+
+        monthName: Object
       },
 
 
       listeners: {
-        'neon-animation-finish': '_animationComplete'
+        'neon-animation-finish': '_startDateAnimationComplete'
       },
 
 
@@ -233,6 +199,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.dayOfTheWeekEl = heading.children[1].children[0];
           this.dateEl         = heading.children[1].children[1];
           this.monthsEl       = calendar.children.months.firstElementChild;
+          this.monthName      = this.monthsEl.children[0].firstElementChild;
           this.leftChevronEl  = monthNav.firstElementChild;
           this.rightChevronEl = monthNav.lastElementChild;
 
@@ -240,43 +207,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.dayOfTheWeekEl.style.opacity  = '0';
           this.dateEl.style.opacity          = '0';
           this.monthsEl.style.opacity        = '0';
+          this.monthName.style.opacity       = '0';
           this.leftChevronEl.style.opacity   = '0';
           this.rightChevronEl.style.opacity  = '0';
           // can't transform a span without a display explicitly set
           this.dayOfTheWeekEl.style.display  = 'inline-block';
           this.dateEl.style.display          = 'inline-block';
-
-
-
-          const monthRows     = this.monthsEl.children;
-          // animation nodes
-          const monthName     = monthRows[0].firstElementChild;
-          
-          // const monthDays = rows => {
-          //   const length = rows.length;
-
-          //   const allDays = (days, index) => {
-          //     if (index === length) { return days; }
-              
-          //     const newDays = [...days, ...rows[index].children];
-          //     return allDays(newDays, index + 1);
-          //   };
-
-          //   return allDays([], 1);
-          // };
-          // // animation nodes
-          // const remainingRows = monthDays([...monthRows]);
           // all animation nodes
           const cascaders = [
             this.$.backButton,
             this.$.title,
             this.yearEl,        
             this.dayOfTheWeekEl,
-            this.dateEl,
-            // leftChevron,
-            // monthName,
-            // rightChevron,
-            // ...remainingRows
+            this.dateEl
           ];
 
           this.animationConfig.startCascade[0].nodes = cascaders;
@@ -287,24 +230,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.animationConfig.startCascade[5].node  = this.rightChevronEl;
           this.animationConfig.startCascade[6].node  = this.leftChevronEl;
           this.animationConfig.startCascade[7].node  = this.rightChevronEl;
+          this.animationConfig.startCascade[8].node  = this.monthName;
         });
       },
 
-      _animationComplete(_, animationType) {
-        if (animationType === 'startEntry') {
-          Polymer.dom(this.$.backButton).classList.remove('hiddenBeforeAnimation');
-          Polymer.dom(this.$.title).classList.remove('hiddenBeforeAnimation');
-          this.yearEl.style.opacity          = '1';
-          this.dayOfTheWeekEl.style.opacity  = '1';
-          this.dateEl.style.opacity          = '1';
-          this.monthsEl.style.opacity        = '1';
-          this.leftChevronEl.style.opacity   = '1';
-          this.rightChevronEl.style.opacity  = '1';
+      _startDateAnimationComplete(_, animationType) {
+        switch (animationType) {
+          case 'startEntry':
+            Polymer.dom(this.$.backButton).classList.remove('hiddenBeforeAnimation');
+            Polymer.dom(this.$.title).     classList.remove('hiddenBeforeAnimation');
+            this.yearEl.style.opacity          = '1';
+            this.dayOfTheWeekEl.style.opacity  = '1';
+            this.dateEl.style.opacity          = '1';
+            this.monthsEl.style.opacity        = '1';
+            this.monthName.style.opacity       = '1';
+            this.leftChevronEl.style.opacity   = '1';
+            this.rightChevronEl.style.opacity  = '1';
 
-          this.cancelAnimation();
-          this.playAnimation('startCascade', 'startCascade');
-        } else if (animationType === 'startCascade') {
-          console.log('start entry done');
+            this.cancelAnimation();
+            this.playAnimation('startCascade', 'startCascade');
+            break;
+          case 'startCascade':
+            console.log('start entry done');
+            break;
+          default:
+            break;
         }
       }, 
 
@@ -327,9 +277,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       
       _dateChanged(_, oldDate) {
         if (oldDate) {
-          this.$.fab.style.display = 'flex';
-          this.cancelAnimation();
-          this.playAnimation('fabEntry', 'fabEntry');
+          this.$.fab.enter();
         }
       },
 

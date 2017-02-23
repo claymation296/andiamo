@@ -9,77 +9,60 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 
-<link rel="import" href="../redaap-behaviors/on-tap-behavior.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animatable.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/fade-in-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/transform-animation.html">
+<link rel="import" href="../../../bower_components/paper-fab/paper-fab.html">
 
 
-<dom-module id="close-save-button">
+<dom-module id="start-fab">
   <template>
     <style>
 
       :host {
-      	display: inline-flex;
-        align-items: center;
-        padding: 8px;
+      	display: none;
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        border-radius: 100%;
+        background-color: var(--accent-color);
       }
 
-		  #button {
-		    --paper-icon-button: {
-		      min-width: 24px;
-		      width: 40px;
-		      height: 40px;
-		      position: absolute;
-		      top: 8px;
-		      right: 16px;
-		      margin: 0px;
-		      padding: 8px;
-		      z-index: 1;
-		    };
-		  }
+      paper-fab {
+      	--paper-fab-background: transparent;
+        --paper-fab-keyboard-focus-background: transparent;
+      }
 
 		  .icon {
 		    width: 24px;
 		    height: 24px;
+		    position: absolute;
+		    top: 50%;
+		    left: 50%;
 		    fill: var(--primary-text-color);
-		    overflow: visible;
 		    transform-origin: 50% 50%;
-		    transform: rotate(-90deg);
-        transition: transform 0.3s ease-out;
 		  }
 
 		  .shaft {
-			  fill: dodgerblue;
+			  fill: var(--dark-text-color);;
 			}
 
 			.topFin {
-			  fill: mediumspringgreen;
+			  fill: var(--dark-text-color);
 			  transform-origin: bottom 1px;
-			  transition: transform 0.2s ease-out;
-			  transform: rotate(-90deg);
 			}
-
-
 
 			.bottomFin {
-			  fill: firebrick;
+			  fill: var(--dark-text-color);
 			  transform-origin: top 1px;
-			  transition: transform 0.2s ease-out;
-			  transform: rotate(90deg);
-			}
-
-			.topFinOut {
-			  transform: rotate(-45deg);
-			}
-
-			.bottomFinOut {
-			  transform: rotate(45deg);
 			}
 
 
     </style>
 
-
-    <!-- button transitionend event listened for by main-page -->
-    <paper-icon-button id="button" on-tap="_buttonTapped"></paper-icon-button>
+    
 
     <svg id="icon"
          class="icon" 
@@ -114,30 +97,141 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		        height="11.4"/>
     </svg>
 
+    <paper-fab id="button"></paper-fab>
 
   </template>
 
   <script>
     (function() {
       Polymer({
-        is: 'close-save-button',
-        behaviors: [ window.Redaap.Behaviors.OnTapBehavior ],
-        properties: {
+        is: 'start-fab',
+
+        behaviors: [
+	        Polymer.NeonAnimatableBehavior,
+	        Polymer.NeonAnimationRunnerBehavior
+	      ],
+
+
+	      properties: {
+
+	      	animationConfig: {
+	      		value() {
+	      			return {
+	      				'fabEntry': [{
+	                name: 'transform-animation',
+	                node: this,
+	                transformFrom: 'scale(0, 0)',
+	                transformTo: 'scale(1.1, 1.1)',
+	                timing: {duration: 200, easing: 'ease-out'}
+	              }, {
+	                name: 'fade-in-animation',
+	                node: this,
+	                timing: {duration: 50, easing: 'ease-out'}
+	              }, {
+	                name: 'transform-animation',
+	                node: this.$.icon,
+	                transformFrom: 'translate(-50%, -50%) rotate(-180deg)',
+	                transformTo: 'translate(-50%, -50%) rotate(20deg)',
+	                timing: {duration: 200, delay: 50, easing: 'ease-out'}
+	              }, {
+	                name: 'transform-animation',
+	                node: this.$.topFin,
+	                transformFrom: 'rotate(-90deg)',
+	                transformTo: 'rotate(-30deg)',
+	                timing: {duration: 200, delay: 100, easing: 'ease-out'}
+	              }, {
+	                name: 'transform-animation',
+	                node: this.$.bottomFin,
+	                transformFrom: 'rotate(90deg)',
+	                transformTo: 'rotate(30deg)',
+	                timing: {duration: 200, delay: 100, easing: 'ease-out'}
+	      				}],
+	      				'fabEntry2': [{
+	                name: 'transform-animation',
+	                node: this,
+	                transformFrom: 'scale(1.1, 1.1)',
+	                transformTo: 'scale(1, 1)',
+	                timing: {duration: 200, easing: 'ease-in-out'}
+	               }, {
+	                name: 'transform-animation',
+	                node: this.$.icon,
+	                transformFrom: 'translate(-50%, -50%) rotate(20deg)',
+	                transformTo: 'translate(-50%, -50%)',
+	                timing: {duration: 300, delay: 50, easing: 'ease-in-out'}
+	              }, {
+	                name: 'transform-animation',
+	                node: this.$.topFin,
+	                transformFrom: 'rotate(-30deg)',
+	                transformTo: 'rotate(-45deg)',
+	                timing: {duration: 400, delay: 50, easing: 'ease-in'}
+	              }, {
+	                name: 'transform-animation',
+	                node: this.$.bottomFin,
+	                transformFrom: 'rotate(30deg)',
+	                transformTo: 'rotate(45deg)',
+	                timing: {duration: 400, delay: 50, easing: 'ease-in'}
+	      				}],
+	              'fabExit': [{
+	                name: 'slide-down-animation',
+	                node: this,
+	                timing: {duration: 200, easing: 'ease-in'}
+	              }, {
+	                name: 'fade-out-animation',
+	                node: this,
+	                timing: {duration: 100, delay: 100, easing: 'ease-in'}
+	              }],
+	      			};
+	      		}
+	      	}
+
+
+	      },
+
+
+	      listeners: {
+	        'neon-animation-finish': '_fabAnimationComplete'
+	      },
+
+
+	      _fabAnimationComplete(_, animationType) {
+	        switch (animationType) {
+	          case 'fabEntry':
+	            this.cancelAnimation();
+	            this.playAnimation('fabEntry2', 'fabEntry2');
+	            break;
+	          case 'fabEntry2':
+	          	this.$.icon.style.transform 		 = 'translate(-50%, -50%)';
+	          	this.$.topFin.style.transform 	 = 'rotate(-45deg)';
+	          	this.$.bottomFin.style.transform = 'rotate(45deg)';
+	            break;
+	          case 'fabExit':
+	            this.style.display = 'none';
+	            break;
+	          default:
+	            break;
+	        }
+	      }, 
+
+
+	      _isVisible() {
+	      	return window.getComputedStyle(this).getPropertyValue('display') === 'flex';
+	      },
+
+
+        enter() {
+        	if (this._isVisible()) { return; }
+        	this.style.display = 'flex';
+          this.cancelAnimation();
+          this.playAnimation('fabEntry', 'fabEntry');
         },
-        makeCheck() {
-        	this.$.icon.classList.add('iconCheck');
-        	this.$.long.classList.add('longCheck');
-        	this.$.short.classList.add('shortCheck');
-        },
-        makeX() {
-        	this.$.icon.classList.remove('iconCheck');
-        	this.$.long.classList.remove('longCheck');
-        	this.$.short.classList.remove('shortCheck');
-        },
-        _buttonTapped() {
-        	const fire = () => this.fire('close-save-button-tapped');
-        	this.onTap = fire;
+
+
+        exit() {
+        	if (!this._isVisible()) { return; }
+        	this.cancelAnimation();
+          this.playAnimation('fabExit', 'fabExit');
         }
+
       });
     })();
   </script>
