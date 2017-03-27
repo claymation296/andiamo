@@ -1,0 +1,46 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="dropdown-list-array" >
+    <template>
+        <style>
+            :host {
+                display: block;
+                padding: 10px;
+        
+
+
+            }
+
+     paper-item {
+        padding: 1px;
+        margin-left: 10px;
+        border-top: 1px solid red;
+                
+    }
+        </style>
+
+
+<iron-ajax url="{{contacts}}" last-response="{{data}}" auto></iron-ajax>
+<paper-dropdown-menu label="Location:">
+  <paper-listbox class="dropdown-content" selected="1">
+    <template is="dom-repeat" items="[[data]]">
+      <paper-item id="items-format" value="{{item.name}}">{{item.name}}</paper-item>
+    </template>
+  </paper-listbox>
+</paper-dropdown-menu>
+
+</template>
+        <script>
+
+      Polymer({
+        is: 'dropdown-list-array',
+
+      });
+
+    </script>
+
+</dom-module>
