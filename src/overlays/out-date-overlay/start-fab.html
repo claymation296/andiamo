@@ -9,7 +9,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 
-<link rel="import" href="../../../bower_components/neon-animation/neon-animatable.html">
 <link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
 <link rel="import" href="../../../bower_components/neon-animation/animations/fade-in-animation.html">
 <link rel="import" href="../../../bower_components/neon-animation/animations/fade-out-animation.html">
@@ -109,7 +108,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         is: 'start-fab',
 
         behaviors: [
-	        Polymer.NeonAnimatableBehavior,
 	        Polymer.NeonAnimationRunnerBehavior
 	      ],
 
@@ -178,11 +176,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	              'fabExit': [{
 	                name: 'scale-down-animation',
 	                node: this,
-	                timing: {duration: 150, easing: 'ease-in'}
+	                timing: {duration: 150, delay: 250, easing: 'ease-in'}
 	              }, {
 	                name: 'fade-out-animation',
 	                node: this,
-	                timing: {duration: 100, delay: 50, easing: 'ease-in'}
+	                timing: {duration: 100, delay: 300, easing: 'ease-in'}
 	              }],
 	      			};
 	      		}
@@ -222,6 +220,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         enter() {
         	if (this._isVisible()) { return; }
+
         	this.style.display = 'flex';
           this.cancelAnimation();
           this.playAnimation('fabEntry', 'fabEntry');
@@ -230,6 +229,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         exit() {
         	if (!this._isVisible()) { return; }
+
         	this.cancelAnimation();
           this.playAnimation('fabExit', 'fabExit');
         }

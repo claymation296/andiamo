@@ -23,8 +23,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.async(() => {
           window.requestAnimationFrame(func);
         }, 1);
-
       },
+
 
       curry(func) {
       	const arity = func.length;
@@ -44,10 +44,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // 	return curried;
       // },
 
+
+      isDisplayed(el) {
+        const display = window.getComputedStyle(el).getPropertyValue('display');
+        return (display !== 'none' && display !== '');
+      },
+
+
       message(string) {
         window.BCDEV.toast.text = string;
         window.BCDEV.toast.show();
       },
+
       // warning toast includes a warning icon
       warn(string) {
         window.BCDEV.warningToast.text = string;
