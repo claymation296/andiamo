@@ -39,6 +39,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       		this.panel = this.$$('paper-scroll-header-panel');
       	});
       },
+
+      _runCallback(cb) {
+        // run callback, if it exists
+        if (cb && typeof cb === 'function') {
+          cb();
+        }
+      },
       // if present, callback will be ran after animation
       open(callback) {
     		this.style.display = 'block';
@@ -57,9 +64,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.playAnimation('exit', {type: 'exit', callback});
       },
 
-      reset() {
+      reset(callback) {
         this.style.display = 'none';
         this.style.zIndex = '-1';
+        this._runCallback(callback);
       },
       // animationType can be a string or object with a callback to run
       _neonAnimationFinished(_, animationType) {
@@ -72,10 +80,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           if (type === 'exit') {
             this.reset();
           }
-          // run callback, if it exists, after animation
-          if (callback && typeof callback === 'function') {
-            callback();
-          }
+          this._runCallback(callback);
         }
       }
 	  };

@@ -127,7 +127,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: String,
           reflectToAttribute: true,
           observer: '_pageChanged',
-        },
+        }
       },
 
 
@@ -138,15 +138,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
       listeners: {
-       'basic-list-selected-item' : '_basicListItemEvent'
+       'basic-list-selected-item' : '_basicListItemEvent',
+       // out-of-office.html button
+       'out-of-office-open-overlay': '_openOutDateOverlay'
       },
+
 
       _basicListItemEvent(event) {
            console.log('this.details: ' , window.BCDEV.jobNameDetails.open);
            this.selectedItem = event.detail.selected;
           window.BCDEV.jobNameDetails.open();
+      }, 
 
-      },      
+
+      _openOutDateOverlay() {
+        this.$.outDateMediator.init();
+      },
+
 
       ready() {
         // Grab a reference to our auto-binding template
@@ -169,7 +177,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
       _routePageChanged: function(page) {
-
         this.page = page || 'home-view';
 
         if (!this.$.drawer.persistent) {
@@ -177,15 +184,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
 
+
       _pageChanged: function(page) {
         // Load page import on demand. Show 404 page if fails
         var resolvedPageUrl = this.resolveUrl(`${page}/${page}.html`);
         this.importHref(resolvedPageUrl, null, this._showPage404, true);
       },
 
+
       _showPage404: function() {
         this.page = 'my-view404';
-            }
+      }
       
     });
   </script>

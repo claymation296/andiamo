@@ -9,9 +9,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../../bower_components/neon-animation/neon-animated-pages.html">
-<link rel="import" href="../../shared-styles.html">
-<link rel="import" href="../../../behaviors/fullscreen-behavior.html">
 <link rel="import" href="../../../behaviors/utilities.html">
 <link rel="import" href="start-date.html">
 <link rel="import" href="end-date.html">
@@ -21,25 +18,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <dom-module id="out-date-mediator">
   <template>
-    <style include="shared-styles">
+    <style>
+    </style>                 										 
 
-      :host {
-      	@apply(--fullscreen-overlays);
-      }
-
-      neon-animated-pages {
-      	height: 100%;
-      }
-
-    </style>
-
-    <neon-animated-pages selected="[[selected]]" 
-                         attr-for-selected="id">                            										 
-
-	    <start-date id="start"></start-date>
-	    <end-date id="end"></end-date>
-
-	  </neon-animated-pages> 
+    <start-date id="start"></start-date>
+    <end-date id="end"></end-date>
 
   </template>
 
@@ -48,40 +31,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'out-date-mediator',
 
       behaviors: [
-      	window.BCDEV.Behaviors.FullscreenBehavior,
       	window.BCDEV.Behaviors.Utilities
       ],
 
-      properties: {
-
-      	selected: {
-          type: String,
-          value: 'start'
-        }
-
-
-      },
-
       listeners: {
-      	'start-date-back-button-tapped': '_startBackButtonTapped'
+        'start-date-fab-tapped': '_startFabTapped'
       },
 
       // called by out-of-office.html as a callback to open()
       init() {
-        const callback = () => {
-          this.$.start.init();
-        };
-
-        this.open(callback);
+        this.$.start.init();
       },
 
-      // _animationComplete(_, animationType) {
-      // 	console.log('animationType: ', animationType);
-      // } 
 
-
-      _startBackButtonTapped() {
-        this.close();
+      _startFabTapped(event) {
+        const date = event.detail.date;
+        this.$.end.init();
+        this.fire('start-date-selected', {date});
+        this.schedule.bind(this, this.$.end.init());
       }
 
     });

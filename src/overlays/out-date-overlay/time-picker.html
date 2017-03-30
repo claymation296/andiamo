@@ -1,0 +1,264 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animatable.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/fade-in-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/slide-down-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/slide-from-bottom-animation.html">
+
+<link rel="import" href="../../shared-styles.html">
+<link rel="import" href="../../../behaviors/on-tap-behavior.html">
+<link rel="import" href="../../../bower_components/paper-time-input/paper-time-input.html">
+
+
+
+<dom-module id="time-picker">
+  <template>
+    <style include="shared-styles">
+
+      :host {
+      	display: none;
+      	height: 100vh;
+      	position: fixed;
+      	top: 160px;
+      	left: 0px;
+      	right: 0px;
+        background-color: var(--dark-primary-color);
+      }
+
+      #text {
+      	font-family: 'Roboto', 'Noto', sans-serif;
+		    -webkit-font-smoothing: antialiased;
+		    font-size: 34px;
+		    font-weight: bold;
+		    letter-spacing: 0.025em;
+		    line-height: 24px;
+		    padding: 0px 24px;
+        color: var(--light-text-color);
+      }
+
+      #container {
+      	height: 300px;
+      	display: flex;
+      	justify-content: center;
+      	align-items: center;
+      }
+
+      #pickerDiv {
+      	display: flex;
+      	justify-content: center;
+      }
+
+
+    </style>
+
+    <div id="text">[[time]]</div>
+
+
+    <div id="container">
+    	<div id="pickerDiv">What time
+    	 will you be out?
+		    <paper-time-input id="picker" 
+		    									value="{{time}}" 
+		    									hour="[[_computeHour(initialTime)]]"
+		    									min="[[_computeMin(initialTime)]]"
+		    									am-pm="[[_computeAmpm(initialTime)]]">
+		    </paper-time-input>
+	    </div>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'time-picker',
+
+      behaviors: [
+        Polymer.NeonAnimatableBehavior,
+        Polymer.NeonAnimationRunnerBehavior,
+        window.BCDEV.Behaviors.OnTapBehavior
+      ],
+
+      properties: {
+
+      	animationConfig: {
+      		value() {
+      			return {
+	            'timeEntry': [{
+	              name: 'slide-from-bottom-animation',
+	              node: this,
+	              timing: {duration: 300, easing: 'ease-out'}
+	            }, {
+	              name: 'fade-in-animation',
+	              node: this,
+	              timing: {duration: 200, delay: 100, easing: 'ease-out'}
+	            }, {
+	              name: 'slide-from-bottom-animation',
+	              node: this.$.text,
+	              timing: {duration: 700, easing: 'ease-out'}
+	            }, {
+	              name: 'fade-in-animation',
+	              node: this.$.text,
+	              timing: {duration: 200, delay: 350, easing: 'ease-out'}
+	            }, {
+	              name: 'slide-from-bottom-animation',
+	              node: this.$.picker,
+	              timing: {duration: 800, easing: 'ease-out'}
+	            }, {
+	              name: 'fade-in-animation',
+	              node: this.$.picker,
+	              timing: {duration: 200, delay: 450, easing: 'ease-out'}
+	            }],
+	            'timeExit': [{
+	              name: 'slide-down-animation',
+	              node: this.$.text,
+	              timing: {duration: 400, easing: 'ease-in'}
+	            }, {
+	              name: 'fade-out-animation',
+	              node: this.$.text,
+	              timing: {duration: 100, delay: 100, easing: 'ease-in'}
+	            }, {
+	              name: 'slide-down-animation',
+	              node: this.$.picker,
+	              timing: {duration: 400, delay: 100, easing: 'ease-in'}
+	            }, {
+	              name: 'fade-out-animation',
+	              node: this.$.picker,
+	              timing: {duration: 100, delay: 200, easing: 'ease-in'}
+	            }, {
+	              name: 'slide-down-animation',
+	              node: this,
+	              timing: {duration: 300, delay: 300, easing: 'ease-in'}
+	            }, {
+	              name: 'fade-out-animation',
+	              node: this,
+	              timing: {duration: 150, delay: 350, easing: 'ease-in'}
+	            }]
+      			};
+      		}
+      	},
+
+      	initialTime: Object,
+
+        time: String,
+      },
+
+
+      listeners: {
+        'neon-animation-finish': '_timePickerAnimationComplete'
+      },
+
+
+      attached() {
+      	this.async(() => {
+      		// restyle picker
+      		const picker 		= Polymer.dom(this.$.picker).node;
+      		const hour 			= picker.$.hour;
+      		const hourInput = hour.$.input;
+      		const min 			= picker.$.min;
+      		const minInput 	= min.$.input;
+      		const menuBtn 	= picker.root.lastElementChild.
+      												lastElementChild.$.menuButton;
+      		const ampmInput = menuBtn.firstElementChild.
+      												lastElementChild.$.input;
+
+      		picker.hideLabel 					= true; 
+      		picker.style.color 				= 'white';
+      		hour.style.width 	  			= '48px';
+      		hourInput.style.color 		= 'white';
+      		hourInput.style.fontSize 	= '34px';
+      		min.style.width 					= '48px';
+      		minInput.style.color 			= 'white';
+      		minInput.style.fontSize 	= '34px';
+      		menuBtn.style.marginTop  	= '14px';
+      		ampmInput.style.color 		= 'white';
+      	});
+      },
+
+
+      enter(date) {
+      	this.style.display = 'block';
+      	this._setInitialTime(date);
+      	this.cancelAnimation();
+      	this.playAnimation('timeEntry', 'timeEntry');
+      },
+
+
+      exit() {
+      	this.cancelAnimation();
+      	this.playAnimation('timeExit', 'timeExit');
+      },
+
+
+      reset() {
+      	this.style.display = 'none';
+      },
+
+
+      _getCalendarDate: date => date.toDateString(),
+
+      _getTime: 				date => date.toLocaleTimeString('en-US'),
+
+      _getAmPm: 				 now => now.includes('AM') ? 'AM' : 'PM',
+
+      _getHour: 				 now => now.split(':')[0],
+
+      _getMin: 					 now => now.split(':')[1],
+
+
+      _getInitialTime() {
+      	const now = this._getTime(new Date());
+    		return {
+    			ampm: this._getAmPm(now),
+    			hour: this._getHour(now),
+    			min:  this._getMin(now)
+    		};
+      },
+
+
+      _setInitialTime(date) {
+      	// if date is todays date, set the picker defaults to the current time
+      	// else set defaults to 8am
+      	const startDate  = this._getCalendarDate(date);
+      	const todaysDate = this._getCalendarDate(new Date());
+
+      	if (startDate === todaysDate) {
+      		this.initialTime = this._getInitialTime();
+      	} else {
+      		this.initialTime = {
+	      		ampm: 'AM',
+	      		hour: '8',
+	      		min: '00'
+	      	};
+      	}
+      },
+
+
+      _computeHour: ({hour}) => hour,
+
+      _computeMin:   ({min}) => min,
+
+      _computeAmpm: ({ampm}) => ampm,
+
+
+      _timePickerAnimationComplete(_, animationType) {
+      	if (animationType === 'timeEntry') {
+      		this.fire('time-picker-entry-animation-done');
+      	} else if (animationType === 'timeExit') {
+      		this.reset();
+      	}
+      }
+
+    });
+  </script>
+</dom-module>

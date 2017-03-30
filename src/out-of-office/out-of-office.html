@@ -37,14 +37,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <div class="card">
       <h1>Out of Office</h1>
-      <p>Start here to notify concerned parties that you will be out of your office on upcoming dates</p>
+      <p>Start here to notify concerned parties when you will be out of your office.</p>
 
 
       <div class="centered">
         <paper-button id="goButton" 
                       on-tap="_goButtonTapped">
-          Go                    
-          <iron-icon icon="my-icons:arrow-forward"></iron-icon>
+          <iron-icon icon="my-icons:add-alert"></iron-icon>
+          New Notification                    
         </paper-button>
       </div>
 
@@ -61,7 +61,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       behaviors: [window.BCDEV.Behaviors.OnTapBehavior],
 
       _goButtonTapped() {
-        this.onTap = window.BCDEV.outDateMediator.init();
+        this.onTap = this.fire.bind(this, 'out-of-office-open-overlay');
       }
 
     });
