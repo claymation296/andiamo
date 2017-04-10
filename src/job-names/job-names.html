@@ -4,29 +4,26 @@
 <link rel="import" href="../../elements/basic-list.html" />
 
 <dom-module id="job-names">
-    <template>
-        <style include="shared-styles">
-            :host {
-          
-            }
-        </style> 
+
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+        padding: 10px;
+      }
+    </style> 
 
 
-        <p>
-            <basic-list contacts="../data/jobs.json"></basic-list>
-        </p>
+    <p>
+      <basic-list contacts="../data/jobs.json"></basic-list>
+    </p>
 
-    </template>
+  </template>
 
 
-    <script>
+  <script>
     Polymer({
       is: 'job-names',
-
-
-
-
     });
-
-    </script>
+  </script>
 </dom-module>

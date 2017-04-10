@@ -9,23 +9,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../../bower_components/paper-date-picker/paper-date-picker.html">
 <link rel="import" href="../../../bower_components/neon-animation/neon-animatable.html">
 <link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
 <link rel="import" href="../../../bower_components/neon-animation/animations/fade-in-animation.html">
 <link rel="import" href="../../../bower_components/neon-animation/animations/fade-out-animation.html">
 <link rel="import" href="../../../bower_components/neon-animation/animations/slide-left-animation.html">
-<link rel="import" href="../../../bower_components/neon-animation/animations/slide-down-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/slide-up-animation.html">
 <link rel="import" href="../../../bower_components/neon-animation/animations/slide-from-top-animation.html">
 <link rel="import" href="../../../bower_components/neon-animation/animations/slide-from-bottom-animation.html">
 <link rel="import" href="../../../bower_components/neon-animation/animations/transform-animation.html">
-
 <link rel="import" href="../../../bower_components/neon-animation/animations/cascaded-animation.html">
-
-
-
 <link rel="import" href="../../shared-styles.html">
 <link rel="import" href="../../../behaviors/on-tap-behavior.html">
+<link rel="import" href="../../../behaviors/fullscreen-behavior.html">
+<link rel="import" href="../../../bower_components/paper-date-picker/paper-date-picker.html">
+<link rel="import" href="time-picker.html">
 <link rel="import" href="start-fab.html">
 
 
@@ -35,8 +33,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style include="shared-styles">
 
       :host {
-        opacity: 0;
-      	background-color: var(--primary-background-color);
+        @apply(--fullscreen-overlays);
+        background-color: var(--primary-background-color);
       }
 
       app-toolbar {
@@ -51,10 +49,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <app-header-layout has-scrolling-region>
-
-          <!--BEN: need to mess with to get pink header-->
         <app-header condenses reveals>
-          <app-toolbar>
+          <app-toolbar id="toolbar">
             <paper-icon-button id="backButton"
                                class="hiddenBeforeAnimation"
                                icon="my-icons:arrow-back"
@@ -75,6 +71,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </app-header-layout>
     </app-drawer-layout>
 
+    <time-picker id="timePicker"></time-picker>
+
 
     <start-fab id="fab" on-tap="_fabTapped"></start-fab>
     
@@ -88,7 +86,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       behaviors: [
         Polymer.NeonAnimatableBehavior,
         Polymer.NeonAnimationRunnerBehavior,
-        window.BCDEV.Behaviors.OnTapBehavior 
+        window.BCDEV.Behaviors.OnTapBehavior,
+        window.BCDEV.Behaviors.FullscreenBehavior
       ],
 
       properties: {
@@ -96,7 +95,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       	animationConfig: {
       		value() {
       			return {
-              'startEntry': [{
+              'entry': [{
                 name: 'slide-from-top-animation',
                 node: this,
                 timing: {duration: 200, easing: 'ease-out'}
@@ -154,7 +153,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 timing: {duration: 100, delay: 100, easing: 'ease-in'}
               }],
               'exit': [{
-                name: 'slide-down-animation',
+                name: 'slide-up-animation',
                 node: this,
                 timing: {duration: 200, easing: 'ease-in'}
               },{
@@ -171,10 +170,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           observer: '_dateChanged'
         },
 
-        minDate: {
-          type: Date,
-          value: () => new Date
-        },
+        minDate: Date,
+
+        time: String,
 
         yearEl: Object,
 
@@ -193,7 +191,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
       listeners: {
-        'neon-animation-finish': '_startDateAnimationComplete'
+        'neon-animation-finish':            '_startDateAnimationComplete',
+        'time-picker-entry-animation-done': '_timePickerEntryDone'
+      },
+
+
+      _yesterday() {
+        const dateObj      = new Date();
+        const todayMillis  = dateObj.getTime();
+        const oneDayMillis = 86400000;
+        dateObj.setTime(todayMillis - oneDayMillis);
+        return dateObj;
+      },
+
+
+      ready() {
+        this.minDate = this._yesterday();
       },
 
 
@@ -201,6 +214,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.async(() => {
           const datePickerDom = Polymer.dom(this.$.picker).node.$;
           const heading       = datePickerDom.heading;
+          const toolbarColor  = window.getComputedStyle(this.$.toolbar).
+                                       getPropertyValue('background-color');
           const calendar      = datePickerDom.calendar.$.calendar;
           const monthNav      = calendar.children.monthNav;
           // animation nodes
@@ -211,7 +226,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.monthName      = this.monthsEl.children[0].firstElementChild;
           this.leftChevronEl  = monthNav.firstElementChild;
           this.rightChevronEl = monthNav.lastElementChild;
+          // all animation nodes
+          const cascaders = [
+            this.$.backButton,
+            this.$.title,
+            this.yearEl,        
+            this.dayOfTheWeekEl,
+            this.dateEl
+          ];
 
+
+          heading.style.backgroundColor      = toolbarColor;
           this.yearEl.style.opacity          = '0';
           this.dayOfTheWeekEl.style.opacity  = '0';
           this.dateEl.style.opacity          = '0';
@@ -222,15 +247,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // can't transform a span without a display explicitly set
           this.dayOfTheWeekEl.style.display  = 'inline-block';
           this.dateEl.style.display          = 'inline-block';
-          // all animation nodes
-          const cascaders = [
-            this.$.backButton,
-            this.$.title,
-            this.yearEl,        
-            this.dayOfTheWeekEl,
-            this.dateEl
-          ];
-
+          // set 'startCascade' animation nodes
           this.animationConfig.startCascade[0].nodes = cascaders;
           this.animationConfig.startCascade[1].nodes = cascaders;
           this.animationConfig.startCascade[2].node  = this.monthsEl;
@@ -246,7 +263,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _reset() {
         Polymer.dom(this.$.backButton).classList.add('hiddenBeforeAnimation');
         Polymer.dom(this.$.title).     classList.add('hiddenBeforeAnimation');
-        this.style.opacity                 = '0';
         this.yearEl.style.opacity          = '0';
         this.dayOfTheWeekEl.style.opacity  = '0';
         this.dateEl.style.opacity          = '0';
@@ -254,11 +270,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.monthName.style.opacity       = '0';
         this.leftChevronEl.style.opacity   = '0';
         this.rightChevronEl.style.opacity  = '0';
+        this.$.timePicker.reset();
       },
 
       _startDateAnimationComplete(_, animationType) {
-        switch (animationType) {
-          case 'startEntry':
+        if (typeof animationType === 'object') {
+          if (animationType.type === 'entry') {
             Polymer.dom(this.$.backButton).classList.remove('hiddenBeforeAnimation');
             Polymer.dom(this.$.title).     classList.remove('hiddenBeforeAnimation');
             this.yearEl.style.opacity          = '1';
@@ -271,44 +288,44 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             this.cancelAnimation();
             this.playAnimation('startCascade', 'startCascade');
-            break;
-          case 'startCascade':
-            console.log('start entry done');
-            break;
-          case 'back':
-            this._reset();
-            this.fire('start-date-back-button-tapped');
-          default:
-            break;
-        }
+          } 
+        } else if (typeof animationType === 'string') {
+          if (animationType === 'back') {
+            this.reset(this._reset());
+          }
+        } 
       }, 
 
       // called by out-of-office.html as a callback to open()
       init() {
-        const play = () => {
-          this.style.opacity = '1';
-          this.cancelAnimation();
-          this.playAnimation('startEntry', 'startEntry');
-        };
         // corrects a styling bug in paper-date-picker when
         // setting from display: none;
+        this.open();
         this.$.picker.fire('iron-resize');
-        this.schedule(play);
       },
 
       
-      _dateChanged(_, oldDate) {
-        if (oldDate) {
-          this.$.fab.enter();
-        }
+      _dateChanged(date, oldDate) {
+        if (!oldDate) { return; }
+        this.$.timePicker.enter(date);
+      },
+
+
+      _timePickerEntryDone() {
+        this.$.fab.enter();
       },
 
 
       _backButtonTapped() {
       	const playBackAnimation = () => {
-          this.$.fab.exit();
-          this.cancelAnimation();
-          this.playAnimation('back', 'back');
+
+          if (this.isDisplayed(this.$.timePicker)) {
+            this.$.fab.exit();
+            this.$.timePicker.exit();
+          } else {
+            this.cancelAnimation();
+            this.playAnimation('back', 'back');
+          }
       	};
 
       	this.onTap = playBackAnimation;
@@ -316,11 +333,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
       _fabTapped() {
-        const next = () => {
-          this.fire('start-date-fab-tapped', {date: this.date});
-        };
-
-        this.onTap = next;
+        this.onTap = this.fire.bind(this, 'start-date-fab-tapped', {date: this.date, time: this.time});
       }
 
     });
