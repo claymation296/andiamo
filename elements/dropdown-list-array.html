@@ -17,7 +17,7 @@
 
      paper-item {
         padding: 1px;
-        margin-left: 10px;
+        margin-left: 20px;
         border-top: 1px solid red;
                 
     }
@@ -26,7 +26,7 @@
 
 <iron-ajax url="{{contacts}}" last-response="{{data}}" auto></iron-ajax>
 <paper-dropdown-menu label="Location:">
-  <paper-listbox class="dropdown-content" selected="1">
+  <paper-listbox class="dropdown-content" selected="{{selectedItem}}" attr-for-selected="value">
     <template is="dom-repeat" items="[[data]]">
       <paper-item id="items-format" value="{{item.name}}">{{item.name}}</paper-item>
     </template>
@@ -39,6 +39,19 @@
       Polymer({
         is: 'dropdown-list-array',
 
+            properties: {
+            selectedItem: {
+              type: String,
+              observer: '_selectedItemChanged',
+
+
+            }
+          },
+          _selectedItemChanged: function(selected){
+            if (!selected) {return;} 
+             console.log('selected: ' , selected);
+             this.fire('dropdown-list-array-selected-item', {selected});
+          }
       });
 
     </script>

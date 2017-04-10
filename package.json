@@ -13,6 +13,7 @@
     "test": "npm run lint && polymer test",
     "start": "polymer serve | npm run watch",
     "watch": "browser-sync start --proxy localhost:8080 --files 'src/**/*.*' 'index.html' '*.js'"
+
   },
   "description": "[![Build Status](https://travis-ci.org/PolymerElements/polymer-starter-kit.svg?branch=master)](https://travis-ci.org/PolymerElements/polymer-starter-kit)",
   "version": "1.0.0",
@@ -32,4 +33,5 @@
     "url": "https://github.com/claymation296/andiamo/issues"
   },
   "homepage": "https://github.com/claymation296/andiamo#readme"
+
 }

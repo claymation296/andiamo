@@ -15,6 +15,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-input/iron-input.html">
 <link rel="import" href="../shared-styles.html">
 <link rel="import" href="../../elements/selection-list.html" />
 <link rel="import" href="../../elements/basic-list.html" />
@@ -33,11 +34,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
 <paper-dropdown-menu label="Type of Work:">
-  <paper-listbox class="dropdown-content" selected="1" >
-    
-    <paper-item>Framing</paper-item>
-    <paper-item>Landscape</paper-item>
-    <paper-item>Roofing</paper-item>
+  <paper-listbox class="dropdown-content" selected="{{selectedWork}}" attr-for-selected="value" >
+    <paper-item value="Electrical">Electrical</paper-item>
+    <paper-item value="Framing">Framing</paper-item>
+    <paper-item value="Landscape">Landscape</paper-item>
+    <paper-item value="Roofing">Roofing</paper-item>
   </paper-listbox>
 </paper-dropdown-menu>
  
@@ -69,13 +70,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   </paper-listbox>
 </paper-dropdown-menu>
-
+<p>
 <paper-button raised id="contactsButton" on-tap="_contactsButtonTapped">Choose Contacts</paper-button>
 
-
-
-
-
+<input is="iron-input" bind-value="{{selectedWork}}">
+<span>[[selectedWork]] crew will be at [[selectedItem]]</span>
 
   </template>
 
@@ -85,16 +84,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       is: 'work-request',
 
+          properties: {
+            selectedWork: {
+              type: String,
+              observer: '_selectedWorkChanged',
+            }
+          },
+
+
       behaviors: [window.BCDEV.Behaviors.OnTapBehavior],
 
-
+      listeners: {
+        'dropdown-list-array-selected-item': '_selectedItem'
+      },
+      
       _contactsButtonTapped() {
         const open = () => {
           const callback = () => {
             window.BCDEV.contactsOverlay.init();
           };
-      
-          window.BCDEV.contactsOverlay.open(callback);
+           window.BCDEV.contactsOverlay.open(callback);
         };
 
         this.onTap = open;
@@ -106,26 +115,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.employees = [
             {first: 'Bob', last: 'Smith'},
             {first: 'Suzy', last: 'Johnson'},
-                 {first: 'Bob', last: 'Smith'},
+            {first: 'Bob', last: 'Smith'},
             {first: 'Sally', last: 'Johnson'},
-                        {first: 'Bob', last: 'Smith'},
-            {first: 'Sally', last: 'Johnson'},
-                        {first: 'Bob', last: 'Smith'},
-            {first: 'Sally', last: 'Johnson'},
-                        {first: 'Bob', last: 'Smith'},
-            {first: 'Sally', last: 'Johnson'},
-                        {first: 'Bob', last: 'Smith'},
-            {first: 'Sally', last: 'Johnson'},
-                        {first: 'Bob', last: 'Smith'},
-            {first: 'Sally', last: 'Johnson'},
-                        {first: 'Bob', last: 'Smith'},
-            {first: 'Sally', last: 'Johnson'},
-                        {first: 'Bob', last: 'Smith'},
-            {first: 'Sally', last: 'Johnson'},
-                        {first: 'Bob', last: 'Smith'},
-            {first: 'Sally', last: 'Johnson'},
+            {first: 'Bob', last: 'Smith'},
+    
         ];
+      },
+
+
+      _selectedWorkChanged: function(selected){
+        if (!selected) {return;} 
+          console.log('selected: ' , selected);
+      },
+
+      _selectedItem (event){
+        console.log(event.detail.selected);
+        this.selectedItem = event.detail.selected ;
       }
+
 
 
 
