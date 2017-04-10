@@ -52,11 +52,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       	display: flex;
       	justify-content: center;
       	align-items: center;
+        color: var(--light-text-color);
       }
 
-      #pickerDiv {
-      	display: flex;
-      	justify-content: center;
+      #picker {
+        display: flex;
+        justify-content: center;
       }
 
 
@@ -66,14 +67,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
     <div id="container">
-    	<div id="pickerDiv">What time will you be out?
-		    <paper-time-input id="picker" 
-		    									value="{{time}}" 
-		    									hour="[[_computeHour(initialTime)]]"
-		    									min="[[_computeMin(initialTime)]]"
-		    									am-pm="[[_computeAmpm(initialTime)]]">
-		    </paper-time-input>
-	    </div>
+      <div>
+        <div id="message">What time will you be out?</div>
+  	    <paper-time-input id="picker" 
+  	    									value="{{time}}" 
+  	    									hour="[[_computeHour(initialTime)]]"
+  	    									min="[[_computeMin(initialTime)]]"
+  	    									am-pm="[[_computeAmpm(initialTime)]]">
+  	    </paper-time-input>
+      </div>
     </div>
 
   </template>
@@ -109,14 +111,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	              name: 'fade-in-animation',
 	              node: this.$.text,
 	              timing: {duration: 200, delay: 350, easing: 'ease-out'}
+              }, {
+                name: 'slide-from-bottom-animation',
+                node: this.$.message,
+                timing: {duration: 800, easing: 'ease-out'}
+              }, {
+                name: 'fade-in-animation',
+                node: this.$.message,
+                timing: {duration: 200, delay: 450, easing: 'ease-out'}
 	            }, {
 	              name: 'slide-from-bottom-animation',
 	              node: this.$.picker,
-	              timing: {duration: 800, easing: 'ease-out'}
+	              timing: {duration: 900, easing: 'ease-out'}
 	            }, {
 	              name: 'fade-in-animation',
 	              node: this.$.picker,
-	              timing: {duration: 200, delay: 450, easing: 'ease-out'}
+	              timing: {duration: 200, delay: 550, easing: 'ease-out'}
 	            }],
 	            'timeExit': [{
 	              name: 'slide-down-animation',
@@ -171,16 +181,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       		const ampmInput = menuBtn.firstElementChild.
       												lastElementChild.$.input;
 
-      		picker.hideLabel 					= true; 
-      		picker.style.color 				= 'white';
-      		hour.style.width 	  			= '48px';
-      		hourInput.style.color 		= 'white';
-      		hourInput.style.fontSize 	= '34px';
-      		min.style.width 					= '48px';
-      		minInput.style.color 			= 'white';
-      		minInput.style.fontSize 	= '34px';
-      		menuBtn.style.marginTop  	= '14px';
-      		ampmInput.style.color 		= 'white';
+      		picker.hideLabel 				 = true; 
+      		picker.style.color 			 = 'white';
+      		hour.style.width 	  		 = '48px';
+      		hourInput.style.color 	 = 'white';
+      		hourInput.style.fontSize = '34px';
+      		min.style.width 				 = '48px';
+      		minInput.style.color 		 = 'white';
+      		minInput.style.fontSize  = '34px';
+      		menuBtn.style.marginTop  = '14px';
+      		ampmInput.style.color 	 = 'white';
       	});
       },
 
