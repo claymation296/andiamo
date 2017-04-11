@@ -26,75 +26,59 @@
                 @apply(--paper-font-common-base);
                 font-family: sans-serif;
             }
-
             .content {
                 @apply(--layout-vertical);
                 height: 100%;
             }
-
             .white-toolbar {
                 background: white;
                 color: #333;
             }
-
             .pink-toolbar {
                 background: var(--paper-grey-500);
                 color: white;
             }
-
             app-toolbar {
                 box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
                 font-size: 18px;
             }
-
             app-drawer {
                 text-align: left;
                 border-left: 1px solid #ccc;
             }
-
             app-toolbar paper-icon-button {
                 --paper-icon-button-ink-color: white;
             }
-
             paper-badge {
                 margin-top: 5px;
              
             }
-
             paper-badge[label="0"] {
                 opacity: 0;
-
             }
-
             @media (min-width: 640px) {
-
                 paper-badge {
                     display: none;
                 }
             }
-
             #itemsList,
             #selectedItemsList {
                 @apply(--layout-flex);
             }
-
             .item {
                 @apply(--layout-horizontal);
                 cursor: pointer;
                 padding: 16px 22px;
                 border-bottom: 1px solid #DDD;
             }
-
             .item:focus,
             .item.selected:focus {
                 outline: 0;
                 background-color: #ddd;
             }
-
             .item.selected .star {
                 color: var(--paper-green-600);
             }
-
             .avatar {
                 height: 50px;
                 width: 50px;
@@ -102,36 +86,29 @@
                 box-sizing: border-box;
                 background-color: #ddd;
             }
-
             .pad {
                 @apply(--layout-flex);
                 @apply(--layout-vertical);
                 padding: 0 16px;
             }
-
             .primary {
                 font-size: 16px;
             }
-
             .secondary {
                 font-size: 12px;
             }
-
             .dim {
                 color: gray;
             }
-
             .star {
                 width: 24px;
                 height: 24px;
             }
-
             paper-item {
                 white-space: nowrap;
                 cursor: pointer;
                 position: relative;
             }
-
             paper-item:hover::after {
                 content: "－";
                 width: 16px;
@@ -149,28 +126,28 @@
                 right: 15px;
                 top: calc(50% - 8px);
             }
-
             .no-selection {
                 color: #999;
                 margin-left: 10px;
                 line-height: 50px;
             }
-
             iron-list {
                 @apply(--layout-flex);
             }
-
-
             .blue {
                 --paper-badge-background: var(--paper-green-300);
             }
-
         </style>
         <!--BEN: url contacts lets you pass in contacts.json-->
         <iron-ajax url="{{contacts}}" last-response="{{data}}" auto></iron-ajax>
         <app-drawer-layout fullbleed>
             <div class="content">
                 <app-toolbar class="pink-toolbar">
+                            <paper-icon-button id="backButton"
+                               class="hiddenBeforeAnimation"
+                               icon="my-icons:arrow-back"
+                               on-tap="_backButtonTapped">
+            </paper-icon-button>
                     <div main-title>Selected Contacts</div>
                     <div>
                         <paper-icon-button icon="star" alt="Starred" drawer-toggle></paper-icon-button>
@@ -216,30 +193,23 @@
     </template>
 
     <script>
-
       Polymer({
         is: 'selection-list',
-
         behaviors: [
           window.BCDEV.Behaviors.Utilities
         ],
-
         properties: {
           selectedItems: {
             type: Object
           }
         },
-
        
         init() {
           this.$.itemsList.fire('iron-resize');
         },
-
-
         iconForItem: function(isSelected) {
           return isSelected ? 'star' : 'star-border';
         },
-
         _computedClass: function(isSelected) {
           var classes = 'item';
           if (isSelected) {
@@ -247,16 +217,19 @@
           }
           return classes;
         },
-
         _unselect: function(e) {
           this.$.itemsList.deselectItem(e.model.item);
         },
-
         _getFormattedCount: function(count) {
           return count > 0 ? '(' + count + ')' : '';
-        }
-      });
+        },
 
+           _backButtonTapped() {
+             console.log('sdf');
+             this.fire('selection-list-back-button')
+           }
+
+      });
     </script>
 
 </dom-module>
