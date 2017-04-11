@@ -21,7 +21,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../../bower_components/paper-time-input/paper-time-input.html">
 
 
-
 <dom-module id="time-picker">
   <template>
     <style include="shared-styles">
@@ -58,8 +57,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       #picker {
         display: flex;
         justify-content: center;
+        --paper-time-input-color: var(--light-text-color);
+        --paper-time-input-underline-color: var(--light-text-color);
       }
-
 
     </style>
 
@@ -70,7 +70,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div>
         <div id="message">What time will you be out?</div>
   	    <paper-time-input id="picker" 
-  	    									value="{{time}}" 
+  	    									value="{{time}}"
+                          hide-label 
   	    									hour="[[_computeHour(initialTime)]]"
   	    									min="[[_computeMin(initialTime)]]"
   	    									am-pm="[[_computeAmpm(initialTime)]]">
@@ -181,23 +182,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       		const ampmInput = menuBtn.firstElementChild.
       												lastElementChild.$.input;
 
-      		picker.hideLabel 				 = true; 
-      		picker.style.color 			 = 'white';
       		hour.style.width 	  		 = '48px';
-      		hourInput.style.color 	 = 'white';
       		hourInput.style.fontSize = '34px';
       		min.style.width 				 = '48px';
-      		minInput.style.color 		 = 'white';
       		minInput.style.fontSize  = '34px';
       		menuBtn.style.marginTop  = '14px';
-      		ampmInput.style.color 	 = 'white';
       	});
       },
 
 
       enter(date) {
       	this.style.display = 'block';
-      	this._setInitialTime(date);
+      	this.initialTime   = this._setInitialTime(date);
       	this.cancelAnimation();
       	this.playAnimation('timeEntry', 'timeEntry');
       },
@@ -242,9 +238,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       	const todaysDate = this._getCalendarDate(new Date());
 
       	if (startDate === todaysDate) {
-      		this.initialTime = this._getInitialTime();
+      		return this._getInitialTime();
       	} else {
-      		this.initialTime = {
+      		return {
 	      		ampm: 'AM',
 	      		hour: '8',
 	      		min: '00'
