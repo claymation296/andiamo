@@ -51,12 +51,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       	display: flex;
       	justify-content: center;
       	align-items: center;
+      }
+
+
+      #message {
         color: var(--light-text-color);
       }
 
       #picker {
         display: flex;
         justify-content: center;
+        --paper-time-input-width: 48px;
+        --paper-time-input-font-size: 34px;
         --paper-time-input-color: var(--light-text-color);
         --paper-time-input-underline-color: var(--light-text-color);
       }
@@ -67,11 +73,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
     <div id="container">
-      <div>
+      <div id="testInherit">
         <div id="message">What time will you be out?</div>
   	    <paper-time-input id="picker" 
   	    									value="{{time}}"
-                          hide-label 
+                          hide-label
   	    									hour="[[_computeHour(initialTime)]]"
   	    									min="[[_computeMin(initialTime)]]"
   	    									am-pm="[[_computeAmpm(initialTime)]]">
@@ -160,34 +166,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       	initialTime: Object,
 
-        time: String,
+        time: {
+          type: String,
+          notify: true
+        }
       },
 
 
       listeners: {
         'neon-animation-finish': '_timePickerAnimationComplete'
-      },
-
-
-      attached() {
-      	this.async(() => {
-      		// restyle picker
-      		const picker 		= Polymer.dom(this.$.picker).node;
-      		const hour 			= picker.$.hour;
-      		const hourInput = hour.$.input;
-      		const min 			= picker.$.min;
-      		const minInput 	= min.$.input;
-      		const menuBtn 	= picker.root.lastElementChild.
-      												lastElementChild.$.menuButton;
-      		const ampmInput = menuBtn.firstElementChild.
-      												lastElementChild.$.input;
-
-      		hour.style.width 	  		 = '48px';
-      		hourInput.style.fontSize = '34px';
-      		min.style.width 				 = '48px';
-      		minInput.style.fontSize  = '34px';
-      		menuBtn.style.marginTop  = '14px';
-      	});
       },
 
 

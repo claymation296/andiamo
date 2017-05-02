@@ -140,7 +140,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       listeners: {
        'basic-list-selected-item' : '_basicListItemEvent',
        // out-of-office.html button
-       'out-of-office-open-overlay': '_openOutDateOverlay'
+       'out-of-office-open-overlay': '_openOutDateOverlay',
+
+       'out-date-mediator-dates-selected': '_datesSelected'
       },
 
 
@@ -153,6 +155,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _openOutDateOverlay() {
         this.$.outDateMediator.init();
+      },
+
+
+      _datesSelected(event) {
+        const {start, end} = event.detail;
+        console.log('out-date-mediator-dates-selected: ', start, end);
       },
 
 
