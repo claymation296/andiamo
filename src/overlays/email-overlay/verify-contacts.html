@@ -1,0 +1,64 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../shared-styles.html">
+<link rel="import" href="../../../behaviors/on-tap-behavior.html">
+<link rel="import" href="../../../behaviors/fullscreen-behavior.html">
+<link rel="import" href="../../../behaviors/utilities.html">
+<link rel="import" href="../../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../../bower_components/iron-list/iron-list.html">
+
+<dom-module id="verify-contacts">
+  
+  <template>
+    <style include="shared-styles">
+      :host {
+        @apply(--fullscreen-overlays);
+        background-color: var(--primary-background-color);
+      }
+      paper-fab {
+        --paper-fab-background: var(--accent-color);
+        --paper-fab-keyboard-focus-background: var(--accent-color);
+        position: fixed;
+        bottom: 16px;
+        right: 16px;
+        display: block;
+      }
+    </style>
+
+    <span>[[selectedWork]] crew will be at [[selectedItem]]</span>
+
+    <iron-list id="selectedItemsList" items="[[selectedItems]]" as="item">
+      <template>
+          <paper-item >[[item.name]]</paper-item>
+      </template>
+    </iron-list>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'verify-contacts',
+
+      behaviors: [
+        window.BCDEV.Behaviors.Utilities,
+        window.BCDEV.Behaviors.FullscreenBehavior
+      ],
+
+      init() {
+         this.$.selectedItemsList.fire('iron-resize');
+      },
+
+    });
+
+  </script>
+</dom-module>

@@ -9,13 +9,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../../bower_components/iron-input/iron-input.html">
 <link rel="import" href="../shared-styles.html">
 <link rel="import" href="../../elements/selection-list.html" />
 <link rel="import" href="../../elements/basic-list.html" />
@@ -29,112 +26,63 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
 
         padding: 10px;
+        background-color: var(--light-primary-color);
       }
     </style>
 
-
-<paper-dropdown-menu label="Type of Work:">
-  <paper-listbox class="dropdown-content" selected="{{selectedWork}}" attr-for-selected="value" >
-    <paper-item value="Electrical">Electrical</paper-item>
-    <paper-item value="Framing">Framing</paper-item>
-    <paper-item value="Landscape">Landscape</paper-item>
-    <paper-item value="Roofing">Roofing</paper-item>
-  </paper-listbox>
-</paper-dropdown-menu>
+    <paper-dropdown-menu label="Type of Work:">
+      <paper-listbox class="dropdown-content" selected="{{selectedWork}}" attr-for-selected="value" >
+        <paper-item value="Electrical">Electrical</paper-item>
+        <paper-item value="Framing">Framing</paper-item>
+        <paper-item value="Landscape">Landscape</paper-item>
+        <paper-item value="Roofing">Roofing</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
  
-<dropdown-list-array  contacts="../data/locations.json"></dropdown-list-array>
+    <dropdown-list-array  contacts="../data/locations.json"></dropdown-list-array>
 
- <paper-dropdown-menu label="Arrival Time:">
-  <paper-listbox class="dropdown-content" selected="1">
-    <paper-item>7:00Am</paper-item>
-    <paper-item>8:00Am</paper-item>
-    <paper-item>9:00Am</paper-item>
-    <paper-item>10:00Am</paper-item>
-  </paper-listbox>
-</paper-dropdown-menu>
-
-<paper-dropdown-menu label="Date:">
-  <paper-listbox class="dropdown-content" selected="1">
-    <paper-item>1/2/19</paper-item>
-    <paper-item>2/8/19</paper-item>
-    <paper-item>3/8/19</paper-item>
-    <paper-item>2/29/19</paper-item>
-  </paper-listbox>
-</paper-dropdown-menu>
-
-<paper-dropdown-menu label="employee:">
-  <paper-listbox class="dropdown-content" selected="1">
-    <template is="dom-repeat" items="{{employees}}">
-      <paper-item value="{{item.first}}">{{item.first}}</paper-item>
-    </template>
-
-  </paper-listbox>
-</paper-dropdown-menu>
-<p>
-<paper-button raised id="contactsButton" on-tap="_contactsButtonTapped">Choose Contacts</paper-button>
-
-<input is="iron-input" bind-value="{{selectedWork}}">
-<span>[[selectedWork]] crew will be at [[selectedItem]]</span>
+    <paper-button raised id="contactsButton" on-tap="_contactsButtonTapped">Choose Contacts</paper-button>
 
   </template>
 
-
   <script>
     Polymer({
-
       is: 'work-request',
 
-          properties: {
-            selectedWork: {
-              type: String,
-              observer: '_selectedWorkChanged',
-            }
-          },
+        properties: {
+          selectedWork: {
+          type: String,
+          observer: '_selectedWorkChanged',
+          }
+        },
 
+        behaviors: [window.BCDEV.Behaviors.OnTapBehavior],
 
-      behaviors: [window.BCDEV.Behaviors.OnTapBehavior],
-
-      listeners: {
-        'dropdown-list-array-selected-item': '_selectedItem'
-      },
+        listeners: {
+          'dropdown-list-array-selected-item': '_selectedItem'
+        },
       
-      _contactsButtonTapped() {
-        const open = () => {
-          const callback = () => {
-            window.BCDEV.contactsOverlay.init();
+
+        _contactsButtonTapped() {
+          const open = () => {
+            const callback = () => {
+              window.BCDEV.contactsOverlay.init();
+              this.fire('contacts-button-tapped', {selectedWork: this.selectedWork,selectedItem: this.selectedItem}); 
+            };
+              window.BCDEV.contactsOverlay.open(callback);
           };
-           window.BCDEV.contactsOverlay.open(callback);
-        };
-
-        this.onTap = open;
+          this.onTap = open;
+        },
 
 
-      },
-
-      ready: function() {
-        this.employees = [
-            {first: 'Bob', last: 'Smith'},
-            {first: 'Suzy', last: 'Johnson'},
-            {first: 'Bob', last: 'Smith'},
-            {first: 'Sally', last: 'Johnson'},
-            {first: 'Bob', last: 'Smith'},
-    
-        ];
-      },
+        _selectedWorkChanged: function(selected){
+          if (!selected) {return;} 
+        },
 
 
-      _selectedWorkChanged: function(selected){
-        if (!selected) {return;} 
-          console.log('selected: ' , selected);
-      },
-
-      _selectedItem (event){
-        console.log(event.detail.selected);
-        this.selectedItem = event.detail.selected ;
-      }
-
-
-
+        _selectedItem (event){
+          this.selectedItem = event.detail.selected;
+        },
 
     });
 
