@@ -11,7 +11,7 @@
 <link rel="import" href="../bower_components/paper-styles/color.html">
 <link rel="import" href="../bower_components/paper-styles/typography.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../bower_components/paper-badge/paper-badge.html" />
+<link rel="import" href="../bower_components/paper-badge/paper-badge.html" >
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../src/shared-styles.html">
 
@@ -55,19 +55,16 @@
 
             paper-badge {
                 margin-top: 5px;
-             
             }
 
-                paper-badge[label="0"] {
-                    opacity: 0;
-
-                }
+            paper-badge[label="0"] {
+                opacity: 0;
+            }
 
             @media (min-width: 640px) {
-
-                paper-badge {
-                    display: none;
-                }
+              paper-badge {
+                display: none;
+              }
             }
 
             #itemsList,
@@ -81,7 +78,6 @@
                 padding: 16px 22px;
                 border-bottom: 1px solid #D7CCC8;
             }
-
 
             .avatar {
                 height: 50px;
@@ -109,31 +105,29 @@
                 color: gray;
             }
 
- 
-
             paper-item {
                 white-space: nowrap;
                 cursor: pointer;
                 position: relative;
             }
 
-                paper-item:hover::after {
-                    content: "－";
-                    width: 16px;
-                    height: 16px;
-                    display: block;
-                    border-radius: 50% 50%;
-                    background-color: var(--google-red-300);
-                    margin-left: 10px;
-                    line-height: 16px;
-                    text-align: center;
-                    color: white;
-                    font-weight: bold;
-                    text-decoration: none;
-                    position: absolute;
-                    right: 15px;
-                    top: calc(50% - 8px);
-                }
+            paper-item:hover::after {
+              content: "－";
+              width: 16px;
+              height: 16px;
+              display: block;
+              border-radius: 50% 50%;
+              background-color: var(--google-red-300);
+              margin-left: 10px;
+              line-height: 16px;
+              text-align: center;
+              color: white;
+              font-weight: bold;
+              text-decoration: none;
+              position: absolute;
+              right: 15px;
+              top: calc(50% - 8px);
+            }
 
             .no-selection {
                 color: #999;
@@ -146,13 +140,20 @@
             }
 
         </style>
-        <!--BEN: url contacts lets you pass in contacts.json-->
-        <iron-ajax url="{{contacts}}" last-response="{{data}}" auto></iron-ajax>
-        <app-drawer-layout fullbleed>
+
+        <iron-ajax id="jobData" url="{{contacts}}" on-response="_ajaxReady" auto></iron-ajax>
+          <app-drawer-layout fullbleed>
             <div class="content">
                 <app-toolbar class="pink-toolbar">
                     <div main-title>Active Job Names</div>
-  
+                      <paper-dropdown-menu label="Type of Work:" style= "width:120px;">
+                        <paper-listbox class="dropdown-content" selected="{{selectedWork}}" attr-for-selected="value" >
+                          <paper-item value="Construction">Construction</paper-item>
+                          <paper-item value="SiteWork">Site Work</paper-item>
+                          <paper-item value="Landscape">Landscape</paper-item>
+                          <paper-item value="All">All</paper-item>
+                        </paper-listbox>
+                      </paper-dropdown-menu>
                 </app-toolbar>
                 <!-- Main List for the items -->
                 <iron-list id="itemsList" items="[[data]]"  selected-item="{{selectedItem}}" selection-enabled>
@@ -166,30 +167,28 @@
                                     </div>
                                     <div class="secondary dim">[[item.shortText]]</div>
                                 </div>
-             
-                            </div>
+                              </div>
                             <div class="border"></div>
                         </div>
                     </template>
                 </iron-list>
             </div>
-
-        </app-drawer-layout>>
+          </app-drawer-layout>>
     </template>
 
     <script>
-
-      HTMLImports.whenReady(function() {
-
-        Polymer({
-
-          is: 'basic-list',
-
+      Polymer({
+        is: 'basic-list',
+          
           properties: {
             selectedItem: {
-              type: Object,
-              observer: '_selectedItemChanged'
+            type: Object,
+            observer: '_selectedItemChanged'
+          },
 
+            selectedWork: {
+            type: String,
+            observer: '_selectedWorkChanged',
             }
           },
 
@@ -204,12 +203,23 @@
           _selectedItemChanged: function(selected){
             if (!selected) {return;} 
             this.fire('basic-list-selected-item', {selected}); 
-            console.log('selected: ' , selected);
-          }
+          },
 
+          _ajaxReady: function(event){
+            this.data = this.$.jobData.lastResponse;
+          },
+
+          _selectedWorkChanged: function(selected){
+           if (!selected) {return;} 
+            if (selected === "All"){
+              this.data = this.$.jobData.lastResponse;            
+            } else {
+              this.data = this.$.jobData.lastResponse.filter((jobType) => jobType.type === selected);
+            }
+
+          },
         });
 
-     });
 
     </script>
 

@@ -5,7 +5,8 @@
     "image": "../../images/locationPics/myHome.jpg",
     "location":  "Location: Camp Verde",
     "shortText": "Interior constuction",
-    "longText": "use for framing, electical"
+    "longText": "use for framing, electical",
+    "type": "Construction"
   },
   {
     "index": 1,

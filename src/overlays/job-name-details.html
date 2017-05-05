@@ -16,7 +16,6 @@
       }
 
              .avatar {
-           
                 width: 80%;
                 border-radius: 20px;
                 box-sizing: border-box;
@@ -35,7 +34,6 @@
                 border-bottom: 1px solid #DDD;
             }
             
-
             .secondary {
                 font-size: 12px;
             }
@@ -49,15 +47,15 @@
             }
 
             .jobName {
-          text-align: center;
-           font-weight: 900;
-           color: #5D4037;
+              text-align: center;
+              font-weight: 900;
+              color: #5D4037;
             }
 
             .card{
-         border:2px solid  yellowgreen;
-         padding: 4px;
-         background-color: white;
+              border:2px solid  yellowgreen;
+              padding: 4px;
+              background-color: white;
             }
 
     </style>
@@ -68,22 +66,17 @@
     -->
 
     <div on-tap="_closePage" >
-        
-          <img class="avatar" src="[[data.image]]"> 
-        
-     
+      <img class="avatar" src="[[data.image]]"> 
       <div class="jobName">[[data.name]]</div>
-          <div class="card">
-            <div class="secondary dim">[[data.location]]</div>
-            <div class="secondary dim">[[data.shortText]]</div>
-          </div>
+      <div class="card">
+      <div class="secondary dim">[[data.location]]</div>
+      <div class="secondary dim">[[data.shortText]]</div>
+      </div>
     
-        <div class="card">
-        <div class="jobUse">Use job name for:</div>
-
-          [[data.longText]]
-
-        </div>
+    <div class="card">
+      <div class="jobUse">Use job name for:</div>
+      [[data.longText]]
+    </div>
     </div>
 
   </template>

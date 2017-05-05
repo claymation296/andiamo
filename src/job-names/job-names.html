@@ -1,8 +1,8 @@
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../shared-styles.html">
-<link rel="import" href="../../elements/basic-list.html" />
-
+<link rel="import" href="../../elements/basic-list.html">
+<link rel="import" href="../../behaviors/on-tap-behavior.html">
 <dom-module id="job-names">
 
   <template>
@@ -13,10 +13,7 @@
       }
     </style> 
 
-
-    <p>
-      <basic-list contacts="../data/jobs.json"></basic-list>
-    </p>
+    <basic-list contacts="../data/jobs.json"></basic-list>
 
   </template>
 

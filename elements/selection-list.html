@@ -1,4 +1,4 @@
-﻿<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../src/shared-styles.html">
@@ -15,8 +15,18 @@
 <link rel="import" href="../bower_components/paper-badge/paper-badge.html" />
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../behaviors/utilities.html">
-
-
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animatable.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/fade-in-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/slide-left-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/slide-up-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/slide-from-top-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/slide-from-bottom-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/transform-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/cascaded-animation.html">
+<link rel="import" href="../animations/bouncing-animation.html">
 
 <dom-module id="selection-list" >
     <template>
@@ -26,59 +36,73 @@
                 @apply(--paper-font-common-base);
                 font-family: sans-serif;
             }
+            
             .content {
                 @apply(--layout-vertical);
                 height: 100%;
             }
+
             .white-toolbar {
                 background: white;
                 color: #333;
             }
-            .pink-toolbar {
-                background: var(--paper-grey-500);
+
+            .main-toolbar {
+                background: var(--default-primary-color);
                 color: white;
             }
+
             app-toolbar {
                 box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
                 font-size: 18px;
             }
+
             app-drawer {
                 text-align: left;
                 border-left: 1px solid #ccc;
             }
+
             app-toolbar paper-icon-button {
                 --paper-icon-button-ink-color: white;
             }
+
             paper-badge {
                 margin-top: 5px;
              
             }
+
             paper-badge[label="0"] {
                 opacity: 0;
             }
+
             @media (min-width: 640px) {
                 paper-badge {
                     display: none;
                 }
             }
+
             #itemsList,
             #selectedItemsList {
                 @apply(--layout-flex);
             }
+
             .item {
                 @apply(--layout-horizontal);
                 cursor: pointer;
                 padding: 16px 22px;
                 border-bottom: 1px solid #DDD;
             }
+
             .item:focus,
             .item.selected:focus {
                 outline: 0;
-                background-color: #ddd;
+                background-color: #e5eae1;
             }
+
             .item.selected .star {
-                color: var(--paper-green-600);
+                color: var(--accent-color);
             }
+
             .avatar {
                 height: 50px;
                 width: 50px;
@@ -86,29 +110,36 @@
                 box-sizing: border-box;
                 background-color: #ddd;
             }
+
             .pad {
                 @apply(--layout-flex);
                 @apply(--layout-vertical);
                 padding: 0 16px;
             }
+
             .primary {
                 font-size: 16px;
             }
+
             .secondary {
                 font-size: 12px;
             }
+
             .dim {
                 color: gray;
             }
+
             .star {
                 width: 24px;
                 height: 24px;
             }
+
             paper-item {
                 white-space: nowrap;
                 cursor: pointer;
                 position: relative;
             }
+
             paper-item:hover::after {
                 content: "－";
                 width: 16px;
@@ -126,29 +157,51 @@
                 right: 15px;
                 top: calc(50% - 8px);
             }
+
             .no-selection {
-                color: #999;
+                color: var(--accent-color);
                 margin-left: 10px;
                 line-height: 50px;
             }
+
             iron-list {
                 @apply(--layout-flex);
             }
+
             .blue {
-                --paper-badge-background: var(--paper-green-300);
+                --paper-badge-background: var(--accent-color);
             }
+
+            paper-fab {
+                --paper-fab-background: var(--accent-color);
+                --paper-fab-keyboard-focus-background: var(--accent-color);
+                position: fixed;
+                bottom: 16px;
+                right: 16px;
+                display: none;
+             }
+
+            paper-icon-button.back {
+                --paper-icon-button-ink-color: var(--paper-orange-500);
+                background-color: var(--accent-color);
+                color: white;
+                border-radius: 3px;
+                padding: 5px;
+            }
+
+
         </style>
         <!--BEN: url contacts lets you pass in contacts.json-->
         <iron-ajax url="{{contacts}}" last-response="{{data}}" auto></iron-ajax>
         <app-drawer-layout fullbleed>
             <div class="content">
-                <app-toolbar class="pink-toolbar">
-                            <paper-icon-button id="backButton"
-                               class="hiddenBeforeAnimation"
-                               icon="my-icons:arrow-back"
-                               on-tap="_backButtonTapped">
-            </paper-icon-button>
-                    <div main-title>Selected Contacts</div>
+                <app-toolbar class="main-toolbar">
+                    <paper-icon-button  id="backButton"
+                                        class="back"
+                                        icon="my-icons:arrow-back"
+                                        on-tap="_backButtonTapped">
+                    </paper-icon-button>
+                    <div main-title>Select Contacts</div>
                     <div>
                         <paper-icon-button icon="star" alt="Starred" drawer-toggle></paper-icon-button>
                         <paper-badge class="blue" label$="[[selectedItems.length]]"></paper-badge>
@@ -158,10 +211,10 @@
                 <iron-list id="itemsList" items="[[data]]" selected-items="{{selectedItems}}" selection-enabled multi-selection>
                     <template>
                         <div>
-                            <div tabindex$="[[tabIndex]]" aria-label$="Select/Deselect [[item.name]]" class$="[[_computedClass(selected)]]">
+                            <div tabindex$="[[tabIndex]]" aria-label$="Select/Deselect [[item.name]]" class$="sliders [[_computedClass(selected)]]">
                                 <img class="avatar" src="[[item.image]]">
                                 <div class="pad">
-                                    <div class="primary">
+                                    <div class="primary" >
                                         [[item.name]]
                                     </div>
                                     <div class="secondary dim">[[item.shortText]]</div>
@@ -189,45 +242,135 @@
                     </iron-list>
                 </div>
             </app-drawer>
-        </app-drawer-layout>>
+        </app-drawer-layout>
+
+        <paper-fab  id="nextButton"
+           class="hiddenBeforeAnimation"
+            icon="my-icons:arrow-forward" 
+            on-tap="_nextButtonTapped">
+        </paper-fab>
+
     </template>
 
     <script>
       Polymer({
         is: 'selection-list',
+
         behaviors: [
-          window.BCDEV.Behaviors.Utilities
+        Polymer.NeonAnimatableBehavior,
+        Polymer.NeonAnimationRunnerBehavior,
+        window.BCDEV.Behaviors.OnTapBehavior,
+        window.BCDEV.Behaviors.FullscreenBehavior,
+        window.BCDEV.Behaviors.Utilities
         ],
+
         properties: {
           selectedItems: {
             type: Object
-          }
+          },
+          animationConfig: {
+            value() {
+              return {
+                'slidersAnimation': [{
+                  name: 'cascaded-animation',
+                  animation: 'slide-from-left-animation',
+                  // nodes set imperitively in init()
+                  timing: {duration: 300, delay: 50, easing: 'ease-out'}
+                }, {
+                  name: 'cascaded-animation',
+                  animation: 'fade-in-animation',
+                  // nodes set imperitively in init()
+                  timing: {duration: 400, delay: 100, easing: 'ease-out'}
+                }], 
+                'fabEntry': [{
+                  name: 'bouncing-animation',
+                  node: this.$.nextButton,
+                  timing: {duration: 700, delay: 50, easing: 'ease-in'}
+               }],
+                'fabExit': [{
+                  name: 'scale-down-animation',
+                  node: this.$.nextButton,
+                  timing: {duration: 150, delay: 250, easing: 'ease-in'}
+                }, {
+                  name: 'fade-out-animation',
+                  node: this.$.nextButton,
+                  timing: {duration: 100, delay: 300, easing: 'ease-in'}
+                }],
+              };
+            }
+          },
         },
-       
+        
+        listeners: {
+          'neon-animation-finish':  '_fabExitAnimationComplete'
+        },
+
+
         init() {
+          this.$.itemsList.style.opacity = '0';
           this.$.itemsList.fire('iron-resize');
+
+          const slide = () => {
+            const sliders = Polymer.dom(this.root).querySelectorAll('.sliders');
+            this.animationConfig.slidersAnimation[0].nodes = sliders;
+            this.animationConfig.slidersAnimation[1].nodes = sliders;
+            this.$.itemsList.style.opacity = '1';
+            this.cancelAnimation();
+            this.playAnimation('slidersAnimation', 'slidersAnimation');
+          };
+
+          this.schedule(slide);
         },
+        
+
         iconForItem: function(isSelected) {
           return isSelected ? 'star' : 'star-border';
         },
+        
+
         _computedClass: function(isSelected) {
           var classes = 'item';
           if (isSelected) {
             classes += ' selected';
+            if (!this.isDisplayed(this.$.nextButton)){
+              this.$.nextButton.style.display='block';
+              this.cancelAnimation();
+              this.playAnimation('fabEntry');
+            }
           }
           return classes;
         },
+ 
+
         _unselect: function(e) {
           this.$.itemsList.deselectItem(e.model.item);
         },
+        
+
         _getFormattedCount: function(count) {
+          if (count < 1) {
+            this.cancelAnimation();
+            this.playAnimation('fabExit', 'fabExit');
+          }
           return count > 0 ? '(' + count + ')' : '';
         },
 
-           _backButtonTapped() {
-             console.log('sdf');
-             this.fire('selection-list-back-button')
-           }
+
+        _fabExitAnimationComplete(_, animationType) {
+          if (animationType === 'fabExit') {
+            this.$.nextButton.style.display='none';
+          }
+        },
+
+
+        _backButtonTapped() {
+          this.fire('selection-list-back-button');
+        },
+        
+
+        _nextButtonTapped() {
+          this.onTap = this.fire.bind(this, 'verify-contacts-overlay', {selectedItems: this.selectedItems});
+        }
 
       });
     </script>

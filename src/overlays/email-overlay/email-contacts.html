@@ -33,17 +33,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-
-  <selection-list id="list"  contacts="../../../data/contacts.json"></selection-list>
+    <selection-list id="list"  contacts="../../../data/contacts.json"></selection-list>
 
   </template>
-
 
   <script>
     Polymer({
 
       is: 'email-contacts',
-
 
       behaviors: [
         Polymer.NeonAnimatableBehavior,
@@ -51,8 +48,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         window.BCDEV.Behaviors.OnTapBehavior,
         window.BCDEV.Behaviors.FullscreenBehavior
       ],
-properties: {
 
+      properties: {
         animationConfig: {
           value() {
             return {
@@ -69,15 +66,18 @@ properties: {
           }
         },
       },
-     listeners: {
+     
+      listeners: {
        'selection-list-back-button' : '_basicListItemEvent',
-
       },
-     _basicListItemEvent(event) {
-           console.log('tpooop');
-            this.cancelAnimation();
-            this.playAnimation('exit', 'exit');
+
+
+      _basicListItemEvent(event) {
+        this.cancelAnimation();
+        this.playAnimation('exit', 'exit');
       }, 
+      
+
       init() {
         this.$.list.init();
       }

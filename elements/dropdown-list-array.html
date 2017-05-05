@@ -10,49 +10,45 @@
             :host {
                 display: block;
                 padding: 10px;
-        
-
-
             }
 
-     paper-item {
-        padding: 1px;
-        margin-left: 20px;
-        border-top: 1px solid red;
-                
-    }
+            paper-item {
+              padding: 1px;
+              margin-left: 20px;
+              border-top: 1px solid red;
+            }
+
         </style>
 
 
-<iron-ajax url="{{contacts}}" last-response="{{data}}" auto></iron-ajax>
-<paper-dropdown-menu label="Location:">
-  <paper-listbox class="dropdown-content" selected="{{selectedItem}}" attr-for-selected="value">
-    <template is="dom-repeat" items="[[data]]">
-      <paper-item id="items-format" value="{{item.name}}">{{item.name}}</paper-item>
-    </template>
-  </paper-listbox>
-</paper-dropdown-menu>
+        <iron-ajax url="{{contacts}}" last-response="{{data}}" auto></iron-ajax>
+          <paper-dropdown-menu label="Location:">
+            <paper-listbox class="dropdown-content" selected="{{selectedItem}}" attr-for-selected="value">
+              <template is="dom-repeat" items="[[data]]">
+                <paper-item id="items-format" value="{{item.name}}">{{item.name}}</paper-item>
+              </template>
+            </paper-listbox>
+          </paper-dropdown-menu>
 
-</template>
+        </template>
+
         <script>
-
-      Polymer({
-        is: 'dropdown-list-array',
+          Polymer({
+            is: 'dropdown-list-array',
 
             properties: {
-            selectedItem: {
-              type: String,
-              observer: '_selectedItemChanged',
+              selectedItem: {
+                type: String,
+                observer: '_selectedItemChanged',
+              }
+            },
 
-
+            _selectedItemChanged: function(selected){
+              if (!selected) {return;} 
+              this.fire('dropdown-list-array-selected-item', {selected});
             }
-          },
-          _selectedItemChanged: function(selected){
-            if (!selected) {return;} 
-             console.log('selected: ' , selected);
-             this.fire('dropdown-list-array-selected-item', {selected});
-          }
-      });
+
+          });
 
     </script>
 

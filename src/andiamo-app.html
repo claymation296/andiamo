@@ -25,6 +25,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="overlays/job-name-details.html">
 <link rel="import" href="overlays/email-overlay/email-contacts.html">
+<link rel="import" href="overlays/email-overlay/verify-contacts.html">
 <link rel="import" href="overlays/out-date-overlay/out-date-mediator.html">
 
 
@@ -81,10 +82,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </iron-selector>
       </app-drawer>
 
-
       <!-- Main content -->
       <app-header-layout has-scrolling-region>
-
           <!--BEN: need to mess with to get pink header-->
         <app-header condenses effects fixed="waterfall">
           <app-toolbar>
@@ -103,18 +102,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <work-request name="work-request"></work-request>
           <job-names name="job-names"></job-names>
           <my-view404 name="view404"></my-view404>
-          </iron-pages>
+        </iron-pages>
       </app-header-layout>
     </app-drawer-layout>
 
-
-
-    <job-name-details id="details" 
-                      data= "[[selectedItem]]"></job-name-details>
+    <job-name-details id="details" data= "[[selectedItem]]"></job-name-details>
 
     <out-date-mediator id="outDateMediator"></out-date-mediator>
     <email-contacts id="contacts"></email-contacts>
-
+    <verify-contacts id="verifyOverlay" selected-work="[[selectedWork]]" selected-item="[[selectedItem]]" selected-items="[[selectedItems]]" ></verify-contacts>
 
   </template>
 
@@ -130,18 +126,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
 
-
       observers: [
         '_routePageChanged(routeData.page)',
       ],
 
-
-
       listeners: {
        'basic-list-selected-item' : '_basicListItemEvent',
-       // out-of-office.html button
        'out-of-office-open-overlay': '_openOutDateOverlay',
-
+       'verify-contacts-overlay': '_openVerifyContactsOverlay',
+       'contacts-button-tapped' : '_selectedWorkAndItem',
        'out-date-mediator-dates-selected': '_datesSelected'
       },
 
@@ -157,7 +150,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.$.outDateMediator.init();
       },
 
-
+      
+      _openVerifyContactsOverlay() {
+        this.$.verifyOverlay.open();
+        this.selectedItems = event.detail.selectedItems;
+      },
+      
+      
+      _selectedWorkAndItem(event){
+        this.selectedWork = event.detail.selectedWork;
+        this.selectedItem = event.detail.selectedItem;
+      },
+     
+      
       _datesSelected(event) {
         const {start, end} = event.detail;
         console.log('out-date-mediator-dates-selected: ', start, end);
@@ -176,6 +181,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           jobNameDetails: 'details',
           outDateMediator: 'outDateMediator',
           contactsOverlay: 'contacts',
+          verifyOverlay: 'verifyOverlay',
         }; 
 
         for (const key in customElements) {
@@ -186,7 +192,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _routePageChanged: function(page) {
         this.page = page || 'home-view';
-
         if (!this.$.drawer.persistent) {
           this.$.drawer.close();
         }
@@ -203,6 +208,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _showPage404: function() {
         this.page = 'my-view404';
       }
+
       
     });
   </script>
