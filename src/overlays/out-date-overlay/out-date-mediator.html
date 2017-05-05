@@ -17,9 +17,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
 <dom-module id="out-date-mediator">
-  <template>
-    <style>
-    </style>                 										 
+  <template>               										 
 
     <start-date id="start"></start-date>
     <end-date id="end"></end-date>
@@ -34,8 +32,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       	window.BCDEV.Behaviors.Utilities
       ],
 
+      properties: {
+
+        start: Object
+
+      },
+
       listeners: {
-        'start-date-fab-tapped': '_startFabTapped'
+        'start-date-fab-tapped': '_startFabTapped',
+        'end-date-fab-tapped':   '_endFabTapped'
       },
 
       // called by out-of-office.html as a callback to open()
@@ -45,11 +50,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
       _startFabTapped(event) {
-        const date = event.detail.date;
-        this.$.end.init();
-        this.fire('start-date-selected', {date});
+        this.start = event.detail.start;
         this.schedule.bind(this, this.$.end.init());
+      },
+
+
+      _endFabTapped(event) {
+        this.fire(
+          'out-date-mediator-dates-selected', 
+          {start: this.start, end: event.detail.end}
+        );
       }
+
+
 
     });
   </script>

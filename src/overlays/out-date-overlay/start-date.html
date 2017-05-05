@@ -9,73 +9,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../../bower_components/neon-animation/neon-animatable.html">
-<link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
-<link rel="import" href="../../../bower_components/neon-animation/animations/fade-in-animation.html">
-<link rel="import" href="../../../bower_components/neon-animation/animations/fade-out-animation.html">
-<link rel="import" href="../../../bower_components/neon-animation/animations/slide-left-animation.html">
-<link rel="import" href="../../../bower_components/neon-animation/animations/slide-up-animation.html">
-<link rel="import" href="../../../bower_components/neon-animation/animations/slide-from-top-animation.html">
-<link rel="import" href="../../../bower_components/neon-animation/animations/slide-from-bottom-animation.html">
-<link rel="import" href="../../../bower_components/neon-animation/animations/transform-animation.html">
-<link rel="import" href="../../../bower_components/neon-animation/animations/cascaded-animation.html">
-<link rel="import" href="../../shared-styles.html">
-<link rel="import" href="../../../behaviors/on-tap-behavior.html">
-<link rel="import" href="../../../behaviors/fullscreen-behavior.html">
-<link rel="import" href="../../../bower_components/paper-date-picker/paper-date-picker.html">
-<link rel="import" href="time-picker.html">
-<link rel="import" href="start-fab.html">
+<link rel="import" href="date-time-selector.html">
 
 
 
 <dom-module id="start-date">
   <template>
-    <style include="shared-styles">
-
-      :host {
-        @apply(--fullscreen-overlays);
-        background-color: var(--primary-background-color);
-      }
-
-      app-toolbar {
-        color: var(--light-text-color);
-        background-color: var(--dark-primary-color);
-      }
-
-      .hiddenBeforeAnimation {
-        opacity: 0;
-      }
-
-    </style>
-
-    <app-header-layout has-scrolling-region>
-        <app-header condenses reveals>
-          <app-toolbar id="toolbar">
-            <paper-icon-button id="backButton"
-                               class="hiddenBeforeAnimation"
-                               icon="my-icons:arrow-back"
-                               on-tap="_backButtonTapped">
-            </paper-icon-button>
-            <div id="title" 
-                 class="hiddenBeforeAnimation" 
-                 main-title>Start Date
-            </div>
-          </app-toolbar>
-        </app-header>
-
-        <paper-date-picker id="picker" 
-                           date="{{date}}" 
-                           min-date="[[minDate]]">
-        </paper-date-picker>
-        
-      </app-header-layout>
-    </app-drawer-layout>
-
-    <time-picker id="timePicker"></time-picker>
-
-
-    <start-fab id="fab" on-tap="_fabTapped"></start-fab>
     
+    <date-time-selector id="selector" title="[[title]]"></date-time-selector>
 
   </template>
 
@@ -83,257 +24,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
       is: 'start-date',
 
-      behaviors: [
-        Polymer.NeonAnimatableBehavior,
-        Polymer.NeonAnimationRunnerBehavior,
-        window.BCDEV.Behaviors.OnTapBehavior,
-        window.BCDEV.Behaviors.FullscreenBehavior
-      ],
+      behaviors: [ window.BCDEV.Behaviors.Utilities ],
 
       properties: {
 
-      	animationConfig: {
-      		value() {
-      			return {
-              'entry': [{
-                name: 'slide-from-top-animation',
-                node: this,
-                timing: {duration: 200, easing: 'ease-out'}
-              }, {
-                name: 'fade-in-animation',
-                node: this,
-                timing: {duration: 150, delay: 50, easing: 'ease-in'}
-              }],
-              'startCascade': [{
-                name: 'cascaded-animation',
-                animation: 'slide-from-top-animation',
-                // nodes set imperitively in init()
-                timing: {duration: 100, delay: 50, easing: 'ease-out'}
-              }, {
-                name: 'cascaded-animation',
-                animation: 'fade-in-animation',
-                // nodes set imperitively in init()
-                timing: {duration: 75, delay: 75, easing: 'ease-out'}
-              }, {
-                name: 'slide-from-bottom-animation',
-                // node set imperitiveley -> this.monthsEl
-                timing: {duration: 500, easing: 'ease-out'}
-              }, {
-                name: 'fade-in-animation',
-                // node set imperitiveley -> this.monthsEl
-                timing: {duration: 200, delay: 300, easing: 'ease-in'}
-              }, {
-                name: 'slide-from-right-animation',
-                // node set imperitiveley -> this.leftChevronEl
-                timing: {duration: 800, easing: 'ease-out'}
-              }, {
-                name: 'slide-from-left-animation',
-                // node set imperitiveley -> this.rightChevronEl
-                timing: {duration: 800, easing: 'ease-out'}
-              }, {
-                name: 'fade-in-animation',
-                // node set imperitiveley -> this.leftChevronEl
-                timing: {duration: 200, delay: 500, easing: 'ease-in'}
-              }, {
-                name: 'fade-in-animation',
-                // node set imperitiveley -> this.rightChevronEl
-                timing: {duration: 200, delay: 500, easing: 'ease-in'}
-              }, {
-                name: 'fade-in-animation',
-                // node set imperitiveley -> this.rightChevronEl
-                timing: {duration: 300, delay: 600, easing: 'ease-in'}
-              }],
-              'back': [{
-                name: 'slide-left-animation',
-                node: this,
-                timing: {duration: 200, easing: 'ease-in'}
-              },{
-                name: 'fade-out-animation',
-                node: this,
-                timing: {duration: 100, delay: 100, easing: 'ease-in'}
-              }],
-              'exit': [{
-                name: 'slide-up-animation',
-                node: this,
-                timing: {duration: 200, easing: 'ease-in'}
-              },{
-                name: 'fade-out-animation',
-                node: this,
-                timing: {duration: 100, delay: 100, easing: 'ease-in'}
-              }]
-      			};
-      		}
-      	},
+        title: {
+          type: String,
+          value: 'Start'
+        }
 
-        date: {
-          type: Date,
-          observer: '_dateChanged'
-        },
-
-        minDate: Date,
-
-        time: String,
-
-        yearEl: Object,
-
-        dayOfTheWeekEl: Object,
-
-        dateEl: Object,        
-
-        monthsEl: Object,
-
-        leftChevronEl: Object, 
-      
-        rightChevronEl: Object,
-
-        monthName: Object
       },
 
 
       listeners: {
-        'neon-animation-finish':            '_startDateAnimationComplete',
-        'time-picker-entry-animation-done': '_timePickerEntryDone'
+        'date-time-selector-fab-tapped': '_startSelectorFabTapped'
       },
 
-
-      _yesterday() {
-        const dateObj      = new Date();
-        const todayMillis  = dateObj.getTime();
-        const oneDayMillis = 86400000;
-        dateObj.setTime(todayMillis - oneDayMillis);
-        return dateObj;
-      },
-
-
-      ready() {
-        this.minDate = this._yesterday();
-      },
-
-
-      attached() {
-        this.async(() => {
-          const datePickerDom = Polymer.dom(this.$.picker).node.$;
-          const heading       = datePickerDom.heading;
-          const toolbarColor  = window.getComputedStyle(this.$.toolbar).
-                                       getPropertyValue('background-color');
-          const calendar      = datePickerDom.calendar.$.calendar;
-          const monthNav      = calendar.children.monthNav;
-          // animation nodes
-          this.yearEl         = heading.children[0];
-          this.dayOfTheWeekEl = heading.children[1].children[0];
-          this.dateEl         = heading.children[1].children[1];
-          this.monthsEl       = calendar.children.months.firstElementChild;
-          this.monthName      = this.monthsEl.children[0].firstElementChild;
-          this.leftChevronEl  = monthNav.firstElementChild;
-          this.rightChevronEl = monthNav.lastElementChild;
-          // all animation nodes
-          const cascaders = [
-            this.$.backButton,
-            this.$.title,
-            this.yearEl,        
-            this.dayOfTheWeekEl,
-            this.dateEl
-          ];
-
-
-          heading.style.backgroundColor      = toolbarColor;
-          this.yearEl.style.opacity          = '0';
-          this.dayOfTheWeekEl.style.opacity  = '0';
-          this.dateEl.style.opacity          = '0';
-          this.monthsEl.style.opacity        = '0';
-          this.monthName.style.opacity       = '0';
-          this.leftChevronEl.style.opacity   = '0';
-          this.rightChevronEl.style.opacity  = '0';
-          // can't transform a span without a display explicitly set
-          this.dayOfTheWeekEl.style.display  = 'inline-block';
-          this.dateEl.style.display          = 'inline-block';
-          // set 'startCascade' animation nodes
-          this.animationConfig.startCascade[0].nodes = cascaders;
-          this.animationConfig.startCascade[1].nodes = cascaders;
-          this.animationConfig.startCascade[2].node  = this.monthsEl;
-          this.animationConfig.startCascade[3].node  = this.monthsEl;
-          this.animationConfig.startCascade[4].node  = this.leftChevronEl;
-          this.animationConfig.startCascade[5].node  = this.rightChevronEl;
-          this.animationConfig.startCascade[6].node  = this.leftChevronEl;
-          this.animationConfig.startCascade[7].node  = this.rightChevronEl;
-          this.animationConfig.startCascade[8].node  = this.monthName;
-        });
-      },
-
-      _reset() {
-        Polymer.dom(this.$.backButton).classList.add('hiddenBeforeAnimation');
-        Polymer.dom(this.$.title).     classList.add('hiddenBeforeAnimation');
-        this.yearEl.style.opacity          = '0';
-        this.dayOfTheWeekEl.style.opacity  = '0';
-        this.dateEl.style.opacity          = '0';
-        this.monthsEl.style.opacity        = '0';
-        this.monthName.style.opacity       = '0';
-        this.leftChevronEl.style.opacity   = '0';
-        this.rightChevronEl.style.opacity  = '0';
-        this.$.timePicker.reset();
-      },
-
-      _startDateAnimationComplete(_, animationType) {
-        if (typeof animationType === 'object') {
-          if (animationType.type === 'entry') {
-            Polymer.dom(this.$.backButton).classList.remove('hiddenBeforeAnimation');
-            Polymer.dom(this.$.title).     classList.remove('hiddenBeforeAnimation');
-            this.yearEl.style.opacity          = '1';
-            this.dayOfTheWeekEl.style.opacity  = '1';
-            this.dateEl.style.opacity          = '1';
-            this.monthsEl.style.opacity        = '1';
-            this.monthName.style.opacity       = '1';
-            this.leftChevronEl.style.opacity   = '1';
-            this.rightChevronEl.style.opacity  = '1';
-
-            this.cancelAnimation();
-            this.playAnimation('startCascade', 'startCascade');
-          } 
-        } else if (typeof animationType === 'string') {
-          if (animationType === 'back') {
-            this.reset(this._reset());
-          }
-        } 
-      }, 
-
-      // called by out-of-office.html as a callback to open()
+      // called by out-date-mediator
       init() {
-        // corrects a styling bug in paper-date-picker when
-        // setting from display: none;
-        this.open();
-        this.$.picker.fire('iron-resize');
+        this.$.selector.init();
       },
 
-      
-      _dateChanged(date, oldDate) {
-        if (!oldDate) { return; }
-        this.$.timePicker.enter(date);
-      },
+      _startSelectorFabTapped(event) {
+        const start = {
+          date: event.detail.date,
+          time: event.detail.time
+        };
 
-
-      _timePickerEntryDone() {
-        this.$.fab.enter();
-      },
-
-
-      _backButtonTapped() {
-      	const playBackAnimation = () => {
-
-          if (this.isDisplayed(this.$.timePicker)) {
-            this.$.fab.exit();
-            this.$.timePicker.exit();
-          } else {
-            this.cancelAnimation();
-            this.playAnimation('back', 'back');
-          }
-      	};
-
-      	this.onTap = playBackAnimation;
-      },
-
-
-      _fabTapped() {
-        this.onTap = this.fire.bind(this, 'start-date-fab-tapped', {date: this.date, time: this.time});
+        this.fire('start-date-fab-tapped', {start});
       }
 
     });

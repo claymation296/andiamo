@@ -9,77 +9,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../../bower_components/paper-date-picker/paper-date-picker.html">
-<link rel="import" href="../../../bower_components/paper-fab/paper-fab.html">
-<link rel="import" href="../../../bower_components/neon-animation/neon-animatable.html">
-<link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
-
-<link rel="import" href="../../../bower_components/neon-animation/animations/fade-in-animation.html">
-<link rel="import" href="../../../bower_components/neon-animation/animations/fade-out-animation.html">
-<link rel="import" href="../../../bower_components/neon-animation/animations/slide-left-animation.html">
-<link rel="import" href="../../../bower_components/neon-animation/animations/transform-animation.html">
-<link rel="import" href="../../../bower_components/neon-animation/animations/slide-from-right-animation.html">
-
-
-
-<link rel="import" href="../../shared-styles.html">
-<link rel="import" href="../../../behaviors/on-tap-behavior.html">
-<link rel="import" href="../../../behaviors/fullscreen-behavior.html">
+<link rel="import" href="date-time-selector.html">
 
 
 
 <dom-module id="end-date">
   <template>
-    <style include="shared-styles">
-
-      :host {
-        @apply(--fullscreen-overlays);
-      	background-color: var(--primary-background-color);
-      }
-
-      app-toolbar {
-        color: var(--light-text-color);
-        background-color: var(--dark-primary-color);
-      }
-
-      paper-fab {
-        --paper-fab: {
-          display: none;
-          position: fixed;
-          right: 16px;
-          bottom: 16px;
-        };
-        --paper-fab-keyboard-focus-background: var(--accent-color);
-      }
-
-    </style>
-
-    <app-header-layout has-scrolling-region>
-
-          <!--BEN: need to mess with to get pink header-->
-        <app-header condenses reveals>
-          <app-toolbar>
-            <paper-icon-button icon="my-icons:arrow-back"
-                               on-tap="_backButtonTapped">
-            </paper-icon-button>
-            <div main-title>End Date</div>
-          </app-toolbar>
-        </app-header>
-
-        <paper-date-picker id="picker" 
-                           date="{{date}}" 
-                           min-date="[[minDate]]">
-        </paper-date-picker>
-        
-      </app-header-layout>
-    </app-drawer-layout>
-
-    <paper-fab id="fab" 
-               on-tap="_fabTapped" 
-               icon="my-icons:arrow-forward">
-    </paper-fab>
-
     
+    <date-time-selector id="selector" title="[[title]]"></date-time-selector>
 
   </template>
 
@@ -87,100 +24,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
       is: 'end-date',
 
-      behaviors: [
-        Polymer.NeonAnimatableBehavior,
-        window.BCDEV.Behaviors.OnTapBehavior,
-        window.BCDEV.Behaviors.FullscreenBehavior
-      ],
+      behaviors: [ window.BCDEV.Behaviors.Utilities ],
 
       properties: {
 
-      	animationConfig: {
-      		value() {
-      			return {
-      				// 'entry': [{
-          //       name: 'slide-from-right-animation',
-          //       node: this,
-          //       timing: {duration: 300, easing: 'ease-in'}
-          //     },{
-          //       name: 'fade-in-animation',
-          //       node: this,
-          //       timing: {duration: 200, delay: 100, easing: 'ease-in'}
-      				// }],
-              'exit': [{
-                name: 'slide-left-animation',
-                node: this,
-                timing: {duration: 200, easing: 'ease-in'}
-              },{
-                name: 'fade-out-animation',
-                node: this,
-                timing: {duration: 100, delay: 100, easing: 'ease-in'}
-              }]
-      			};
-      		}
-      	},
-
-        date: {
-          type: Date,
-          observer: '_dateChanged'
-        },
-
-        minDate: Date,
-
-        time: {
+        title: {
           type: String,
-          observer: '_timeChanged'
+          value: 'End'
         }
-      },
 
-      _yesterday() {
-        const dateObj      = new Date();
-        const todayMillis  = dateObj.getTime();
-        const oneDayMillis = 86400000;
-        dateObj.setTime(todayMillis - oneDayMillis);
-        return dateObj;
       },
 
 
-      ready() {
-        this.minDate = this._yesterday();
+      listeners: {
+        'date-time-selector-fab-tapped': '_endSelectorFabTapped'
       },
 
-
-      // called by out-date-mediator.html
+      // called by out-date-mediator
       init() {
-        // corrects a styling bug in paper-date-picker when
-        // setting from display: none;
-        this.$.picker.fire('iron-resize');
+        this.$.selector.init();
       },
 
 
-      _dateChanged(_, oldDate) {
-        if (!oldDate) { return; }
-        this.$.timePicker.enter();
-        // this.$.fab.enter();
-      },
-
-
-      _timeChanged() {
-        console.log('time changed');
-        this.$.fab.enter();
-      },
-
-
-      _backButtonTapped() {
-        const playBackAnimation = () => {
-          this.$.fab.exit();
-          this.cancelAnimation();
-          this.playAnimation('back', 'back');
+      _endSelectorFabTapped(event) {
+        const end = {
+          date: event.detail.date,
+          time: event.detail.time
         };
 
-        this.onTap = playBackAnimation;
-      },
-
-
-      _fabTapped() {
-        this.onTap = this.fire.bind(this, 'end-date-fab-tapped', {date: this.date});
+        this.fire('end-date-fab-tapped', {end});
       }
 
     });
