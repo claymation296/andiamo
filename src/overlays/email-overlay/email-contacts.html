@@ -22,7 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../shared-styles.html">
 <link rel="import" href="../../../behaviors/on-tap-behavior.html">
 <link rel="import" href="../../../behaviors/fullscreen-behavior.html">
-<link rel="import" href="../../../elements/selection-list.html" />
+<link rel="import" href="../../../elements/contacts-selection-list.html" />
 
 <dom-module id="email-contacts">
   <template>
@@ -33,7 +33,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-    <selection-list id="list"  contacts="../../../data/contacts.json"></selection-list>
+    <contacts-selection-list id="list"  contacts="../../../data/contacts.json"></contacts-selection-list>
 
   </template>
 
@@ -68,7 +68,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
      
       listeners: {
-       'selection-list-back-button' : '_basicListItemEvent',
+       'contacts-selection-list-back-button' : '_basicListItemEvent',
       },
 
 

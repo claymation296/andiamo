@@ -28,7 +28,7 @@
 <link rel="import" href="../../../bower_components/neon-animation/animations/cascaded-animation.html">
 <link rel="import" href="../animations/bouncing-animation.html">
 
-<dom-module id="selection-list" >
+<dom-module id="contacts-selection-list" >
     <template>
         <style>
             :host {
@@ -204,11 +204,11 @@
                     <div main-title>Select Contacts</div>
                     <div>
                         <paper-icon-button icon="star" alt="Starred" drawer-toggle></paper-icon-button>
-                        <paper-badge class="blue" label$="[[selectedItems.length]]"></paper-badge>
+                        <paper-badge class="blue" label$="[[selectedContacts.length]]"></paper-badge>
                     </div>
                 </app-toolbar>
                 <!-- Main List for the items -->
-                <iron-list id="itemsList" items="[[data]]" selected-items="{{selectedItems}}" selection-enabled multi-selection>
+                <iron-list id="itemsList" items="[[data]]" selected-items="{{selectedContacts}}" selection-enabled multi-selection>
                     <template>
                         <div>
                             <div tabindex$="[[tabIndex]]" aria-label$="Select/Deselect [[item.name]]" class$="sliders [[_computedClass(selected)]]">
@@ -229,13 +229,13 @@
             <app-drawer align="right">
                 <div class="content">
                     <app-toolbar class="white-toolbar">
-                        <div main-title>[[_getFormattedCount(selectedItems.length)]] Selected contacts</div>
+                        <div main-title>[[_getFormattedCount(selectedContacts.length)]] Selected contacts</div>
                     </app-toolbar>
-                    <template is="dom-if" if="[[!selectedItems.length]]">
+                    <template is="dom-if" if="[[!selectedContacts.length]]">
                         <div class="no-selection">Select a contact</div>
                     </template>
                     <!-- List for the selected items -->
-                    <iron-list id="selectedItemsList" items="[[selectedItems]]" hidden$="[[!selectedItems.length]]">
+                    <iron-list id="selectedContactsList" items="[[selectedContacts]]" hidden$="[[!selectedContacts.length]]">
                         <template>
                             <paper-item tabindex$="[[tabIndex]]" on-tap="_unselect" aria-label$="Deselect [[item.name]]">[[item.name]]</paper-item>
                         </template>
@@ -254,7 +254,7 @@
 
     <script>
       Polymer({
-        is: 'selection-list',
+        is: 'contacts-selection-list',
 
         behaviors: [
         Polymer.NeonAnimatableBehavior,
@@ -265,7 +265,7 @@
         ],
 
         properties: {
-          selectedItems: {
+          selectedContacts: {
             type: Object
           },
           animationConfig: {
@@ -364,12 +364,12 @@
 
 
         _backButtonTapped() {
-          this.fire('selection-list-back-button');
+          this.fire('contacts-selection-list-back-button');
         },
         
 
         _nextButtonTapped() {
-          this.onTap = this.fire.bind(this, 'verify-contacts-overlay', {selectedItems: this.selectedItems});
+          this.onTap = this.fire.bind(this, 'verify-contacts-overlay', {selectedContacts: this.selectedContacts});
         }
 
       });

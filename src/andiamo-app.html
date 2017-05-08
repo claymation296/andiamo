@@ -110,7 +110,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <out-date-mediator id="outDateMediator"></out-date-mediator>
     <email-contacts id="contacts"></email-contacts>
-    <verify-contacts id="verifyOverlay" selected-work="[[selectedWork]]" selected-item="[[selectedItem]]" selected-items="[[selectedItems]]" ></verify-contacts>
+    <verify-contacts id="verifyOverlay" selected-work="[[selectedWork]]" selected-item="[[selectedItem]]" selected-items="[[selectedContacts]]" ></verify-contacts>
 
   </template>
 
@@ -153,7 +153,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       
       _openVerifyContactsOverlay() {
         this.$.verifyOverlay.open();
-        this.selectedItems = event.detail.selectedItems;
+        this.selectedContacts = event.detail.selectedContacts;
       },
       
       
