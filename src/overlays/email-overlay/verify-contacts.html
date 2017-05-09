@@ -37,6 +37,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </style>
 
+
     <template is="dom-if" if="[[selectedWork]]">
       <span>[[selectedWork]] crew will be at [[selectedItem]] [[selectedDate.date]]</span>
 
@@ -47,14 +48,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </iron-list>
     </template>
 
-
-    <template is="dom-if" if="[[selectedDates]]">
+    <template is="dom-if" if="[[outDates]]">
       
       <p>
         Out of office verify!!
       </p>
 
-      <p>[[selectedDates]]</p>
+      <p>[[_formatDate(outDates.start.date)]]</p>
+      <p>[[outDates.end.date]]</p>
 
     </template>
 
@@ -70,6 +71,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         window.BCDEV.Behaviors.Utilities,
         window.BCDEV.Behaviors.FullscreenBehavior
       ],
+
+
+      _formatDate: date => date.toLocaleString(),
+
 
       init() {
          this.$.selectedItemsList.fire('iron-resize');
