@@ -14,11 +14,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../shared-styles.html">
-<link rel="import" href="../../elements/selection-list.html" />
+<link rel="import" href="../../elements/contacts-selection-list.html" />
 <link rel="import" href="../../elements/basic-list.html" />
 <link rel="import" href="../../elements/dropdown-list-array.html" />
 <link rel="import" href="../../behaviors/on-tap-behavior.html"/>
-
+<link rel="import" href="../overlays/out-date-overlay/start-date.html">
 <dom-module id="work-request">
   <template>
     <style include="shared-styles">
@@ -40,7 +40,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </paper-dropdown-menu>
  
     <dropdown-list-array  contacts="../data/locations.json"></dropdown-list-array>
-
+    <start-date id="pickStartDate"></start-date>
+        <paper-button on-tap="_chooseDateButtonTapped">Choose Date</paper-button>
     <paper-button raised id="contactsButton" on-tap="_contactsButtonTapped">Choose Contacts</paper-button>
 
   </template>
@@ -59,7 +60,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         behaviors: [window.BCDEV.Behaviors.OnTapBehavior],
 
         listeners: {
-          'dropdown-list-array-selected-item': '_selectedItem'
+          'dropdown-list-array-selected-item': '_selectedItem',
+          'start-date-fab-tapped': '_selectedDate'
         },
       
 
@@ -67,13 +69,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           const open = () => {
             const callback = () => {
               window.BCDEV.contactsOverlay.init();
-              this.fire('contacts-button-tapped', {selectedWork: this.selectedWork,selectedItem: this.selectedItem}); 
+              this.fire('contacts-button-tapped', {selectedWork: this.selectedWork,selectedItem: this.selectedItem, selectedDate: this.selectedDate }); 
             };
               window.BCDEV.contactsOverlay.open(callback);
           };
           this.onTap = open;
         },
 
+        _chooseDateButtonTapped() {
+          const open = () => {
+          	this.$.pickStartDate.init();
+          };
+          this.onTap = open;
+        },
+
+        _selectedDate(){
+        	this.selectedDate = event.detail.start;
+        	console.log(this.selectedDate);
+        	this.$.pickStartDate.resetAll();
+
+        },
 
         _selectedWorkChanged: function(selected){
           if (!selected) {return;} 

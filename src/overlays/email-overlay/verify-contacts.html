@@ -38,8 +38,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
 
+
     <template is="dom-if" if="[[selectedWork]]">
-      <span>[[selectedWork]] crew will be at [[selectedItem]]</span>
+      <span>[[selectedWork]] crew will be at [[selectedItem]][[selectedDate]]</span>
 
       <iron-list id="selectedItemsList" items="[[selectedItems]]" as="item">
         <template>
@@ -58,6 +59,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <p>[[selectedDates]]</p>
 
     </template>
+
 
   </template>
 

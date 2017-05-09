@@ -112,12 +112,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <email-contacts id="contacts"></email-contacts>
 
-    <verify-contacts id="verifyOverlay" 
-                     selected-work="[[selectedWork]]" 
-                     selected-item="[[selectedItem]]" 
-                     selected-items="[[selectedItems]]"
-                     selected-dates="[[selectedDates]]">
-    </verify-contacts>
+    <verify-contacts id="verifyOverlay" selected-work="[[selectedWork]]" selected-item="[[selectedItem]]" selected-items="[[selectedContacts]]" selected-date =[[selectedDate]] ></verify-contacts>
+
 
   </template>
 
@@ -170,13 +166,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       
       _openVerifyContactsOverlay() {
         this.$.verifyOverlay.open();
-        this.selectedItems = event.detail.selectedItems;
+        this.selectedContacts = event.detail.selectedContacts;
       },
       
       
       _selectedWorkAndItem(event){
         this.selectedWork = event.detail.selectedWork;
         this.selectedItem = event.detail.selectedItem;
+        this.selectedDate = event.detail.selectedDate;
       },
      
       
