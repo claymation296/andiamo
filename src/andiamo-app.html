@@ -112,7 +112,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <email-contacts id="contacts"></email-contacts>
 
+
     <verify-contacts id="verifyOverlay" selected-work="[[selectedWork]]" selected-item="[[selectedItem]]" selected-items="[[selectedContacts]]" selected-date =[[selectedDate]] out-dates="[[outDates]]"></verify-contacts>
+
 
 
   </template>
@@ -142,7 +144,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        'out-of-office-open-overlay':       '_openOutDateOverlay',
        'verify-contacts-overlay':          '_openVerifyContactsOverlay',
        'contacts-button-tapped' :          '_selectedWorkAndItem',
-       'out-date-mediator-dates-selected': '_outDatesSelected'
+       'out-date-mediator-dates-selected': '_datesSelected',
       },
 
 
@@ -175,7 +177,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         const callback = () => {
           window.BCDEV.contactsOverlay.init();
         };
-
         this.outDates = event.detail;
         window.BCDEV.contactsOverlay.open(callback);
       },

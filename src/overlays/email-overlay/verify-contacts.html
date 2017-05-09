@@ -38,17 +38,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
 
-
     <template is="dom-if" if="[[selectedWork]]">
-      <span>[[selectedWork]] crew will be at [[selectedItem]][[selectedDate]]</span>
+      <span>[[selectedWork]] crew will be at [[selectedItem]] [[selectedDate.date]]</span>
 
-      <iron-list id="selectedItemsList" items="[[selectedItems]]" as="item">
+      <iron-list id="selectedItemsList" items="[[selectedContacts]]" as="item">
         <template>
             <paper-item >[[item.name]]</paper-item>
         </template>
       </iron-list>
     </template>
-
 
     <template is="dom-if" if="[[outDates]]">
       
@@ -58,7 +56,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <p>[[_formatDate(outDates.start.date)]]</p>
       <p>[[outDates.end.date]]</p>
-
 
     </template>
 
