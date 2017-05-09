@@ -359,9 +359,6 @@
         _fabExitAnimationComplete(_, animationType) {
           if (animationType === 'fabExit') {
             this.$.nextButton.style.display='none';
-          } else if (animationType === 'slidersAnimation') {
-            // reset other overlay elements behind it ie. both start-date and end-date pickers
-            this.fire('selection-list-entry-done');
           }
         },
 
