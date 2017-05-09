@@ -40,7 +40,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       listeners: {
         'start-date-fab-tapped': '_startFabTapped',
-        'end-date-fab-tapped':   '_endFabTapped'
+        'end-date-fab-tapped':   '_endFabTapped',
+        'end-date-reset-all':    '_resetStart'
       },
 
       // called by out-of-office.html as a callback to open()
@@ -60,6 +61,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           'out-date-mediator-dates-selected', 
           {start: this.start, end: event.detail.end}
         );
+      },
+
+
+      _resetStart() {
+        this.$.start.resetAll();
+      },
+
+
+      resetAll() {
+        this.$.start.resetAll();
+        this.$.end.resetAll();
       }
 
 

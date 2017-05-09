@@ -39,11 +39,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       app-toolbar {
         color: var(--light-text-color);
-        background-color: var(--dark-primary-color);
+        background-color: var(--date-time-selector-theme-color, --dark-primary-color);
       }
 
       .hiddenBeforeAnimation {
         opacity: 0;
+      }
+
+      time-picker {
+        --time-picker-background-color: var(--date-time-selector-theme-color);
       }
 
     </style>
@@ -69,7 +73,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </app-toolbar>
         </app-header>
 
-        <paper-date-picker id="picker" 
+        <paper-date-picker id="datePicker" 
                            date="{{date}}" 
                            min-date="[[minDate]]">
         </paper-date-picker>
@@ -79,9 +83,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <time-picker id="timePicker" time="{{time}}"></time-picker>
 
-
     <date-fab id="fab" on-tap="_fabTapped"></date-fab>
-    
 
   </template>
 
@@ -219,7 +221,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       attached() {
         this.async(() => {
-          const datePickerDom = Polymer.dom(this.$.picker).node.$;
+          const datePickerDom = Polymer.dom(this.$.datePicker).node.$;
           const heading       = datePickerDom.heading;
           const toolbarColor  = window.getComputedStyle(this.$.toolbar).
                                        getPropertyValue('background-color');
@@ -280,10 +282,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.leftChevronEl.style.opacity   = '0';
         this.rightChevronEl.style.opacity  = '0';
         this.$.timePicker.reset();
-
-
-        // TODO: 
-        //      add fab reset
+        this.$.fab.reset();
       },
 
       _dateAnimationComplete(_, animationType) {
@@ -305,7 +304,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           } 
         } else if (typeof animationType === 'string') {
           if (animationType === 'back') {
-            this.reset(this._reset());
+            this.resetAll();
           }
         } 
       }, 
@@ -315,7 +314,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // corrects a styling bug in paper-date-picker when
         // setting from display: none;
         this.open();
-        this.$.picker.fire('iron-resize');
+        this.$.datePicker.fire('iron-resize');
       },
 
       
@@ -358,6 +357,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _fabTapped() {
         this.onTap = this.fire.bind(this, 'date-time-selector-fab-tapped', {date: this.date, time: this.time});
+      },
+
+      resetAll() {
+        this.reset(this._reset());
       }
 
     });

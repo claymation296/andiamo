@@ -205,7 +205,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	          	this.$.bottomFin.style.transform = 'rotate(45deg)';
 	            break;
 	          case 'fabExit':
-	            this.style.display = 'none';
+	          	this.reset();
 	            break;
 	          default:
 	            break;
@@ -232,6 +232,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         	this.cancelAnimation();
           this.playAnimation('fabExit', 'fabExit');
+        },
+
+
+        reset() {
+        	this.style.display = 'none';
         }
 
       });

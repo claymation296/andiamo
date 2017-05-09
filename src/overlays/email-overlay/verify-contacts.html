@@ -20,10 +20,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   
   <template>
     <style include="shared-styles">
+
       :host {
         @apply(--fullscreen-overlays);
         background-color: var(--primary-background-color);
       }
+
       paper-fab {
         --paper-fab-background: var(--accent-color);
         --paper-fab-keyboard-focus-background: var(--accent-color);
@@ -32,15 +34,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         right: 16px;
         display: block;
       }
+
     </style>
 
-    <span>[[selectedWork]] crew will be at [[selectedItem]] [[selectedDate]]</span>
+    <template is="dom-if" if="[[selectedWork]]">
+      <span>[[selectedWork]] crew will be at [[selectedItem]] [[selectedDate.date]]</span>
 
-    <iron-list id="selectedItemsList" items="[[selectedItems]]" as="item">
-      <template>
-          <paper-item >[[item.name]]</paper-item>
-      </template>
-    </iron-list>
+      <iron-list id="selectedItemsList" items="[[selectedContacts]]" as="item">
+        <template>
+            <paper-item >[[item.name]]</paper-item>
+        </template>
+      </iron-list>
+    </template>
+
+
+    <template is="dom-if" if="[[selectedDates]]">
+      
+      <p>
+        Out of office verify!!
+      </p>
+
+      <p>[[selectedDates]]</p>
+
+    </template>
 
 
   </template>
