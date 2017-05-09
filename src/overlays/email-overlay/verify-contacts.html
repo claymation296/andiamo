@@ -34,13 +34,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-    <span>[[selectedWork]] crew will be at [[selectedItem]]</span>
+    <span>[[selectedWork]] crew will be at [[selectedItem]] [[selectedDate]]</span>
 
     <iron-list id="selectedItemsList" items="[[selectedItems]]" as="item">
       <template>
           <paper-item >[[item.name]]</paper-item>
       </template>
     </iron-list>
+
 
   </template>
 
