@@ -68,7 +68,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
      
       listeners: {
-       'contacts-selection-list-back-button' : '_basicListItemEvent',
+       'selection-list-entry-done' : '_selectionListEntryDone',
+       'contacts-selection-list-back-button' : '_basicListItemEvent'
       },
 
 
@@ -80,6 +81,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       init() {
         this.$.list.init();
+      },
+
+
+      _selectionListEntryDone() {
+        this.fire('email-contacts-entry-done');
       }
 
     });

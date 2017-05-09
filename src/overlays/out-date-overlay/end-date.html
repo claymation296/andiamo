@@ -14,6 +14,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
 <dom-module id="end-date">
+  <style>
+    
+    date-time-selector {
+      --date-time-selector-theme-color: var(--default-primary-color);
+    }
+
+  </style>
   <template>
     
     <date-time-selector id="selector" title="[[title]]"></date-time-selector>
@@ -37,7 +44,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
       listeners: {
-        'date-time-selector-fab-tapped': '_endSelectorFabTapped'
+        'date-time-selector-fab-tapped':          '_endSelectorFabTapped',
+        'date-time-selector-close-button-tapped': '_selectorCloseButtonTapped'
       },
 
       // called by out-date-mediator
@@ -45,14 +53,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.$.selector.init();
       },
 
+      // called by out-date-mediator when end-date's selector close button is tapped
+      resetAll() {
+        this.$.selector.resetAll();
+      },
+
 
       _endSelectorFabTapped(event) {
-        const end = {
+        const end = { 
           date: event.detail.date,
           time: event.detail.time
         };
 
         this.fire('end-date-fab-tapped', {end});
+      },
+
+
+      _selectorCloseButtonTapped() {
+        this.fire('end-date-reset-all');
       }
 
     });

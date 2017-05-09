@@ -45,6 +45,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.$.selector.init();
       },
 
+      // called by out-date-mediator when end-date's selector close button is tapped
+      resetAll() {
+        this.$.selector.resetAll();
+      },
+
       _startSelectorFabTapped(event) {
         const start = {
           date: event.detail.date,

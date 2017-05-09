@@ -106,11 +106,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </app-header-layout>
     </app-drawer-layout>
 
-    <job-name-details id="details" data= "[[selectedItem]]"></job-name-details>
+    <job-name-details id="details" data="[[selectedItem]]"></job-name-details>
 
     <out-date-mediator id="outDateMediator"></out-date-mediator>
+
     <email-contacts id="contacts"></email-contacts>
+
     <verify-contacts id="verifyOverlay" selected-work="[[selectedWork]]" selected-item="[[selectedItem]]" selected-items="[[selectedContacts]]" selected-date =[[selectedDate]] ></verify-contacts>
+
 
   </template>
 
@@ -119,30 +122,40 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'andiamo-app',
 
       properties: {
+
         page: {
           type: String,
           reflectToAttribute: true,
           observer: '_pageChanged',
         }
+        
       },
+
 
       observers: [
         '_routePageChanged(routeData.page)',
       ],
 
+
       listeners: {
-       'basic-list-selected-item' : '_basicListItemEvent',
-       'out-of-office-open-overlay': '_openOutDateOverlay',
-       'verify-contacts-overlay': '_openVerifyContactsOverlay',
-       'contacts-button-tapped' : '_selectedWorkAndItem',
-       'out-date-mediator-dates-selected': '_datesSelected'
+       'basic-list-selected-item' :        '_basicListItemEvent',
+       'out-of-office-open-overlay':       '_openOutDateOverlay',
+       'verify-contacts-overlay':          '_openVerifyContactsOverlay',
+       'contacts-button-tapped' :          '_selectedWorkAndItem',
+       'out-date-mediator-dates-selected': '_datesSelected',
+       'email-contacts-entry-done':        '_emailContactsEntryDone'
+      },
+
+
+      _emailContactsEntryDone() {
+        this.$.outDateMediator.resetAll();
       },
 
 
       _basicListItemEvent(event) {
-           console.log('this.details: ' , window.BCDEV.jobNameDetails.open);
-           this.selectedItem = event.detail.selected;
-          window.BCDEV.jobNameDetails.open();
+        console.log('this.details: ', window.BCDEV.jobNameDetails.open);
+        this.selectedItem = event.detail.selected;
+        window.BCDEV.jobNameDetails.open();
       }, 
 
 
@@ -165,8 +178,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
      
       
       _datesSelected(event) {
-        const {start, end} = event.detail;
-        console.log('out-date-mediator-dates-selected: ', start, end);
+
+        const callback = () => {
+          // const {start, end} = event.detail;
+          // console.log('out-date-mediator-dates-selected: ', start, end);
+          window.BCDEV.contactsOverlay.init();
+        };
+
+
+        this.selectedDates = event.detail;
+        window.BCDEV.contactsOverlay.open(callback);
       },
 
 
@@ -176,13 +197,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Learn more about auto-binding templates at http://goo.gl/Dx1u2g
         const select = str => this.$[str];
         // create a table of custom element objects that will be
-        // referenced by other elements for dom manipulation and api calls        
-
+        // referenced by other elements for dom manipulation and api calls  
         const customElements = {
-          jobNameDetails: 'details',
+          jobNameDetails:  'details',
           outDateMediator: 'outDateMediator',
           contactsOverlay: 'contacts',
-          verifyOverlay: 'verifyOverlay',
+          verifyOverlay:   'verifyOverlay',
         }; 
 
         for (const key in customElements) {
