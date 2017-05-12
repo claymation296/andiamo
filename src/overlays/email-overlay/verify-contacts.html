@@ -12,8 +12,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../../behaviors/on-tap-behavior.html">
 <link rel="import" href="../../../behaviors/fullscreen-behavior.html">
 <link rel="import" href="../../../behaviors/utilities.html">
+<link rel="import" href="../../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../../bower_components/paper-item/paper-icon-item.html">
 <link rel="import" href="../../../bower_components/iron-list/iron-list.html">
 
 <dom-module id="verify-contacts">
@@ -24,6 +26,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         @apply(--fullscreen-overlays);
         background-color: var(--primary-background-color);
+      }
+
+      app-toolbar {
+        color: var(--dark-text-color);
+        background-color: var(--light-primary-color);
+      }
+
+      .content {
+        margin-top: 64px;
+        padding: 16px;
+      }
+
+      paper-card {
+        width: 100%;
+      }
+
+      .avatar {
+        width: 56px;
+        height: 56px;
+      }
+
+      .img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
       }
 
       paper-fab {
@@ -37,27 +64,77 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </style>
 
+    <app-header-layout has-scrolling-region>
+        <app-header condenses reveals>
+          <app-toolbar id="toolbar">
+            <paper-icon-button id="backButton"
+                               icon="my-icons:arrow-back"
+                               on-tap="_backButtonTapped">
+            </paper-icon-button>
+            <div id="title" 
+                 main-title>Review Notification
+            </div>
+            <span class="flex"></span>
+            <paper-icon-button id="closeButton"
+                               icon="my-icons:close"
+                               on-tap="_closeButtonTapped">
+            </paper-icon-button>
+          </app-toolbar>
+        </app-header>
+        <div class="content">
 
-    <template is="dom-if" if="[[selectedWork]]">
-      <span>[[selectedWork]] crew will be at [[selectedItem]] [[selectedDate.date]]</span>
+          <template is="dom-if" if="[[selectedWork]]">
+            <span>[[selectedWork]] crew will be at [[selectedItem]] [[selectedDate.date]]</span>
 
-      <iron-list id="selectedItemsList" items="[[selectedContacts]]" as="item">
-        <template>
-            <paper-item >[[item.name]]</paper-item>
-        </template>
-      </iron-list>
-    </template>
+            <iron-list id="selectedItemsList" items="[[selectedContacts]]" as="item">
+              <template>
+                  <paper-item >[[item.name]]</paper-item>
+              </template>
+            </iron-list>
+          </template>
 
-    <template is="dom-if" if="[[outDates]]">
-      
-      <p>
-        Out of office verify!!
-      </p>
 
-      <p>[[_formatDate(outDates.start.date)]]</p>
-      <p>[[outDates.end.date]]</p>
 
-    </template>
+          <template is="dom-if" if="[[outDates]]">
+            
+            <paper-card heading="Send to: ">
+
+              <template is="dom-repeat" items="[[selectedContacts]]">
+                <paper-icon-item>
+                  <div class="avatar" item-icon>
+                    <iron-image class="img" 
+                                src="[[item.image]]" 
+                                fade
+                                sizing="cover">
+                    </iron-image>
+                  </div>
+                  <div>[[item.name]]</div>
+                </paper-icon-item>
+              </template>
+                
+
+              <!-- <div class="card-content">
+              <div>[[_computeRecipients(selectedContacts)]]</div> -->
+
+
+
+              <!-- <p>[[_formatDate(outDates.start.date)]]</p>
+              <p>start time: [[outDates.start.time]]</p>
+              <p>[[outDates.end.date]]</p> -->
+
+
+              </div>
+
+            </paper-card>
+
+          </template>
+
+        </div>
+      </app-header-layout>
+    </app-drawer-layout>
+
+
+    
 
 
   </template>
@@ -71,6 +148,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         window.BCDEV.Behaviors.Utilities,
         window.BCDEV.Behaviors.FullscreenBehavior
       ],
+
+      properties: {
+        selectedContacts: {
+          type: Array,
+          observer: '_selectedContactsChanged'
+        }
+      },
+
+
+      _selectedContactsChanged(array) {
+        console.log('contacts array: ', array);
+      },
+
+      // _computeRecipients: objs => objs.map(obj => obj.name).join(', '),
 
 
       _formatDate: date => date.toLocaleString(),
