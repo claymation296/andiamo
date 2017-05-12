@@ -35,19 +35,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
       }
 
+      paper-item {
+
+        font-size: 10px;
+    padding: 1px;
+
+
+      }
+
+
     </style>
 
 
     <template is="dom-if" if="[[selectedWork]]">
-      <span>[[selectedWork]] crew will be at [[selectedItem]] [[selectedDate.date]]</span>
-
-      <iron-list id="selectedItemsList" items="[[selectedContacts]]" as="item">
-        <template>
-            <paper-item >[[item.name]]</paper-item>
-        </template>
-      </iron-list>
+      <span>[[selectedWork]] crew will be at [[selectedItem]] on [[_formatSelectedDate(selectedDate.date)]] at [[selectedDate.time]]</span>
+    [[_formatSelectedContacts(selectedContacts)]]
     </template>
 
+        <paper-fab  id="nextButton"
+           class="hiddenBeforeAnimation"
+            icon="my-icons:arrow-forward" 
+            on-tap="_formatSelectedContacts">
+        </paper-fab>
     <template is="dom-if" if="[[outDates]]">
       
       <p>
@@ -73,7 +82,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
 
-      _formatDate: date => date.toLocaleString(),
+      _formatSelectedDate: date => date.toLocaleDateString(),
+
+      
+
+      _formatSelectedContacts(array){
+        const names = array.map((contact) => contact.name);
+        return names.join(', ');
+      },
+
 
 
       init() {

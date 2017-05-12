@@ -28,6 +28,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding: 10px;
         background-color: var(--light-primary-color);
       }
+
+      
     </style>
 
     <paper-dropdown-menu label="Type of Work:">
@@ -41,7 +43,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
  
     <dropdown-list-array  contacts="../data/locations.json"></dropdown-list-array>
     <start-date id="pickStartDate"></start-date>
-        <paper-button on-tap="_chooseDateButtonTapped">Choose Date</paper-button>
+        <paper-button id="dateButton" on-tap="_chooseDateButtonTapped">[[_chooseDate(datePicked)]]</paper-button>
     <paper-button raised id="contactsButton" on-tap="_contactsButtonTapped">Choose Contacts</paper-button>
 
   </template>
@@ -54,6 +56,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           selectedWork: {
           type: String,
           observer: '_selectedWorkChanged',
+          },
+
+          datePicked: {
+            type: String,
+            value: 'Choose Date',
           }
         },
 
@@ -76,6 +83,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.onTap = open;
         },
 
+
+        _chooseDate(datePicked) {
+          if(datePicked) {
+            return datePicked;
+          } 
+        },
+
+
         _chooseDateButtonTapped() {
           const open = () => {
           	this.$.pickStartDate.init();
@@ -83,11 +98,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.onTap = open;
         },
 
-        _selectedDate(){
+        _selectedDate(event){
         	this.selectedDate = event.detail.start;
-        	console.log(this.selectedDate);
         	this.$.pickStartDate.resetAll();
-
+          this.datePicked = event.detail.start.date.toLocaleDateString() + ' ' + event.detail.start.time;
+          date => date.toLocaleDateString();
         },
 
         _selectedWorkChanged: function(selected){
