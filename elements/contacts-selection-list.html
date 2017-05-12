@@ -373,6 +373,7 @@
 
         _nextButtonTapped() {
           this.onTap = this.fire.bind(this, 'verify-contacts-overlay', {selectedContacts: this.selectedContacts});
+          console.log(this.selectedContacts);
         }
 
       });
