@@ -144,7 +144,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        'out-of-office-open-overlay':       '_openOutDateOverlay',
        'verify-contacts-overlay':          '_openVerifyContactsOverlay',
        'contacts-button-tapped' :          '_selectedWorkAndItem',
-       'out-date-mediator-dates-selected': '_datesSelected',
+       'out-date-mediator-dates-selected': '_outDatesSelected',
+      },
+
+
+      _outDatesSelected(event) {
+        this.outDates = event.detail;
+        this.$.contacts.init();
       },
 
 
