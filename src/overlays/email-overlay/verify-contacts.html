@@ -85,35 +85,61 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </style>
 
+
     <app-header-layout has-scrolling-region>
-      <app-header condenses reveals>
-        <app-toolbar id="toolbar">
-          <paper-icon-button id="backButton"
-                             icon="my-icons:arrow-back"
-                             on-tap="_backButtonTapped">
-          </paper-icon-button>
-          <div id="title" 
-               main-title>Your Notification
-          </div>
-          <span class="flex"></span>
-          <paper-icon-button id="closeButton"
-                             icon="my-icons:close"
-                             on-tap="_closeButtonTapped">
-          </paper-icon-button>
-        </app-toolbar>
-      </app-header>
-      <div class="content">
 
-        <template is="dom-if" if="[[selectedWork]]">
-          <span>[[selectedWork]] crew will be at [[selectedItem]] on [[_formatSelectedDate(selectedDate.date)]] at [[selectedDate.time]]</span>
-          [[_formatSelectedContacts(selectedContacts)]]
-        </template>
+        <app-header condenses reveals>
+          <app-toolbar id="toolbar">
+            <paper-icon-button id="backButton"
+                               icon="my-icons:arrow-back"
+                               on-tap="_backButtonTapped">
+            </paper-icon-button>
+            <div id="title" 
+                 main-title>Review Notification
+            </div>
+            <span class="flex"></span>
+            <paper-icon-button id="closeButton"
+                               icon="my-icons:close"
+                               on-tap="_closeButtonTapped">
+            </paper-icon-button>
+          </app-toolbar>
+        </app-header>
+        
 
-        <paper-fab id="nextButton"
-                   class="hiddenBeforeAnimation"
-                   icon="my-icons:arrow-forward" 
-                   on-tap="_formatSelectedContacts">
-        </paper-fab>
+        <div class="content">
+
+
+
+ <template is="dom-if" if="[[selectedWork]]">
+     <span>[[selectedWork]] crew will be at [[selectedLocation]] on [[_formatSelectedDate(selectedDate.date)]] at [[selectedDate.time]]</span>
+    <p>Sending email to :[[_formatSelectedContacts(selectedContacts)]]</p>
+      <paper-fab  id="nextButton"
+                  class="hiddenBeforeAnimation"
+                  icon="my-icons:arrow-forward" 
+                  on-tap="_formatSelectedContacts">
+      </paper-fab>
+  </template>
+
+
+          <template is="dom-if" if="[[outDates]]">
+            
+            <paper-card heading="Send to: ">
+
+              <template is="dom-repeat" items="[[selectedContacts]]">
+                <paper-icon-item>
+                  <div class="avatar" item-icon>
+                    <iron-image class="img" 
+                                src="[[item.image]]" 
+                                fade
+                                sizing="cover">
+                    </iron-image>
+                  </div>
+                  <div>[[item.name]]</div>
+                </paper-icon-item>
+              </template>
+                
+
+
 
         <template is="dom-if" if="[[outDates]]">
           <paper-card heading="Send to: ">
@@ -139,8 +165,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           
         </template>
 
-      </div>
-    </app-header-layout>
+
+             <!--  </div> -->
+
+            </paper-card>
+
+          </template>
+
+        </div>
+      </app-header-layout>
+
+
 
 
     
@@ -161,7 +196,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       properties: {
         selectedContacts: {
           type: Array,
-          observer: '_selectedContactsChanged'
+          observer: '_selectedContactsChanged',
         }
       },
 

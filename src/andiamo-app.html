@@ -22,7 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
-
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="overlays/job-name-details.html">
 <link rel="import" href="overlays/email-overlay/email-contacts.html">
 <link rel="import" href="overlays/email-overlay/verify-contacts.html">
@@ -113,10 +113,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <email-contacts id="contacts"></email-contacts>
 
 
-    <verify-contacts id="verifyOverlay" selected-work="[[selectedWork]]" selected-item="[[selectedItem]]" selected-contacts="[[selectedContacts]]" selected-date =[[selectedDate]] out-dates="[[outDates]]"></verify-contacts>
+    <verify-contacts id="verifyOverlay" selected-work="[[selectedWork]]" selected-location="[[selectedLocation]]" selected-contacts="[[selectedContacts]]" selected-date =[[selectedDate]] out-dates="[[outDates]]"></verify-contacts>
 
 
-
+    <paper-toast id="message"></paper-toast>
+    <paper-toast id="warning"></paper-toast>
+    
   </template>
 
   <script>
@@ -174,7 +176,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       
       _selectedWorkAndItem(event){
         this.selectedWork = event.detail.selectedWork;
-        this.selectedItem = event.detail.selectedItem;
+        this.selectedLocation = event.detail.selectedLocation;
         this.selectedDate = event.detail.selectedDate;
       },
      
@@ -200,6 +202,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           outDateMediator: 'outDateMediator',
           contactsOverlay: 'contacts',
           verifyOverlay:   'verifyOverlay',
+          message: 'message', 
+          warning: 'warning',
         }; 
 
         for (const key in customElements) {

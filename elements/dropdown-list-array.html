@@ -9,21 +9,22 @@
         <style>
             :host {
                 display: block;
-                padding: 10px;
+                width: 285px;
             }
 
             paper-item {
-              padding: 1px;
-              margin-left: 20px;
               border-top: 1px solid red;
             }
 
+            paper-dropdown-menu {
+                width: 100%;
+            }
         </style>
 
 
         <iron-ajax url="{{contacts}}" last-response="{{data}}" auto></iron-ajax>
           <paper-dropdown-menu label="Location:">
-            <paper-listbox class="dropdown-content" selected="{{selectedItem}}" attr-for-selected="value">
+            <paper-listbox class="dropdown-content" selected="{{selectedLocation}}" attr-for-selected="value">
               <template is="dom-repeat" items="[[data]]">
                 <paper-item id="items-format" value="{{item.name}}">{{item.name}}</paper-item>
               </template>
@@ -37,13 +38,13 @@
             is: 'dropdown-list-array',
 
             properties: {
-              selectedItem: {
+              selectedLocation: {
                 type: String,
-                observer: '_selectedItemChanged',
+                observer: '_selectedLocationChanged',
               }
             },
 
-            _selectedItemChanged: function(selected){
+            _selectedLocationChanged: function(selected){
               if (!selected) {return;} 
               this.fire('dropdown-list-array-selected-item', {selected});
             }
