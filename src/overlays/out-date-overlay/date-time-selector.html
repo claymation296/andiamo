@@ -34,7 +34,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       :host {
         @apply(--fullscreen-overlays);
-        background-color: var(--primary-background-color);
+        background-color: var(--date-time-selector-theme-color, --dark-primary-color);
       }
 
       app-toolbar {
@@ -44,6 +44,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .hiddenBeforeAnimation {
         opacity: 0;
+      }
+
+      .date-container {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        background-color: var(--primary-background-color);
+      }
+
+      .faux-toolbar {
+        position: absolute;
+        width: 100%;
+        height: 98px;
+        background-color: var(--date-time-selector-theme-color, --dark-primary-color);
+      }
+
+      paper-date-picker {
+        position: absolute;
+        height: 100%;
       }
 
       time-picker {
@@ -73,15 +93,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </app-toolbar>
         </app-header>
 
-        <paper-date-picker id="datePicker" 
+        <div class="date-container">
+          <div class="faux-toolbar"></div>
+          <paper-date-picker id="datePicker" 
                            date="{{date}}" 
                            min-date="[[minDate]]">
-        </paper-date-picker>
-        
+          </paper-date-picker>
+
+          <time-picker id="timePicker" time="{{time}}"></time-picker>
+
+        </div>        
       </app-header-layout>
     </app-drawer-layout>
-
-    <time-picker id="timePicker" time="{{time}}"></time-picker>
 
     <date-fab id="fab" on-tap="_fabTapped"></date-fab>
 
