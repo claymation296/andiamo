@@ -73,6 +73,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </style>
 
+
     <app-header-layout has-scrolling-region>
         <app-header condenses reveals>
           <app-toolbar id="toolbar">
@@ -90,25 +91,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </paper-icon-button>
           </app-toolbar>
         </app-header>
+        
+
         <div class="content">
 
 
 
  <template is="dom-if" if="[[selectedWork]]">
-      <span>[[selectedWork]] crew will be at [[selectedItem]] on [[_formatSelectedDate(selectedDate.date)]] at [[selectedDate.time]]</span>
-    [[_formatSelectedContacts(selectedContacts)]]
-    </template>
+     <span>[[selectedWork]] crew will be at [[selectedLocation]] on [[_formatSelectedDate(selectedDate.date)]] at [[selectedDate.time]]</span>
+    <p>Sending email to :[[_formatSelectedContacts(selectedContacts)]]</p>
+      <paper-fab  id="nextButton"
+                  class="hiddenBeforeAnimation"
+                  icon="my-icons:arrow-forward" 
+                  on-tap="_formatSelectedContacts">
+      </paper-fab>
+  </template>
 
-        <paper-fab  id="nextButton"
-           class="hiddenBeforeAnimation"
-            icon="my-icons:arrow-forward" 
-            on-tap="_formatSelectedContacts">
-        </paper-fab>
-    <template is="dom-if" if="[[outDates]]">
-      
-      <p>
-        Out of office verify!!
-      </p>
 
           <template is="dom-if" if="[[outDates]]">
             
@@ -139,7 +137,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <p>[[outDates.end.date]]</p> -->
 
 
-              </div>
+             <!--  </div> -->
 
             </paper-card>
 
@@ -147,7 +145,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         </div>
       </app-header-layout>
-    </app-drawer-layout>
+<!--     </app-drawer-layout> -->
 
 
     
@@ -168,7 +166,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       properties: {
         selectedContacts: {
           type: Array,
-          observer: '_selectedContactsChanged'
+          observer: '_selectedContactsChanged',
         }
       },
 
