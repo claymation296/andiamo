@@ -113,7 +113,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <email-contacts id="contacts"></email-contacts>
 
 
-    <verify-contacts id="verifyOverlay" selected-work="[[selectedWork]]" selected-location="[[selectedLocation]]" selected-contacts="[[selectedContacts]]" selected-date =[[selectedDate]] out-dates="[[outDates]]"></verify-contacts>
+    <verify-contacts id="verifyOverlay" 
+                     selected-work="[[selectedWork]]" 
+                     selected-location="[[selectedLocation]]" 
+                     selected-contacts="[[selectedContacts]]" 
+                     selected-date =[[selectedDate]] 
+                     out-dates="[[outDates]]">
+    </verify-contacts>
 
 
     <paper-toast id="message"></paper-toast>
@@ -169,8 +175,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       
       _openVerifyContactsOverlay() {
-        this.$.verifyOverlay.open();
+        this.selectedContacts = undefined;
         this.selectedContacts = event.detail.selectedContacts;
+        this.$.verifyOverlay.open();
       },
       
       
