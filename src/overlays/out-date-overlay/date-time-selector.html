@@ -96,8 +96,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="date-container">
           <div class="faux-toolbar"></div>
           <paper-date-picker id="datePicker" 
-                           date="{{date}}" 
-                           min-date="[[minDate]]">
+                             date="{{date}}" 
+                             min-date="[[minDate]]">
           </paper-date-picker>
 
           <time-picker id="timePicker" time="{{time}}"></time-picker>
@@ -202,6 +202,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           observer: '_dateChanged'
         },
 
+        formatedDate: {
+          type: String,
+          computed: '_computeFormatedDate(date)'
+        },
+
         minDate: Date,
 
         time: String,
@@ -226,6 +231,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         'neon-animation-finish':            '_dateAnimationComplete',
         'time-picker-entry-animation-done': '_timePickerEntryDone'
       },
+
+      // cut out the year and seconds
+      _computeFormatedDate: date => date.toString().split(' ').slice(0, 3).join(' '),
 
 
       _yesterday() {
@@ -379,7 +387,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
       _fabTapped() {
-        this.onTap = this.fire.bind(this, 'date-time-selector-fab-tapped', {date: this.date, time: this.time});
+        this.onTap = this.fire.bind(this, 'date-time-selector-fab-tapped', {date: this.formatedDate, time: this.time});
       },
 
       resetAll() {
