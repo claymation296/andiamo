@@ -20,6 +20,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       :host {
         display: block;
+        height: 100vh;
+        padding: 16px;
+        background-color: var(--light-primary-color);
       }
 
       paper-button {
@@ -33,10 +36,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         justify-content: center;
       }
 
+      #card{
+        background-color: white;
+        padding: 6px;
+        width: 100%;
+        border-radius: 8px;
+      }
+
+      #header{
+            font-weight: bold;
+            font-size: 1.5em;
+            color: black;
+      }
     </style>
+ 
+ <paper-card id="card" image="../images/andiamoBuilders.png"></paper-card>
 
     <div class="card">
-      <h1>Out of Office</h1>
+      <div id="header">Out of Office</div>
       <p>Start here to notify concerned parties when you will be out of your office.</p>
 
 
