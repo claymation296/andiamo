@@ -28,11 +28,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
       	display: none;
         justify-content: center;
-        width: 100%;
       	height: 100vh;
       	position: absolute;
+        left: 0px;
+        right: 0px;
       	top: 96px;
         background-color: var(--time-picker-background-color, --dark-primary-color);
+        z-index: 1;
       }
 
       #text {
@@ -56,7 +58,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-top: 64px;
       }
 
-
       #message {
         text-align: center;
         color: var(--light-text-color);
@@ -72,8 +73,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
     </style>
-
-    <!-- <div id="text">[[time]]</div> -->
 
 
     <div id="container">

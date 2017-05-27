@@ -12,6 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../../behaviors/on-tap-behavior.html">
 <link rel="import" href="../../../behaviors/fullscreen-behavior.html">
 <link rel="import" href="../../../behaviors/utilities.html">
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../../../bower_components/paper-item/paper-item.html">
@@ -19,6 +20,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../../bower_components/paper-item/paper-item-body.html">
 <link rel="import" href="../../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../../bower_components/iron-autogrow-textarea/iron-autogrow-textarea.html">
 
 
 
@@ -96,6 +98,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding: 1px;
       }
 
+      iron-autogrow-textarea {
+        /*--iron-autogrow-textarea: {
+          width: calc(100% - 4px);
+        };*/
+        width: calc(100% - 4px);
+      }
+
+
+      #sendBtnContainer {
+        display: flex;
+        justify-content: center;
+        margin-top: 32px;
+      }
+
+
+      #sendBtn {
+        --paper-button: {
+          background-color: var(--accent-color);
+        };
+      }
+
     </style>
 
 
@@ -152,27 +175,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           <paper-card heading="Away">
             <iron-icon class="card-header-icon" icon="my-icons:event"></iron-icon>
-
-
             <paper-icon-item>
               <iron-icon icon="my-icons:hourglass-empty" item-icon>
               </iron-icon>
               <paper-item-body two-line>
-                <div>[[outDates.start.date]]</div>
+                <div>[[_computeFormatedDate(outDates.start.date)]]</div>
                 <div secondary>[[outDates.start.time]]</div>
               </paper-item-body>
             </paper-icon-item>
-
             <paper-icon-item>
               <iron-icon icon="my-icons:hourglass-full" item-icon>
               </iron-icon>
               <paper-item-body two-line>
-                <div>[[outDates.end.date]]</div>
+                <div>[[_computeFormatedDate(outDates.end.date)]]</div>
                 <div secondary>[[outDates.end.time]]</div>
               </paper-item-body>
             </paper-icon-item>
           </paper-card>
 
+          <paper-card heading="Message">
+            <iron-icon class="card-header-icon" icon="my-icons:create"></iron-icon>
+            <div class="card-content">
+              <iron-autogrow-textarea autocomplete="on" 
+                                      value={{message}} 
+                                      placeholder="Add a personalized message">
+              </iron-autogrow-textarea>
+            </div>
+          </paper-card>
+
+
+          <div id="sendBtnContainer">
+            <paper-button id="sendBtn" on-tap="_sendButtonTapped">
+              <iron-icon icon="my-icons:send"></iron-icon>
+              send notification
+            </paper-button>
+          </div>
 
 
         </template>
@@ -200,6 +237,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         outDates: Object
       },
+
+      // cut out the year and seconds
+      _computeFormatedDate: date => date.toString().split(' ').slice(0, 3).join(' '), 
 
 
       _selectedContactsChanged(array) {
@@ -229,6 +269,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _closeButtonTapped() {
         this.selectedContacts = undefined;
         this.style.display    = 'none';
+      },
+
+
+      _sendButtonTapped() {
+        console.log('send button tapped: ', this.message);
       }
 
     });
