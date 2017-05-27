@@ -56,14 +56,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .faux-toolbar {
         position: absolute;
-        width: 100%;
+        left: 0px;
+        right: 0px;
         height: 98px;
         background-color: var(--date-time-selector-theme-color, --dark-primary-color);
       }
 
       paper-date-picker {
-        position: absolute;
         height: 100%;
+        z-index: 1;
       }
 
       time-picker {
@@ -202,11 +203,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           observer: '_dateChanged'
         },
 
-        formatedDate: {
-          type: String,
-          computed: '_computeFormatedDate(date)'
-        },
-
         minDate: Date,
 
         time: String,
@@ -231,9 +227,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         'neon-animation-finish':            '_dateAnimationComplete',
         'time-picker-entry-animation-done': '_timePickerEntryDone'
       },
-
-      // cut out the year and seconds
-      _computeFormatedDate: date => date.toString().split(' ').slice(0, 3).join(' '),
 
 
       _yesterday() {
@@ -387,7 +380,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
       _fabTapped() {
-        this.onTap = this.fire.bind(this, 'date-time-selector-fab-tapped', {date: this.formatedDate, time: this.time});
+        this.onTap = this.fire.bind(this, 'date-time-selector-fab-tapped', {date: this.date, time: this.time});
       },
 
       resetAll() {

@@ -60,10 +60,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			  transform-origin: top 1px;
 			}
 
-
     </style>
 
-    
 
     <svg id="icon"
          class="icon" 
@@ -84,14 +82,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		        height="2"/>
 
 		  <rect id="topFin" 
-		        class="topFin topFinOut" 
+		        class="topFin" 
 		        x="18.35" 
 		        y="1.35" 
 		        width="2" 
 		        height="11.4"/>
 
 		  <rect id="bottomFin" 
-		        class="bottomFin bottomFinOut" 
+		        class="bottomFin" 
 		        x="18.3" 
 		        y="11.3" 
 		        width="2" 
@@ -114,6 +112,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 	      properties: {
 
+
 	      	animationConfig: {
 	      		value() {
 	      			return {
@@ -131,18 +130,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	              }, {
 	                name: 'transform-animation',
 	                node: this.$.icon,
+	                transformOrigin: '50% 50%',
 	                transformFrom: 'translate(-50%, -50%) rotate(-180deg)',
 	                transformTo: 'translate(-50%, -50%) rotate(15deg)',
 	                timing: {duration: 200, delay: 50, easing: 'ease-out'}
 	              }, {
 	                name: 'transform-animation',
 	                node: this.$.topFin,
+	                transformOrigin: 'bottom 1px',
 	                transformFrom: 'rotate(-90deg)',
 	                transformTo: 'rotate(-35deg)',
 	                timing: {duration: 200, delay: 100, easing: 'ease-out'}
 	              }, {
 	                name: 'transform-animation',
 	                node: this.$.bottomFin,
+	                transformOrigin: 'top 1px',
 	                transformFrom: 'rotate(90deg)',
 	                transformTo: 'rotate(35deg)',
 	                timing: {duration: 200, delay: 100, easing: 'ease-out'}
@@ -157,18 +159,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	               }, {
 	                name: 'transform-animation',
 	                node: this.$.icon,
+	                transformOrigin: '50% 50%',
 	                transformFrom: 'translate(-50%, -50%) rotate(15deg)',
 	                transformTo: 'translate(-50%, -50%)',
 	                timing: {duration: 200, delay: 50, easing: 'ease-in-out'}
 	              }, {
 	                name: 'transform-animation',
 	                node: this.$.topFin,
+	                transformOrigin: 'bottom 1px',
 	                transformFrom: 'rotate(-35deg)',
 	                transformTo: 'rotate(-45deg)',
 	                timing: {duration: 250, delay: 50, easing: 'ease-in'}
 	              }, {
 	                name: 'transform-animation',
 	                node: this.$.bottomFin,
+	                transformOrigin: 'top 1px',
 	                transformFrom: 'rotate(35deg)',
 	                transformTo: 'rotate(45deg)',
 	                timing: {duration: 250, delay: 50, easing: 'ease-in'}
