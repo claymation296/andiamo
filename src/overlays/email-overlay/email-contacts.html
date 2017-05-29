@@ -83,6 +83,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
 
+      resetData() {
+        this.$.list.resetData();
+      },
+
+
       _selectionListEntryDone() {
         this.fire('email-contacts-entry-done');
       }
