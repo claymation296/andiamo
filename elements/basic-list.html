@@ -34,9 +34,15 @@
                 color: #333;
             }
 
+            #search{
+              width: 120px;
+          padding-bottom: 10px;
+            }
+
             .pink-toolbar {
-                background: var(--paper-grey-500);
+                background: var(--light-primary-color);
                 color: white;
+                height: 50px;
             }
 
             app-toolbar {
@@ -76,6 +82,7 @@
                 @apply(--layout-horizontal);
                 cursor: pointer;
                 padding: 16px 22px;
+                background-color: white;
                 border-bottom: 1px solid #D7CCC8;
             }
 
@@ -111,6 +118,7 @@
                 position: relative;
             }
 
+    
             paper-item:hover::after {
               content: "－";
               width: 16px;
@@ -135,6 +143,7 @@
                 line-height: 50px;
             }
 
+   
             iron-list {
                 @apply(--layout-flex);
             }
@@ -142,11 +151,11 @@
         </style>
 
         <iron-ajax id="jobData" url="{{contacts}}" on-response="_ajaxReady" auto></iron-ajax>
-          <app-drawer-layout fullbleed>
+          <app-drawer-layout  fullbleed>
             <div class="content">
-                <app-toolbar class="pink-toolbar">
-                    <div main-title>Active Job Names</div>
-                      <paper-dropdown-menu label="Type of Work:" style= "width:120px;">
+                <app-toolbar  class="pink-toolbar">
+                    <div main-title>Job Names</div>
+                      <paper-dropdown-menu id="search" label="Filter:">
                         <paper-listbox class="dropdown-content" selected="{{selectedWork}}" attr-for-selected="value" >
                           <paper-item value="Construction">Construction</paper-item>
                           <paper-item value="SiteWork">Site Work</paper-item>
