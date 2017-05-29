@@ -21,6 +21,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../../bower_components/iron-autogrow-textarea/iron-autogrow-textarea.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/fade-in-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/slide-left-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/slide-right-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/slide-from-top-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/slide-from-right-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/cascaded-animation.html">
 
 
 
@@ -44,6 +52,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .content {
         margin-top: 64px;
         padding: 16px;
+      }
+
+      .hiddenBeforeAnimation {
+        opacity: 0;
+      }
+
+      .showForAnimation {
+        opacity: 1;
       }
 
       paper-card {
@@ -99,19 +115,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       iron-autogrow-textarea {
-        /*--iron-autogrow-textarea: {
-          width: calc(100% - 4px);
-        };*/
-        width: calc(100% - 4px);
+        width: calc(100% - 6px);
       }
-
 
       #sendBtnContainer {
         display: flex;
         justify-content: center;
         margin-top: 32px;
       }
-
 
       #sendBtn {
         --paper-button: {
@@ -156,7 +167,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
         <template is="dom-if" if="[[outDates]]">
-          <paper-card heading="To">
+          <paper-card id="recipients" class="hiddenBeforeAnimation" heading="To">
             <iron-icon class="card-header-icon" icon="my-icons:face"></iron-icon>
             <template is="dom-repeat" items="[[selectedContacts]]">
               <paper-icon-item class="items">
@@ -173,7 +184,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           </paper-card>
 
-          <paper-card heading="Away">
+          <paper-card id="dates" class="hiddenBeforeAnimation" heading="Away">
             <iron-icon class="card-header-icon" icon="my-icons:event"></iron-icon>
             <paper-icon-item>
               <iron-icon icon="my-icons:hourglass-empty" item-icon>
@@ -193,7 +204,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </paper-icon-item>
           </paper-card>
 
-          <paper-card heading="Message">
+          <paper-card id="message" class="hiddenBeforeAnimation" heading="Message">
             <iron-icon class="card-header-icon" icon="my-icons:create"></iron-icon>
             <div class="card-content">
               <iron-autogrow-textarea autocomplete="on" 
@@ -204,7 +215,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </paper-card>
 
 
-          <div id="sendBtnContainer">
+          <div id="sendBtnContainer" class="hiddenBeforeAnimation">
+
+
+            <paper-button id="authorizeButton">authorize gmail</paper-button>
+
+            <paper-button id="signoutButton">sign out gmail</paper-button>
+
+
+
+
             <paper-button id="sendBtn" on-tap="_sendButtonTapped">
               <iron-icon icon="my-icons:send"></iron-icon>
               send notification
@@ -225,11 +245,58 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'verify-contacts',
 
       behaviors: [
+        Polymer.NeonAnimationRunnerBehavior,
         window.BCDEV.Behaviors.Utilities,
         window.BCDEV.Behaviors.FullscreenBehavior
       ],
 
       properties: {
+
+        animationConfig: {
+          value() {
+            return {
+              'entry': [{
+                name: 'slide-from-right-animation',
+                node: this,
+                timing: {duration: 200, easing: 'ease-out'}
+              }, {
+                name: 'fade-in-animation',
+                node: this,
+                timing: {duration: 150, delay: 50, easing: 'ease-in'}
+              }],
+              'startCascade': [{
+                name: 'cascaded-animation',
+                animation: 'slide-from-right-animation',
+                // nodes set imperitively in _verifyContactsAnimationDone()
+                timing: {duration: 500, easing: 'ease-out'}
+              }, {
+                name: 'cascaded-animation',
+                animation: 'fade-in-animation',
+                // nodes set imperitively in _verifyContactsAnimationDone()
+                timing: {duration: 300, delay: 250, easing: 'ease-out'}
+              }],
+              'back': [{
+                name: 'slide-left-animation',
+                node: this,
+                timing: {duration: 200, easing: 'ease-in'}
+              },{
+                name: 'fade-out-animation',
+                node: this,
+                timing: {duration: 100, delay: 100, easing: 'ease-in'}
+              }],
+              'exit': [{
+                name: 'slide-right-animation',
+                node: this,
+                timing: {duration: 200, easing: 'ease-in'}
+              },{
+                name: 'fade-out-animation',
+                node: this,
+                timing: {duration: 100, delay: 100, easing: 'ease-in'}
+              }]
+            };
+          }
+        },
+
         selectedContacts: {
           type: Array,
           observer: '_selectedContactsChanged',
@@ -238,12 +305,106 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         outDates: Object
       },
 
+
+      listeners: {
+        'neon-animation-finish': '_verifyContactsAnimationDone'
+      },
+
+
+      attached() {
+        this.importHref(this.resolveUrl('gmail-api.html'), () => {
+          this.gapi = gapi;
+          this.gapi.load('client:auth2', this._initClient);
+        });
+      },
+      /**
+       *  Initializes the API client library and sets up sign-in state
+       *  listeners.
+       */
+      _initClient() {
+
+        console.log('_initClient');
+
+        // Client ID and API key from the Developer Console
+        const CLIENT_ID      = '648012012734-oc16um25g0vlgm08iccnqs4hgks356uf.apps.googleusercontent.com';
+        // Array of API discovery doc URLs for APIs used by the quickstart
+        const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest"];
+        // Authorization scopes required by the API; multiple scopes can be
+        // included, separated by spaces.
+        const SCOPES         = 'https://www.googleapis.com/auth/gmail.readonly';
+
+        this.gapi.client.init({
+          discoveryDocs: DISCOVERY_DOCS,
+          clientId:      CLIENT_ID,
+          scope:         SCOPES
+        }).then(() => {
+          // Listen for sign-in state changes.
+          gapi.auth2.getAuthInstance().isSignedIn.listen(this.updateSigninStatus);
+
+          // Handle the initial sign-in state.
+          this.updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+        });
+      },
+
+
+      /**
+       *  Called when the signed in status changes, to update the UI
+       *  appropriately. After a sign-in, the API is called.
+       */
+      updateSigninStatus(isSignedIn) {
+        if (isSignedIn) {
+          this.$.authorizeButton.style.display = 'none';
+          this.$.signoutButton.style.display   = 'block';
+          this._listLabels();
+        } else {
+          this.$.authorizeButton.style.display = 'block';
+          this.$.signoutButton.style.display   = 'none';
+        }
+      },
+
+      /**
+       * Print all Labels in the authorized user's inbox. If no labels
+       * are found an appropriate message is printed.
+       */
+      _listLabels() {
+        this.gapi.client.gmail.users.labels.list({
+          'userId': 'me'
+        }).then(function(response) {
+          var labels = response.result.labels;
+          this._appendPre('Labels:');
+
+          if (labels && labels.length > 0) {
+            for (i = 0; i < labels.length; i++) {
+              var label = labels[i];
+              this._appendPre(label.name)
+            }
+          } else {
+            this._appendPre('No Labels found.');
+          }
+        });
+      },
+
+
+      /**
+       * Append a pre element to the body containing the given message
+       * as its text node. Used to display the results of the API call.
+       *
+       * @param {string} message Text to be placed in pre element.
+       */
+      _appendPre(message) {
+
+        console.log('append pre: ', message);
+        // var pre = document.getElementById('content');
+        // var textContent = document.createTextNode(message + '\n');
+        // pre.appendChild(textContent);
+      },
+
       // cut out the year and seconds
       _computeFormatedDate: date => date.toString().split(' ').slice(0, 3).join(' '), 
 
 
       _selectedContactsChanged(array) {
-        console.log('contacts array: ', array);
+        // console.log('contacts array: ', array);
       },
 
 
@@ -261,19 +422,90 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
 
+      _reset() {
+        const nodesToReset = Polymer.dom(this.root).querySelectorAll('.showForAnimation');
+
+        nodesToReset.forEach(node => {
+          Polymer.dom(node).classList.remove('showForAnimation');
+        });
+
+        this.selectedContacts = undefined;
+      },
+
+
+
+      _verifyContactsAnimationDone(_, animationType) {
+        if (animationType && typeof animationType === 'object') {
+          if (animationType.type === 'entry') {
+
+            const nodes = [
+              this.$$('#recipients'),
+              this.$$('#dates'),
+              this.$$('#message'),
+              this.$$('#sendBtnContainer')
+            ];
+
+            this.animationConfig.startCascade[0].nodes = nodes;
+            this.animationConfig.startCascade[1].nodes = nodes;
+
+            const play = () => {
+              nodes.forEach(node => {
+                Polymer.dom(node).classList.add('showForAnimation');
+              });
+
+              this.cancelAnimation();
+              this.playAnimation('startCascade', 'startCascade');
+            };
+
+            this.async(() => {
+              this.schedule(play);
+            }, 10);
+          }
+        } else if (typeof animationType === 'string' && animationType === 'back') {
+          this.reset();
+          this._reset();
+        }
+      },
+
+
       _backButtonTapped() {
-        this.style.display = 'none';
+        this.cancelAnimation();
+        this.playAnimation('back', 'back');
       },
 
 
       _closeButtonTapped() {
-        this.selectedContacts = undefined;
-        this.style.display    = 'none';
+        const close = () => {
+          this.close(this._reset.bind(this));
+        };
+
+        this.fire('verify-contacts-close-button-tapped');
+        this.schedule(close);
+      },
+
+
+      // _sendButtonTapped() {
+      //   console.log('send button tapped: ', this.message);
+      // }
+
+
+      /**
+       *  Sign in the user upon button click.
+       */
+      _handleAuthClick() {
+        this.auth2.getAuthInstance().signIn();
+      },
+
+      /**
+       *  Sign out the user upon button click.
+       */
+      _handleSignoutClick() {
+        this.gapi.auth2.getAuthInstance().signOut();
       },
 
 
       _sendButtonTapped() {
-        console.log('send button tapped: ', this.message);
+        console.log('send button tapped: ', this.message);  
       }
 
     });

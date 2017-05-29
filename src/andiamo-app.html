@@ -143,16 +143,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
       observers: [
-        '_routePageChanged(routeData.page)',
+        '_routePageChanged(routeData.page)'
       ],
 
 
       listeners: {
-       'basic-list-selected-item' :        '_basicListItemEvent',
-       'out-of-office-open-overlay':       '_openOutDateOverlay',
-       'verify-contacts-overlay':          '_openVerifyContactsOverlay',
-       'contacts-button-tapped' :          '_selectedWorkAndItem',
-       'out-date-mediator-dates-selected': '_outDatesSelected',
+       'basic-list-selected-item' :           '_basicListItemEvent',
+       'out-of-office-open-overlay':          '_openOutDateOverlay',
+       'verify-contacts-overlay':             '_openVerifyContactsOverlay',
+       'verify-contacts-close-button-tapped': '_verifyContactsCloseAll',
+       'contacts-button-tapped' :             '_selectedWorkAndItem',
+       'out-date-mediator-dates-selected':    '_outDatesSelected',
       },
 
 
@@ -178,6 +179,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.selectedContacts = undefined;
         this.selectedContacts = event.detail.selectedContacts;
         this.$.verifyOverlay.open();
+      },
+
+
+      _verifyContactsCloseAll() {
+        this.$.outDateMediator.resetAll();
+        this.$.contacts.reset();
+        this.$.contacts.resetData();
       },
       
       
