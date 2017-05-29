@@ -9,8 +9,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../shared-styles.html">
-
+<link rel="import" href="../../bower_components/neon-animation/neon-animatable.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../../animations/home-view-animation.html">
 <dom-module id="home-view">
   <template>
     <style include="shared-styles">
@@ -18,19 +21,107 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
 
         padding: 10px;
+        height: 90vh;
+                background-color: var(--light-primary-color);
+      }
+
+      paper-card [image] {
+        width: 40%;
+        margin: 10px;
+      }
+
+        #card{
+        background-color: white;
+        padding: 6px;
+        width: 100%;
+        border-radius: 8px;
+      }
+      #iconContainer {
+        margin-top: 5%;
+      }
+
+      #outOfOfficeCard {
+        margin-left: 7.5%;
+      }
+
+      #workRequestCard{
+
+      }
+      #jobNamesCard {
+        margin-left: 30%;
       }
     </style>
 
-    <div class="card">
-      <h1>Home Page</h1>
-        <p>This will be home page maybe describs what app does </p>
+     <div id="page">
+    <paper-card id="card" image="../images/andiamoBuilders.png"></paper-card>
+
+            <paper-card id="iconContainer">
+      <paper-card id="outOfOfficeCard" image="../images/outOfOffice.jpg" on-tap="_outOfOfficeCardTapped"></paper-card>
+      <paper-card id="workRequestCard" image="../images/workRequest.png" on-tap="_workRequestCardTapped"></paper-card>
+      <paper-card id="jobNamesCard" image="../images/location.png" on-tap="_jobNamesCardTapped"></paper-card>
+    </paper-card>
     </div>
+
+
     
   </template>
 
   <script>
     Polymer({
       is: 'home-view',
+        
+        behaviors: [
+        Polymer.NeonAnimatableBehavior,
+        Polymer.NeonAnimationRunnerBehavior,
+        ],
+              
+           listeners: {
+          'neon-animation-finish':  '_animationComplete'
+        },
+              properties: {
+           animationConfig: {
+            value() {
+              return {
+                'exit': [{
+                  name: 'home-view-animation',
+                  node: this.$.iconContainer,
+                  timing: {duration: 500, delay: 50, easing: 'ease-in'}
+               }],
+              };
+            }
+          },
+        },
+
+
+        _outOfOfficeCardTapped(){
+            this.cancelAnimation();
+            this.playAnimation('exit', 'outOffice');
+        },
+
+
+        _workRequestCardTapped(){
+          this.cancelAnimation();
+          this.playAnimation('exit', 'workRequest') ;
+        },
+
+
+        _jobNamesCardTapped(){
+          this.cancelAnimation();
+          this.playAnimation('exit', 'jobNames') ;
+        },
+
+
+        _animationComplete(_, animationType){
+          if (animationType === 'outOffice'){
+            this.fire('home-open-out-of-office');
+          } else if (animationType === 'workRequest'){
+            this.fire('home-open-work-request');
+          } else if (animationType === 'jobNames'){
+            this.fire('home-open-job-names');
+          }
+        },
+
+
     });
   </script>
 </dom-module>
