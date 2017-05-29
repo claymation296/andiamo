@@ -9,7 +9,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../../bower_components/neon-animation/neon-animatable.html">
 <link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
 <link rel="import" href="../../../bower_components/neon-animation/animations/fade-in-animation.html">
 <link rel="import" href="../../../bower_components/neon-animation/animations/fade-out-animation.html">
@@ -337,13 +336,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       init() {
         // corrects a styling bug in paper-date-picker when
         // setting from display: none;
+        this.ignoreDateChange = false;
         this.open();
         this.$.datePicker.fire('iron-resize');
       },
 
       
       _dateChanged(date, oldDate) {
-        if (!oldDate) { return; }
+        if (this.ignoreDateChange || !oldDate) { return; }
         this.$.timePicker.enter(date);
       },
 
@@ -355,7 +355,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _backButtonTapped() {
       	const playBackAnimation = () => {
-
           if (this.isDisplayed(this.$.timePicker)) {
             this.$.fab.exit();
             this.$.timePicker.exit();
@@ -383,8 +382,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.onTap = this.fire.bind(this, 'date-time-selector-fab-tapped', {date: this.date, time: this.time});
       },
 
+
       resetAll() {
-        this.reset(this._reset());
+        // dont allow data changes to open time picker here
+        this.ignoreDateChange = true;
+        this.date = new Date();
+        this.time = undefined;
+        this.reset();
+        this._reset();
       }
 
     });
