@@ -149,6 +149,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       
 
       <div class="content">
+
+
+        <paper-button id="authorizeButton" on-tap="_handleAuthClick">authorize gmail</paper-button>
+
+        <paper-button id="signoutButton" on-tap="_handleSignoutClick">sign out gmail</paper-button>
+
+
         <template is="dom-if" if="[[selectedWork]]">
           <span>[[selectedWork]] crew will be at [[selectedLocation]] on [[_formatSelectedDate(selectedDate.date)]] at [[selectedDate.time]]</span>
           <p>Sending email to :[[_formatSelectedContacts(selectedContacts)]]</p>
@@ -209,8 +216,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </paper-card>
 
           <div id="sendBtnContainer" class="hiddenBeforeAnimation">
-            <paper-button id="authorizeButton">authorize gmail</paper-button>
-            <paper-button id="signoutButton">sign out gmail</paper-button>
+
             <paper-button id="sendBtn" on-tap="_sendButtonTapped">
               <iron-icon icon="my-icons:send"></iron-icon>
               send notification
@@ -299,7 +305,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       attached() {
         this.importHref(this.resolveUrl('gmail-api.html'), () => {
           this.gapi = gapi;
-          this.gapi.load('client:auth2', this._initClient);
+          this.gapi.load('client:auth2', this._initClient.bind(this));
         });
       },
       /**
@@ -307,11 +313,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        *  listeners.
        */
       _initClient() {
-
-        console.log('_initClient');
-
         // Client ID and API key from the Developer Console
-        const CLIENT_ID      = '648012012734-oc16um25g0vlgm08iccnqs4hgks356uf.apps.googleusercontent.com';
+        const CLIENT_ID      = '975582954774-2mc0e9b4d4fsurjvlmrbuiq2bc0h5tdp.apps.googleusercontent.com';
         // Array of API discovery doc URLs for APIs used by the quickstart
         const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest"];
         // Authorization scopes required by the API; multiple scopes can be
@@ -324,10 +327,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           scope:         SCOPES
         }).then(() => {
           // Listen for sign-in state changes.
-          gapi.auth2.getAuthInstance().isSignedIn.listen(this.updateSigninStatus);
+          this.gapi.auth2.getAuthInstance().isSignedIn.listen(this.updateSigninStatus.bind(this));
 
           // Handle the initial sign-in state.
-          this.updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+          this.updateSigninStatus(this.gapi.auth2.getAuthInstance().isSignedIn.get());
         });
       },
 
@@ -354,14 +357,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _listLabels() {
         this.gapi.client.gmail.users.labels.list({
           'userId': 'me'
-        }).then(function(response) {
+        }).then(response => {
           var labels = response.result.labels;
           this._appendPre('Labels:');
 
           if (labels && labels.length > 0) {
             for (i = 0; i < labels.length; i++) {
               var label = labels[i];
-              this._appendPre(label.name)
+              this._appendPre(label.name);
             }
           } else {
             this._appendPre('No Labels found.');
@@ -478,7 +481,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        *  Sign in the user upon button click.
        */
       _handleAuthClick() {
-        this.auth2.getAuthInstance().signIn();
+        this.gapi.auth2.getAuthInstance().signIn();
       },
 
       /**
