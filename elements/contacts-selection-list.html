@@ -1,5 +1,4 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../src/shared-styles.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
@@ -8,23 +7,14 @@
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="../bower_components/paper-styles/color.html">
-<link rel="import" href="../bower_components/paper-styles/typography.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-badge/paper-badge.html" />
-<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../behaviors/utilities.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animatable.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animation-runner-behavior.html">
 <link rel="import" href="../bower_components/neon-animation/animations/fade-in-animation.html">
 <link rel="import" href="../bower_components/neon-animation/animations/fade-out-animation.html">
-<link rel="import" href="../bower_components/neon-animation/animations/slide-left-animation.html">
-<link rel="import" href="../bower_components/neon-animation/animations/slide-up-animation.html">
-<link rel="import" href="../bower_components/neon-animation/animations/slide-from-top-animation.html">
-<link rel="import" href="../bower_components/neon-animation/animations/slide-from-bottom-animation.html">
-<link rel="import" href="../bower_components/neon-animation/animations/transform-animation.html">
 <link rel="import" href="../bower_components/neon-animation/animations/cascaded-animation.html">
 <link rel="import" href="../animations/bouncing-animation.html">
 
@@ -32,223 +22,225 @@
     <template>
         <style>
             :host {
-                display: block;
-                @apply(--paper-font-common-base);
-                font-family: sans-serif;
+              display: block;
+              @apply(--paper-font-common-base);
+              font-family: sans-serif;
             }
             
             .content {
-                @apply(--layout-vertical);
-                height: 100%;
+              @apply(--layout-vertical);
+              height: 100%;
             }
 
             .white-toolbar {
-                background: white;
-                color: #333;
+              background: white;
+              color: #333;
             }
 
             .main-toolbar {
-                background: var(--default-primary-color);
-                color: white;
+              background: var(--default-primary-color);
+              color: white;
             }
 
             app-toolbar {
-                box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
-                font-size: 18px;
+              box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+              font-size: 18px;
             }
 
             app-drawer {
-                text-align: left;
-                border-left: 1px solid #ccc;
+              text-align: left;
+              border-left: 1px solid #ccc;
             }
 
             app-toolbar paper-icon-button {
-                --paper-icon-button-ink-color: white;
+              --paper-icon-button-ink-color: white;
             }
 
             paper-badge {
-                margin-top: 5px;
+              margin-top: 5px;
              
             }
 
             paper-badge[label="0"] {
-                opacity: 0;
+              opacity: 0;
             }
 
             @media (min-width: 640px) {
-                paper-badge {
-                    display: none;
-                }
+              paper-badge {
+                  display: none;
+              }
             }
 
             #itemsList,
             #selectedItemsList {
-                @apply(--layout-flex);
+              @apply(--layout-flex);
             }
 
             .item {
-                @apply(--layout-horizontal);
-                cursor: pointer;
-                padding: 16px 22px;
-                border-bottom: 1px solid #DDD;
+              @apply(--layout-horizontal);
+              cursor: pointer;
+              padding: 16px 22px;
+              border-bottom: 1px solid #DDD;
             }
 
             .item:focus,
             .item.selected:focus {
-                outline: 0;
-                background-color: #e5eae1;
+              outline: 0;
+              background-color: #e5eae1;
             }
 
             .item.selected .star {
-                color: var(--accent-color);
+              color: var(--accent-color);
             }
 
             .avatar {
-                height: 50px;
-                width: 50px;
-                border-radius: 20px;
-                box-sizing: border-box;
-                background-color: #ddd;
+              height: 50px;
+              width: 50px;
+              border-radius: 20px;
+              box-sizing: border-box;
+              background-color: #ddd;
             }
 
             .pad {
-                @apply(--layout-flex);
-                @apply(--layout-vertical);
-                padding: 0 16px;
+              @apply(--layout-flex);
+              @apply(--layout-vertical);
+              padding: 0 16px;
             }
 
             .primary {
-                font-size: 16px;
+              font-size: 16px;
             }
 
             .secondary {
-                font-size: 12px;
+              font-size: 12px;
             }
 
             .dim {
-                color: gray;
+              color: gray;
             }
 
             .star {
-                width: 24px;
-                height: 24px;
+              width: 24px;
+              height: 24px;
             }
 
             paper-item {
-                white-space: nowrap;
-                cursor: pointer;
-                position: relative;
+              white-space: nowrap;
+              cursor: pointer;
+              position: relative;
             }
 
             paper-item:hover::after {
-                content: "－";
-                width: 16px;
-                height: 16px;
-                display: block;
-                border-radius: 50% 50%;
-                background-color: var(--google-red-300);
-                margin-left: 10px;
-                line-height: 16px;
-                text-align: center;
-                color: white;
-                font-weight: bold;
-                text-decoration: none;
-                position: absolute;
-                right: 15px;
-                top: calc(50% - 8px);
+              content: "－";
+              width: 16px;
+              height: 16px;
+              display: block;
+              border-radius: 50% 50%;
+              background-color: var(--google-red-300);
+              margin-left: 10px;
+              line-height: 16px;
+              text-align: center;
+              color: white;
+              font-weight: bold;
+              text-decoration: none;
+              position: absolute;
+              right: 15px;
+              top: calc(50% - 8px);
             }
 
             .no-selection {
-                color: var(--accent-color);
-                margin-left: 10px;
-                line-height: 50px;
+              color: var(--accent-color);
+              margin-left: 10px;
+              line-height: 50px;
             }
 
             iron-list {
-                @apply(--layout-flex);
+              @apply(--layout-flex);
             }
 
-            .blue {
-                --paper-badge-background: var(--accent-color);
+            .starCount {
+              --paper-badge-background: var(--accent-color);
             }
 
             paper-fab {
-                --paper-fab-background: var(--accent-color);
-                --paper-fab-keyboard-focus-background: var(--accent-color);
-                position: fixed;
-                bottom: 16px;
-                right: 16px;
-                display: none;
+              --paper-fab-background: var(--accent-color);
+              --paper-fab-keyboard-focus-background: var(--accent-color);
+              position: fixed;
+              bottom: 16px;
+              right: 16px;
+              display: none;
              }
 
             paper-icon-button.back {
-                --paper-icon-button-ink-color: var(--paper-orange-500);
-                background-color: var(--accent-color);
-                color: white;
-                border-radius: 3px;
-                padding: 5px;
+              --paper-icon-button-ink-color: var(--paper-orange-500);
+              background-color: var(--accent-color);
+              color: white;
+              border-radius: 3px;
+              padding: 5px;
             }
 
-
         </style>
+ 
         <!--BEN: url contacts lets you pass in contacts.json-->
         <iron-ajax url="{{contacts}}" last-response="{{data}}" auto></iron-ajax>
-        <app-drawer-layout fullbleed>
+          <app-drawer-layout fullbleed>
             <div class="content">
-                <app-toolbar class="main-toolbar">
-                    <paper-icon-button  id="backButton"
-                                        class="back"
-                                        icon="my-icons:arrow-back"
-                                        on-tap="_backButtonTapped">
-                    </paper-icon-button>
-                    <div main-title>Select Contacts</div>
-                    <div>
-                        <paper-icon-button icon="star" alt="Starred" drawer-toggle></paper-icon-button>
-                        <paper-badge class="blue" label$="[[selectedContacts.length]]"></paper-badge>
-                    </div>
-                </app-toolbar>
-                <!-- Main List for the items -->
-                <iron-list id="itemsList" items="[[data]]" selected-items="{{selectedContacts}}" selection-enabled multi-selection>
-                    <template>
-                        <div>
-                            <div tabindex$="[[tabIndex]]" aria-label$="Select/Deselect [[item.name]]" class$="sliders [[_computedClass(selected)]]">
-                                <img class="avatar" src="[[item.image]]">
-                                <div class="pad">
-                                    <div class="primary" >
-                                        [[item.name]]
-                                    </div>
-                                    <div class="secondary dim">[[item.shortText]]</div>
-                                </div>
-                                <iron-icon icon$="[[iconForItem(selected)]]" class="star"></iron-icon>
-                            </div>
-                            <div class="border"></div>
-                        </div>
-                    </template>
-                </iron-list>
-            </div>
-            <app-drawer align="right">
-                <div class="content">
-                    <app-toolbar class="white-toolbar">
-                        <div main-title>[[_getFormattedCount(selectedContacts.length)]] Selected contacts</div>
-                    </app-toolbar>
-                    <template is="dom-if" if="[[!selectedContacts.length]]">
-                        <div class="no-selection">Select a contact</div>
-                    </template>
-                    <!-- List for the selected items -->
-                    <iron-list id="selectedContactsList" items="[[selectedContacts]]" hidden$="[[!selectedContacts.length]]">
-                        <template>
-                            <paper-item tabindex$="[[tabIndex]]" on-tap="_unselect" aria-label$="Deselect [[item.name]]">[[item.name]]</paper-item>
-                        </template>
-                    </iron-list>
-                </div>
-            </app-drawer>
-        </app-drawer-layout>
+              <app-toolbar class="main-toolbar">
+                <paper-icon-button  id="backButton"
+                                    class="back"
+                                    icon="my-icons:arrow-back"
+                                    on-tap="_backButtonTapped">
+                </paper-icon-button>
+                <div main-title>Select Contacts</div>
+                  <div>
+                    <paper-icon-button icon="star" alt="Starred" drawer-toggle></paper-icon-button>
+                    <paper-badge class="starCount" label$="[[selectedContacts.length]]"></paper-badge>
+                  </div>
+              </app-toolbar>
 
-        <paper-fab  id="nextButton"
-           class="hiddenBeforeAnimation"
-            icon="my-icons:arrow-forward" 
-            on-tap="_nextButtonTapped">
-        </paper-fab>
+                  <!-- Main List for the items -->
+              <iron-list id="itemsList" items="[[data]]" selected-items="{{selectedContacts}}" selection-enabled multi-selection>
+                <template>
+                  <div>
+                    <div tabindex$="[[tabIndex]]" aria-label$="Select/Deselect [[item.name]]" class$="sliders [[_computedClass(selected)]]">
+                      <img class="avatar" src="[[item.image]]">
+                      <div class="pad">
+                        <div class="primary" >[[item.name]]</div>
+                        <div class="secondary dim">[[item.shortText]]</div>
+                      </div>
+                      <iron-icon icon$="[[iconForItem(selected)]]" class="star"></iron-icon>
+                    </div>
+                    <div class="border"></div>
+                  </div>
+                </template>
+              </iron-list>
+            </div>
+
+          <!-- Selected contacts viewed on right -->
+            <app-drawer align="right">
+              <div class="content">
+                <app-toolbar class="white-toolbar">
+                  <div main-title>[[_getFormattedCount(selectedContacts.length)]] Selected contacts</div>
+                </app-toolbar>
+                <template is="dom-if" if="[[!selectedContacts.length]]">
+                  <div class="no-selection">Select a contact</div>
+                </template>
+                <!-- List for the selected items -->
+                <iron-list id="selectedContactsList" items="[[selectedContacts]]" hidden$="[[!selectedContacts.length]]">
+                  <template>
+                    <paper-item tabindex$="[[tabIndex]]" on-tap="_unselect" aria-label$="Deselect [[item.name]]">[[item.name]]</paper-item>
+                  </template>
+                </iron-list>
+              </div>
+            </app-drawer>
+          </app-drawer-layout>
+
+          <!-- Fab that animates when a selection is made -->
+          <paper-fab  id="nextButton"
+                      class="hiddenBeforeAnimation"
+                      icon="my-icons:arrow-forward" 
+                      on-tap="_nextButtonTapped">
+          </paper-fab>
 
     </template>
 

@@ -17,7 +17,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../shared-styles.html">
 <link rel="import" href="../../elements/contacts-selection-list.html" />
-<link rel="import" href="../../elements/basic-list.html" />
 <link rel="import" href="../../elements/dropdown-list-array.html" />
 <link rel="import" href="../../behaviors/on-tap-behavior.html"/>
 <link rel="import" href="../../behaviors/utilities.html"/>
@@ -37,13 +36,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         width: 100%;
         padding-left: 5px;
         margin-top: 6px;
-
       }
 
       paper-dropdown-menu {
         width: 100%;
       }
-
 
       paper-button{
         background-color: white;
@@ -54,11 +51,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-top: 10px;
       }
 
-      .selected {
-        --paper-card-background-color: #fafff2;
-      }
-
-            #card{
+      #card{
         background-color: white;
         padding: 6px;
         width: 100%;
@@ -73,27 +66,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <paper-card id="card" image="../images/andiamoBuilders.png"></paper-card>
 
-<paper-card id="workCard" class="options">
-    <paper-dropdown-menu label="Type of Work:">
-      <paper-listbox  class="dropdown-content"  selected="{{selectedWork}}" attr-for-selected="value" >
-        <paper-item value="Electrical">Electrical</paper-item>
-        <paper-item value="Framing">Framing</paper-item>
-        <paper-item value="Landscape">Landscape</paper-item>
-        <paper-item value="Roofing">Roofing</paper-item>
-      </paper-listbox>
-    </paper-dropdown-menu>
-</paper-card>
+    <paper-card id="workCard" class="options">
+        <paper-dropdown-menu label="Type of Work:">
+          <paper-listbox  class="dropdown-content"  selected="{{selectedWork}}" attr-for-selected="value" >
+            <paper-item value="Electrical">Electrical</paper-item>
+            <paper-item value="Framing">Framing</paper-item>
+            <paper-item value="Landscape">Landscape</paper-item>
+            <paper-item value="Roofing">Roofing</paper-item>
+          </paper-listbox>
+        </paper-dropdown-menu>
+    </paper-card>
 
-<paper-card class="options">
-    <dropdown-list-array contacts="../data/locations.json"></dropdown-list-array>
-</paper-card>
+    <paper-card class="options">
+        <dropdown-list-array contacts="../data/locations.json"></dropdown-list-array>
+    </paper-card>
 
     <start-date id="pickStartDate"></start-date>
-        <paper-button raised id="dateButton" on-tap="_chooseDateButtonTapped">[[_chooseDate(datePicked)]]</paper-button>
+    <paper-button raised id="dateButton" on-tap="_chooseDateButtonTapped">[[_chooseDate(datePicked)]]</paper-button>
     <paper-button raised id="contactsButton" on-tap="_contactsButtonTapped">Pick Contacts</paper-button>
-
-
-
 
   </template>
 
@@ -142,8 +132,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               window.BCDEV.contactsOverlay.open(callback);
           };
           this.onTap = open;
-        }
+      
         },
+
 
         _chooseDate(datePicked) {
           if(datePicked) {
@@ -161,12 +152,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
            this.$.dateButton.style.fontSize = "small";
         },
 
+
         _selectedDate(event){
         	this.selectedDate = event.detail.start;
         	this.$.pickStartDate.resetAll();
           this.datePicked = event.detail.start.date.toLocaleDateString() + ' ' + event.detail.start.time;
           date => date.toLocaleDateString();
         },
+
 
         _selectedWorkChanged: function(selected){
           if (!selected) {

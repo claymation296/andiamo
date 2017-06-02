@@ -15,107 +15,72 @@
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../src/shared-styles.html">
 
-<dom-module id="basic-list" >
+<dom-module id="job-names-list" >
     <template>
         <style>
             :host {
-                display: block;
-                @apply(--paper-font-common-base);
-                font-family: sans-serif;
+              display: block;
+              @apply(--paper-font-common-base);
+              font-family: sans-serif;
             }
 
             .content {
-                @apply(--layout-vertical);
-                height: 100%;
-            }
-
-            .white-toolbar {
-                background: white;
-                color: #333;
+              @apply(--layout-vertical);
+              height: 100%;
             }
 
             #search{
               width: 120px;
-          padding-bottom: 10px;
+              padding-bottom: 10px;
             }
 
-            .pink-toolbar {
-                background: var(--light-primary-color);
-                color: white;
-                height: 50px;
-            }
-
-            app-toolbar {
-                box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
-                font-size: 18px;
-            }
-
-            app-drawer {
-                text-align: left;
-                border-left: 1px solid #ccc;
-            }
-
-            app-toolbar paper-icon-button {
-                --paper-icon-button-ink-color: white;
-            }
-
-            paper-badge {
-                margin-top: 5px;
-            }
-
-            paper-badge[label="0"] {
-                opacity: 0;
-            }
-
-            @media (min-width: 640px) {
-              paper-badge {
-                display: none;
-              }
+            .main-toolbar {
+              background: var(--light-primary-color);
+              color: white;
+              height: 50px;
+              box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+              font-size: 18px;
             }
 
             #itemsList,
             #selectedItemsList {
-                @apply(--layout-flex);
+              @apply(--layout-flex);
             }
 
             .item {
-                @apply(--layout-horizontal);
-                cursor: pointer;
-                padding: 16px 22px;
-                background-color: white;
-                border-bottom: 1px solid #D7CCC8;
+              @apply(--layout-horizontal);
+              cursor: pointer;
+              padding: 16px 22px;
+              background-color: white;
+              border-bottom: 1px solid #D7CCC8;
             }
 
             .avatar {
-                height: 50px;
-                width: 50px;
-                border-radius: 20px;
-                box-sizing: border-box;
-                background-color: #ddd;
+              height: 50px;
+              width: 50px;
+              border-radius: 20px;
+              box-sizing: border-box;
+              background-color: #ddd;
             }
 
             .pad {
-                @apply(--layout-flex);
-                @apply(--layout-vertical);
-                padding: 0 16px;
+              @apply(--layout-flex);
+              @apply(--layout-vertical);
+              padding: 0 16px;
             }
 
             .primary {
-                font-size: 16px;
+              font-size: 16px;
             }
 
             .secondary {
-                font-size: 12px;
-            }
-
-            .dim {
-                color: gray;
+              font-size: 12px;
             }
 
             paper-item {
-                white-space: nowrap;
-                cursor: pointer;
-                position: relative;
+              white-space: nowrap;
+              cursor: pointer;
+              position: relative;
             }
 
     
@@ -136,13 +101,6 @@
               right: 15px;
               top: calc(50% - 8px);
             }
-
-            .no-selection {
-                color: #999;
-                margin-left: 10px;
-                line-height: 50px;
-            }
-
    
             iron-list {
                 @apply(--layout-flex);
@@ -153,41 +111,38 @@
         <iron-ajax id="jobData" url="{{contacts}}" on-response="_ajaxReady" auto></iron-ajax>
           <app-drawer-layout  fullbleed>
             <div class="content">
-                <app-toolbar  class="pink-toolbar">
-                    <div main-title>Job Names</div>
-                      <paper-dropdown-menu id="search" label="Filter:">
-                        <paper-listbox class="dropdown-content" selected="{{selectedWork}}" attr-for-selected="value" >
-                          <paper-item value="Construction">Construction</paper-item>
-                          <paper-item value="SiteWork">Site Work</paper-item>
-                          <paper-item value="Landscape">Landscape</paper-item>
-                          <paper-item value="All">All</paper-item>
-                        </paper-listbox>
-                      </paper-dropdown-menu>
+              <app-toolbar  class="main-toolbar">
+                <div main-title>Job Names</div>
+                  <paper-dropdown-menu id="search" label="Filter:">
+                    <paper-listbox class="dropdown-content" selected="{{selectedWork}}" attr-for-selected="value" >
+                      <paper-item value="Construction">Construction</paper-item>
+                      <paper-item value="SiteWork">Site Work</paper-item>
+                      <paper-item value="Landscape">Landscape</paper-item>
+                      <paper-item value="All">All</paper-item>
+                    </paper-listbox>
+                  </paper-dropdown-menu>
                 </app-toolbar>
+                
                 <!-- Main List for the items -->
                 <iron-list id="itemsList" items="[[data]]"  selected-item="{{selectedItem}}" selection-enabled>
-                    <template>
-                        <div>
-                            <div tabindex$="[[tabIndex]]" aria-label$="Select/Deselect [[item.name]]" class$="[[_computedClass(selected)]]">
-                                <img class="avatar" src="[[item.image]]">
-                                <div class="pad">
-                                    <div class="primary">
-                                        [[item.name]]
-                                    </div>
-                                    <div class="secondary dim">[[item.shortText]]</div>
-                                </div>
-                              </div>
-                            <div class="border"></div>
-                        </div>
-                    </template>
+                  <template>
+                    <div tabindex$="[[tabIndex]]" aria-label$="Select/Deselect [[item.name]]" class$="[[_computedClass(selected)]]">
+                      <img class="avatar" src="[[item.image]]">
+                        <div class="pad">
+                          <div class="primary">[[item.name]]</div>
+                          <div class="secondary dim">[[item.shortText]]</div>
+                      </div>
+                    </div>
+                    <div class="border"></div>
+                  </template>
                 </iron-list>
             </div>
-          </app-drawer-layout>>
+          </app-drawer-layout>
     </template>
 
     <script>
       Polymer({
-        is: 'basic-list',
+        is: 'job-names-list',
           
           properties: {
             selectedItem: {
@@ -201,6 +156,7 @@
             }
           },
 
+
           _computedClass: function(isSelected) {
             var classes = 'item';
             if (isSelected) {
@@ -209,14 +165,17 @@
             return classes;
           },
 
+
           _selectedItemChanged: function(selected){
             if (!selected) {return;} 
-            this.fire('basic-list-selected-item', {selected}); 
+            this.fire('job-names-list-selected-item', {selected}); 
           },
+
 
           _ajaxReady: function(event){
             this.data = this.$.jobData.lastResponse;
           },
+
 
           _selectedWorkChanged: function(selected){
            if (!selected) {return;} 
@@ -225,10 +184,9 @@
             } else {
               this.data = this.$.jobData.lastResponse.filter((jobType) => jobType.type === selected);
             }
-
           },
-        });
 
+        });
 
     </script>
 

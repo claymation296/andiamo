@@ -27,12 +27,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../../bower_components/neon-animation/animations/slide-left-animation.html">
 <link rel="import" href="../../../bower_components/neon-animation/animations/slide-right-animation.html">
 <link rel="import" href="../../../bower_components/neon-animation/animations/slide-from-top-animation.html">
-<link rel="import" href="../../../bower_components/neon-animation/animations/slide-from-right-animation.html">
 <link rel="import" href="../../../bower_components/neon-animation/animations/cascaded-animation.html">
-
-
-
-
 
 
 <dom-module id="verify-contacts">
@@ -134,7 +129,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
     <app-header-layout has-scrolling-region>
-
       <app-header condenses reveals>
         <app-toolbar id="toolbar">
           <paper-icon-button id="backButton"
@@ -221,8 +215,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </div>
           </paper-card>
 
-
           <div id="sendBtnContainer" class="hiddenBeforeAnimation">
+
             <paper-button id="sendBtn" on-tap="_sendButtonTapped">
               <iron-icon icon="my-icons:send"></iron-icon>
               send notification

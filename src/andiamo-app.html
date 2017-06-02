@@ -151,7 +151,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       listeners: {
 
-       'basic-list-selected-item' :        '_basicListItemEvent',
+       'job-names-list-selected-item' :        '_jobNamesListItemEvent',
        'home-open-out-of-office':          '_openOutDateOverlay',
        'out-of-office-open-overlay':       '_openOutDateOverlay',
        'home-open-work-request':          '_openWorkRequest',
@@ -176,8 +176,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.set('routeData.page',  'job-names');
       },
 
-      _basicListItemEvent(event) {
-        console.log('this.details: ', window.BCDEV.jobNameDetails.open);
+      _jobNamesListItemEvent(event) {
         this.selectedItem = event.detail.selected;
         window.BCDEV.jobNameDetails.open();
       }, 
