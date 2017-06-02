@@ -24,11 +24,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding: 16px;
         background-color: var(--light-primary-color);
       }
-
+      
       paper-button {
-        --paper-button: {
-          background-color: var(--accent-color);
-        };
+        background-color: var(--accent-color);
       }
 
       .centered {
@@ -44,30 +42,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       #header{
-            font-weight: bold;
-            font-size: 1.5em;
-            color: black;
+        font-weight: bold;
+        font-size: 1.5em;
+        color: black;
       }
+      
     </style>
  
- <paper-card id="card" image="../images/andiamoBuilders.png"></paper-card>
+    <paper-card id="card" image="../images/andiamoBuilders.png"></paper-card>
 
     <div class="card">
       <div id="header">Out of Office</div>
       <p>Start here to notify concerned parties when you will be out of your office.</p>
-
-
       <div class="centered">
-        <paper-button id="goButton" 
-                      on-tap="_goButtonTapped">
+        <paper-button id="goButton" on-tap="_goButtonTapped">
           <iron-icon icon="my-icons:add-alert"></iron-icon>
           New Notification                    
         </paper-button>
       </div>
-
     </div>
-
-    
 
   </template>
 

@@ -19,10 +19,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style include="shared-styles">
       :host {
         display: block;
-
         padding: 10px;
         height: 90vh;
-                background-color: var(--light-primary-color);
+        background-color: var(--light-primary-color);
       }
 
       paper-card [image] {
@@ -30,12 +29,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin: 10px;
       }
 
-        #card{
+      #card{
         background-color: white;
         padding: 6px;
         width: 100%;
         border-radius: 8px;
       }
+  
       #iconContainer {
         margin-top: 5%;
       }
@@ -44,26 +44,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-left: 7.5%;
       }
 
-      #workRequestCard{
-
-      }
       #jobNamesCard {
         margin-left: 30%;
       }
+
     </style>
 
-     <div id="page">
     <paper-card id="card" image="../images/andiamoBuilders.png"></paper-card>
-
-            <paper-card id="iconContainer">
+    
+    <paper-card id="iconContainer">
       <paper-card id="outOfOfficeCard" image="../images/outOfOffice.jpg" on-tap="_outOfOfficeCardTapped"></paper-card>
       <paper-card id="workRequestCard" image="../images/workRequest.png" on-tap="_workRequestCardTapped"></paper-card>
       <paper-card id="jobNamesCard" image="../images/location.png" on-tap="_jobNamesCardTapped"></paper-card>
     </paper-card>
-    </div>
-
-
-    
+     
   </template>
 
   <script>
@@ -74,12 +68,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         Polymer.NeonAnimatableBehavior,
         Polymer.NeonAnimationRunnerBehavior,
         ],
-              
-           listeners: {
-          'neon-animation-finish':  '_animationComplete'
-        },
-              properties: {
-           animationConfig: {
+        
+        properties: {
+          animationConfig: {
             value() {
               return {
                 'exit': [{
@@ -92,6 +83,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           },
         },
 
+        listeners: {
+          'neon-animation-finish':  '_animationComplete'
+        },
+ 
 
         _outOfOfficeCardTapped(){
             this.cancelAnimation();

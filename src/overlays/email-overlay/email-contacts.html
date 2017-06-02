@@ -11,14 +11,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../../bower_components/neon-animation/neon-animatable.html">
 <link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
-<link rel="import" href="../../../bower_components/neon-animation/animations/fade-in-animation.html">
 <link rel="import" href="../../../bower_components/neon-animation/animations/fade-out-animation.html">
-<link rel="import" href="../../../bower_components/neon-animation/animations/slide-left-animation.html">
 <link rel="import" href="../../../bower_components/neon-animation/animations/slide-up-animation.html">
-<link rel="import" href="../../../bower_components/neon-animation/animations/slide-from-top-animation.html">
-<link rel="import" href="../../../bower_components/neon-animation/animations/slide-from-bottom-animation.html">
-<link rel="import" href="../../../bower_components/neon-animation/animations/transform-animation.html">
-<link rel="import" href="../../../bower_components/neon-animation/animations/cascaded-animation.html">
 <link rel="import" href="../../shared-styles.html">
 <link rel="import" href="../../../behaviors/on-tap-behavior.html">
 <link rel="import" href="../../../behaviors/fullscreen-behavior.html">
@@ -86,11 +80,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       resetData() {
         this.$.list.resetData();
       },
-
-
-      _selectionListEntryDone() {
-        this.fire('email-contacts-entry-done');
-      }
 
     });
 

@@ -15,7 +15,7 @@
         background-image: url("../../images/locationPics/backGround.jpg");
       }
 
-             .avatar {
+            .avatar {
                 width: 80%;
                 border-radius: 20px;
                 box-sizing: border-box;
@@ -27,23 +27,12 @@
                 max-width: 600px;
             }
 
-            .item {
-                @apply(--layout-horizontal);
-                cursor: pointer;
-                padding: 16px 22px;
-                border-bottom: 1px solid #DDD;
-            }
-            
             .secondary {
-                font-size: 12px;
+              font-size: 12px;
             }
-
-            .dim {
-                color: gray;
-            }
-
+     
             .jobUse {
-               font-size: 24px;
+              font-size: 24px;
             }
 
             .jobName {
@@ -60,23 +49,17 @@
 
     </style>
 
-    <!-- 
-      If deploying in a folder replace href="/" with the full path to your site.
-      Such as: href=="http://polymerelements.github.io/polymer-starter-kit"
-    -->
-
     <div on-tap="_closePage" >
       <img class="avatar" src="[[data.image]]"> 
       <div class="jobName">[[data.name]]</div>
       <div class="card">
-      <div class="secondary dim">[[data.location]]</div>
-      <div class="secondary dim">[[data.shortText]]</div>
+        <div class="secondary dim">[[data.location]]</div>
+        <div class="secondary dim">[[data.shortText]]</div>
       </div>
-    
-    <div class="card">
+      <div class="card">
       <div class="jobUse">Use job name for:</div>
-      [[data.longText]]
-    </div>
+        [[data.longText]]
+      </div>
     </div>
 
   </template>
@@ -86,19 +69,19 @@
       is: 'job-name-details',
 
 
-    behaviors: [window.BCDEV.Behaviors.FullscreenBehavior,
+      behaviors: [window.BCDEV.Behaviors.FullscreenBehavior,
                 window.BCDEV.Behaviors.OnTapBehavior,
-    ],
+      ],
 
-    _closePage(){
-      this.close();
-    },
+      properties: {
+        data: Object,
+      },
 
-    properties: {
-      data: Object,
-    },
 
-      
+      _closePage(){
+        this.close();
+      },
+     
     });
   </script>
 </dom-module>
