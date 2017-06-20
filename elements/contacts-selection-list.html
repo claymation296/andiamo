@@ -302,10 +302,25 @@
           this.$.itemsList.style.opacity = '0';
           this.$.itemsList.fire('iron-resize');
 
+          // const slide = () => {
+          //   const sliders = Polymer.dom(this.root).querySelectorAll('.sliders');
+          //   this.animationConfig.slidersAnimation[0].nodes = sliders;
+          //   this.animationConfig.slidersAnimation[1].nodes = sliders;
+          //   this.$.itemsList.style.opacity = '1';
+          //   this.cancelAnimation();
+          //   this.playAnimation('slidersAnimation', 'slidersAnimation');
+          // };
+
+          // this.schedule(slide);
+        },
+
+
+        enter() {
+          const sliders = Polymer.dom(this.root).querySelectorAll('.sliders');
+          this.animationConfig.slidersAnimation[0].nodes = sliders;
+          this.animationConfig.slidersAnimation[1].nodes = sliders;
+
           const slide = () => {
-            const sliders = Polymer.dom(this.root).querySelectorAll('.sliders');
-            this.animationConfig.slidersAnimation[0].nodes = sliders;
-            this.animationConfig.slidersAnimation[1].nodes = sliders;
             this.$.itemsList.style.opacity = '1';
             this.cancelAnimation();
             this.playAnimation('slidersAnimation', 'slidersAnimation');
