@@ -23,7 +23,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
-<link rel="import" href="overlays/job-name-details.html">
+<link rel="import" href="job-names/job-name-details.html">
 <link rel="import" href="overlays/email-overlay/email-contacts.html">
 <link rel="import" href="overlays/email-overlay/verify-contacts.html">
 <link rel="import" href="overlays/out-date-overlay/out-date-mediator.html">
@@ -35,6 +35,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     
       :host {
         display: block;
+        margin-bottom: -64px;
       }
 
       app-header {
@@ -85,9 +86,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </app-drawer>
 
       <!-- Main content -->
-      <app-header-layout has-scrolling-region>
+      <app-header-layout has-scrolling-region >
           <!--BEN: need to mess with to get pink header-->
-        <app-header condenses effects fixed="waterfall">
+        <app-header fixed >
           <app-toolbar>
             <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
             <div main-title>Andiamo</div>
@@ -178,7 +179,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _jobNamesListItemEvent(event) {
         this.selectedItem = event.detail.selected;
-        window.BCDEV.jobNameDetails.open();
+        window.BCDEV.jobNameDetails.open('entry');
+
       }, 
 
 

@@ -16,10 +16,10 @@
   },
   {
     "index": 2,
-    "name": "Dora Griffith",
+    "name": "11 High Crescent",
     "first": "Valentine",
     "last": "Meyer",
-    "image": "https://s3.amazonaws.com/uifaces/faces/twitter/iboldurev/73.jpg",
+    "image": "../../images/locationPics/11higCrescent.png",
     "expanded": false,
     "guid": "8c3bd9ad-e8d6-4ea4-85e6-d145295f3f91",
     "integer": 99,
