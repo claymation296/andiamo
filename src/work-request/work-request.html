@@ -114,25 +114,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       
 
         _contactsButtonTapped() {
-          if (!this.selectedWork){
+          if (!this.selectedWork) {
             this.message('Please input type of work');
-          }
-          else if (!this.selectedLocation){
+          } else if (!this.selectedLocation) {
             this.message('Please input location');
-          }
-          else if (!this.selectedDate){
+          } else if (!this.selectedDate) {
             this.message('Please input date and time');
-          }
-          else{
-          const open = () => {
-            const callback = () => {
-              window.BCDEV.contactsOverlay.init();
-              this.fire('contacts-button-tapped', {selectedWork: this.selectedWork,selectedLocation: this.selectedLocation, selectedDate: this.selectedDate }); 
-            };
+          } else {
+            const open = () => {
+              const callback = () => {
+                window.BCDEV.contactsOverlay.init();
+                this.fire('contacts-button-tapped', {
+                  selectedWork:     this.selectedWork,
+                  selectedLocation: this.selectedLocation, 
+                  selectedDate:     this.selectedDate
+                }); 
+              };
               window.BCDEV.contactsOverlay.open(callback);
-          };
-          this.onTap = open;
-        }
+            };
+            this.onTap = open;
+          }
         },
 
 
@@ -157,7 +158,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         	this.selectedDate = event.detail.start;
         	this.$.pickStartDate.resetAll();
           this.datePicked = event.detail.start.date.toLocaleDateString() + ' ' + event.detail.start.time;
-          date => date.toLocaleDateString();
+          // date => date.toLocaleDateString();
         },
 
 

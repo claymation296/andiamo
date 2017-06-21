@@ -151,7 +151,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
       listeners: {
-
        'job-names-list-selected-item' :        '_jobNamesListItemEvent',
        'home-open-out-of-office':          '_openOutDateOverlay',
        'out-of-office-open-overlay':       '_openOutDateOverlay',
@@ -208,15 +207,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.selectedWork = event.detail.selectedWork;
         this.selectedLocation = event.detail.selectedLocation;
         this.selectedDate = event.detail.selectedDate;
-      },
-     
-      
-      _outDatesSelected(event) {
-        const callback = () => {
-          window.BCDEV.contactsOverlay.init();
-        };
-        this.outDates = event.detail;
-        window.BCDEV.contactsOverlay.open(callback);
       },
 
 
