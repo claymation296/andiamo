@@ -121,14 +121,14 @@ _error(event){
 
 _latChanged(lat){
   if (!this.message){
-    console.log('warning')
+ 
     this.message(`My Lat:${lat}`)
   }
 },
 
 _geoResponse(){
 //   console.log('poop');
-this.warn('response');
+
 },
      _poop(){
 
@@ -143,10 +143,10 @@ const end = {
   latitude: this.data.latitude,
   longitude: this.data.longitude
 }
-this.message(`My Lat:${this.lat} Lng:${start.longitude}`)
+// this.message(`My Lat:${this.lat} Lng:${start.longitude}`)
 
 console.log(haversine(start, end))
-console.log(haversine(start, end, {unit: 'mile'}))
+this.message(haversine(start, end, {unit: 'mile'}))
 console.log(haversine(start, end, {unit: 'meter'}))
 console.log(haversine(start, end, {threshold: 1}))
 console.log(haversine(start, end, {threshold: 42, unit: 'mile'}))
