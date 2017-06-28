@@ -26,7 +26,9 @@
     "location":  "Location: Dominion", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
-    "type": "Dominion" 
+    "type": "Dominion",
+    "latitude": 29.9528791,
+    "longitude": -99.0576897
    }, 
    { 
     "index": 3, 
@@ -287,7 +289,6 @@
     "type": "Boerne",
     "latitude": 29.739626,
     "longitude":  -98.70382899999998
-
    },
    {
     "index": 31, 
