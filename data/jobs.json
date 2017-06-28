@@ -26,7 +26,9 @@
     "location":  "Location: Dominion", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
-    "type": "Dominion" 
+    "type": "Dominion",
+    "latitude": 29.9528791,
+    "longitude": -99.0576897
    }, 
    { 
     "index": 3, 
@@ -251,7 +253,9 @@
     "location":  "Location: Boerne", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
-    "type": "Boerne" 
+    "type": "Boerne", 
+    "latitude": 29.742628,
+    "longitude": -98.704636
    },
    {
     "index": 28, 
@@ -260,7 +264,9 @@
     "location":  "Location: Boerne", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
-    "type": "Boerne" 
+    "type": "Boerne",
+    "latitude": 29.74074,
+    "longitude": -98.702875
    },
    {
     "index": 29, 
@@ -269,7 +275,9 @@
     "location":  "Location: Boerne", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
-    "type": "Boerne" 
+    "type": "Boerne",
+    "latitude": 29.7544562,
+    "longitude": -98.70447769
    },
    {
     "index": 30, 
@@ -278,7 +286,9 @@
     "location":  "Location: Boerne", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
-    "type": "Boerne" 
+    "type": "Boerne",
+    "latitude": 29.739626,
+    "longitude": -98.703828
    },
    {
     "index": 31, 
@@ -314,7 +324,9 @@
     "location":  "Location: Boerne", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
-    "type": "Boerne" 
+    "type": "Boerne",
+    "latitude": 29.7381446,
+    "longitude": -98.70488269
    },
    {
     "index": 35, 

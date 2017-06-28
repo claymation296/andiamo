@@ -19,6 +19,9 @@
 <link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html">
 <link rel="import" href="../../bower_components/geo-location/geo-location.html">
 <link rel="import" href="haversine-api.html">
+
+
+
 <dom-module id="job-names-list" >
     <template>
         <style>
@@ -111,42 +114,48 @@
             }
 
         </style>
-    <!--        <geo-location on-geo-response="_usersLocation" latitude="{{lat}}"
-               longitude="{{lng}}"></geo-location> -->
-
-        <iron-ajax id="jobData" url="{{contacts}}" on-response="_ajaxReady" auto></iron-ajax>
-        <app-drawer-layout  fullbleed>
-            <div class="content">
-              <app-toolbar  class="main-toolbar">
-                <div main-title>Job Names</div>
 
 
-                  <paper-dropdown-menu id="search" label="Filter:">
-                    <paper-listbox class="dropdown-content" selected="{{selectedWork}}" attr-for-selected="value" >
-                      <paper-item value="Camp Verde">Camp Verde</paper-item>
-                      <paper-item value="Boerne">Boerne</paper-item>
-                      <paper-item value="Dominion">Dominion</paper-item>
-                      <paper-item value="All">All</paper-item>
-                    </paper-listbox>
-                  </paper-dropdown-menu>
-                </app-toolbar>
-                  
-                <!-- Main List for the items -->
-                <iron-list id="itemsList" items="[[data]]"  selected-item="{{selectedItem}}" selection-enabled>
-                  <template>
-                    <div tabindex$="[[tabIndex]]" aria-label$="Select/Deselect [[item.name]]" class$="[[_computedClass(selected)]]">
-                      <img class="avatar" src="[[item.image]]">
-                        <div class="pad">
-                          <div class="primary">[[item.name]]</div>
-                          <div class="secondary dim">[[item.shortText]]</div>
-                      </div>
-                    </div>
-                    <div class="border"></div>
-                  </template>
-                </iron-list>
-            </div>
-          </app-drawer-layout>
+        <geo-location id="geo" 
+                      latitude="{{lat}}"
+                      longitude="{{lng}}" 
+                      on-geo-error="_geoError">
+        </geo-location>
 
+        <iron-ajax id="jobData" url="../../data/jobs.json" last-response="{{response}}" auto></iron-ajax>
+
+
+
+        <app-drawer-layout fullbleed>
+          <div class="content">
+            <app-toolbar  class="main-toolbar">
+              <div main-title>Job Names</div>
+              <paper-dropdown-menu id="search" label="Filter:">
+                <paper-listbox class="dropdown-content" selected="{{filter}}" attr-for-selected="value">
+                  <paper-item value="All">All</paper-item>
+                  <paper-item value="Near Me">Near Me</paper-item>
+                  <paper-item value="Camp Verde">Camp Verde</paper-item>
+                  <paper-item value="Boerne">Boerne</paper-item>
+                  <paper-item value="Dominion">Dominion</paper-item>
+                </paper-listbox>
+              </paper-dropdown-menu>
+            </app-toolbar>
+                
+            <!-- Main List for the items -->
+            <iron-list id="itemsList" items="[[_computeFilteredList(filter, response)]]" selected-item="{{selectedItem}}" selection-enabled>
+              <template>
+                <div tabindex$="[[tabIndex]]" aria-label$="Select/Deselect [[item.name]]" class$="item [[_computedClass(selected)]]">
+                  <img class="avatar" src="[[item.image]]">
+                    <div class="pad">
+                      <div class="primary">[[item.name]]</div>
+                      <div class="secondary dim">[[item.shortText]]</div>
+                  </div>
+                </div>
+                <div class="border"></div>
+              </template>
+            </iron-list>
+          </div>
+        </app-drawer-layout>
 
 
     </template>
@@ -155,75 +164,75 @@
       Polymer({
         is: 'job-names-list',
           
-          properties: {
-            selectedItem: {
+        properties: {
+          selectedItem: {
             type: Object,
             observer: '_selectedItemChanged'
-            },
+          },
 
-            selectedWork: {
+          filter: {
             type: String,
-            observer: '_selectedWorkChanged',
-            },
-          
-          },  
-
-
-          _computedClass: function(isSelected) {
-            var classes = 'item';
-            if (isSelected) {
-              classes += ' selected';
-            }
-            return classes;
+            value: 'All'
           },
 
+          lat: Number,
 
-          _selectedItemChanged: function(selected){
-            if (!selected) {return;}
-              this.fire('job-names-list-selected-item', {selected}); 
-          },
+          lng: Number,
 
-_usersLocation(){
-//  const start = {
-//               latitude: this.lat,
-//               longitude:this.lng
-//             }
-
-//             const end = {
-//               latitude: this.data[0].latitude,
-//               longitude: this.data[0].longitude
-//             }
-
-//             console.log(this.data[0].latitude);
-//                         console.log(this.data[0].longitude);
-//                          console.log(this.lat);
-//                         console.log(this.lng);    
-
-// // console.log(haversine(start, end))
-// // console.log(haversine(start, end, {unit: 'mile'}))
-// // console.log(haversine(start, end, {unit: 'meter'}))
-// // console.log(haversine(start, end, {threshold: 1}))
-// // console.log(haversine(start, end, {threshold: 400, unit: 'mile'}))
-// // console.log(haversine(start, end, {threshold: 1, unit: 'meter'}))       
-},
-          _ajaxReady: function(event){
-            this.data = this.$.jobData.lastResponse;
-
-           
-          },
+          start: {
+            type: Object,
+            computed: '_computedStart(lat, lng)'
+          }
+        },
 
 
-          _selectedWorkChanged: function(selected){
-           if (!selected) {return;} 
-            if (selected === "All"){
-              this.data = this.$.jobData.lastResponse;            
-            } else {
-              this.data = this.$.jobData.lastResponse.filter((jobType) => jobType.type === selected);
-            }
-          },
+        _computedStart: (lat, lng) => ({latitude: lat, longitude: lng}),
 
-        });
 
+        _computedClass: isSelected => isSelected ? 'selected' : '',
+
+
+        _selectedItemChanged(selected) {
+          if (!selected) { return; }
+          this.fire('job-names-list-selected-item', {selected}); 
+        },
+
+
+        _geoError(event) {
+          if (event.detail.code === 3) { return; }
+          console.log('geo error: ', event);
+        },
+
+
+        _sortByGeoLocation(start, res) {
+          const hasGeoData  = obj => obj.hasOwnProperty('latitude');
+
+          const getDist     = ({latitude, longitude}) => 
+                                haversine(start, {latitude, longitude}, {unit: 'meter'});
+
+          const compareDist = (a, b) => (getDist(a) < getDist(b)) ? 1 : 0;
+
+          const sortedData  = res.filter(hasGeoData).sort(compareDist);
+
+          console.log('sortedData: ', sortedData);
+          // console.log('data: ', this.data);
+
+          return sortedData;
+        },
+
+        _computeFilteredList(filter, response) {
+
+          console.log('_computeFilteredList: ', filter, response);
+
+          if (filter === 'All') {
+            return response;         
+          } else if (filter === 'Near Me') {
+            return this._sortByGeoLocation(this.start, response);
+          } else {
+            return response.filter(job => job.type === filter);
+          }
+        }
+
+      });
     </script>
-
 </dom-module>
