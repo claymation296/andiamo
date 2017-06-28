@@ -103,7 +103,7 @@
    { 
     "index": 11, 
     "name": "16 Galleria Drive", 
-    "image": "../../images/locationPics/16 Galleria Drive.png", 
+    "image": "../../images/locationPics/need.png", 
     "location":  "Location: Dominion", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
@@ -112,7 +112,7 @@
    { 
     "index": 12, 
     "name": "17 Crescent Bluff", 
-    "image": "../../images/locationPics/17 Crescent Bluff.png", 
+    "image": "../../images/locationPics/need.png", 
     "location":  "Location: Dominion", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
@@ -121,7 +121,7 @@
    { 
     "index": 13, 
     "name": "17 Crescent Bluff 2017 Improvements", 
-    "image": "../../images/locationPics/17 Crescent Bluff.png", 
+    "image": "../../images/locationPics/need.png", 
     "location":  "Location: Dominion", 
     "shortText": "Construction", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other work beyound the scope of maintenance", 
@@ -130,7 +130,7 @@
    { 
     "index": 14, 
     "name": "18 Toepperwein Art Studio", 
-    "image": "../../images/locationPics/18 Toepperwein Art Studio.png", 
+    "image": "../../images/locationPics/need.png", 
     "location":  "Location: Boerne", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
@@ -166,7 +166,7 @@
    { 
     "index": 18, 
     "name": "18 Toepperwein Road", 
-    "image": "../../images/locationPics/18 Toepperwein.png", 
+    "image": "../../images/locationPics/need.png", 
     "location":  "Location: Boerne", 
     "shortText": "Maintenance", 
     "longText": "Used for landscape and any other general maintenance", 
@@ -184,7 +184,7 @@
    { 
     "index": 20, 
     "name": "19 Queens Heath", 
-    "image": "../../images/locationPics/19 Queens Heath.png", 
+    "image": "../../images/locationPics/need.png", 
     "location":  "Location: Boerne", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
@@ -238,7 +238,7 @@
    {
     "index": 26, 
     "name": "25 Toepperwein Road", 
-    "image": "../../images/locationPics/25 Toepperwein.png", 
+    "image": "../../images/locationPics/need.png", 
     "location":  "Location: Boerne", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
@@ -247,20 +247,24 @@
    {
     "index": 27, 
     "name": "39 Scenic Loop Road", 
-    "image": "../../images/locationPics/39 Scenic Loop.png", 
+    "image": "../../images/locationPics/need.png", 
     "location":  "Location: Boerne", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
-    "type": "Boerne" 
+    "type": "Boerne",
+    "latitude": 29.742628,
+    "longitude":  -98.70463699999999 
    },
    {
     "index": 28, 
     "name": "41 Scenic Loop Road", 
-    "image": "../../images/locationPics/41 Scenic Loop.png", 
+    "image": "../../images/locationPics/need.png", 
     "location":  "Location: Boerne", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
-    "type": "Boerne" 
+    "type": "Boerne",
+    "latitude": 29.74074999999999,
+    "longitude":  -98.702875 
    },
    {
     "index": 29, 
@@ -269,7 +273,9 @@
     "location":  "Location: Boerne", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
-    "type": "Boerne" 
+    "type": "Boerne",
+    "latitude": 29.7544562,
+    "longitude":  -98.70447769999998 
    },
    {
     "index": 30, 
@@ -278,7 +284,10 @@
     "location":  "Location: Boerne", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
-    "type": "Boerne" 
+    "type": "Boerne",
+    "latitude": 29.739626,
+    "longitude":  -98.70382899999998
+
    },
    {
     "index": 31, 
@@ -314,7 +323,9 @@
     "location":  "Location: Boerne", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
-    "type": "Boerne" 
+    "type": "Boerne",
+    "latitude": 29.7381446,
+    "longitude":  -98.70488269999998
    },
    {
     "index": 35, 
