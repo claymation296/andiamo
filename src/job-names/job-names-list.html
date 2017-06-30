@@ -1,4 +1,4 @@
-﻿<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
@@ -207,14 +207,14 @@
         _sortByGeoLocation(start, res) {
           const hasGeoData  = obj => obj.hasOwnProperty('latitude');
 
-          const getDist     = ({latitude, longitude}) => 
-                                haversine(start, {latitude, longitude}, {unit: 'meter'});
-
-          const compareDist = (a, b) => (getDist(a) < getDist(b)) ? 1 : 0;
+          const getDist     = ({latitude, longitude}) => haversine(start, {latitude, longitude}, {unit: 'mile'});
+                               
+          const compareDist = (a, b) => getDist(a) - getDist(b);
 
           const sortedData  = res.filter(hasGeoData).sort(compareDist);
 
-          console.log('sortedData: ', sortedData);
+          console.log('distatance: ', sortedData.map(obj => obj.distance));
+          // console.log('sortedData: ', sortedData);
           // console.log('data: ', this.data);
 
           return sortedData;
