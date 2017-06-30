@@ -8,7 +8,8 @@
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
     "type": "Dominion",
     "latitude": 29.6542883,
-    "longitude":  -98.61460310000001
+    "longitude":  -98.61460310000001,
+    "distance": 37.54158686416616
    }, 
    { 
     "index": 1, 
@@ -27,8 +28,9 @@
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
     "type": "Dominion",
-    "latitude": 29.9528791,
-    "longitude": -99.0576897
+    "latitude": 29.65485869999999,
+    "longitude": -98.6147168,
+    "distance": 37.51181197648654
    }, 
    { 
     "index": 3, 
@@ -255,7 +257,8 @@
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
     "type": "Boerne",
     "latitude": 29.742628,
-    "longitude":  -98.70463699999999 
+    "longitude":  -98.70463699999999,
+    "distance":  29.551981693409648
    },
    {
     "index": 28, 
@@ -266,7 +269,8 @@
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
     "type": "Boerne",
     "latitude": 29.74074999999999,
-    "longitude":  -98.702875 
+    "longitude":  -98.702875,
+    "distance":  29.713418778451885
    },
    {
     "index": 29, 
@@ -277,7 +281,8 @@
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
     "type": "Boerne",
     "latitude": 29.7544562,
-    "longitude":  -98.70447769999998 
+    "longitude":  -98.70447769999998,
+    "distance":  29.093607344591103
    },
    {
     "index": 30, 
@@ -288,7 +293,8 @@
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
     "type": "Boerne",
     "latitude": 29.739626,
-    "longitude":  -98.70382899999998
+    "longitude":  -98.70382899999998,
+    "distance": 29.71210650381327
    },
    {
     "index": 31, 
@@ -326,7 +332,8 @@
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
     "type": "Boerne",
     "latitude": 29.7381446,
-    "longitude":  -98.70488269999998
+    "longitude":  -98.70488269999998,
+    "distance": 29.720748366856633
    },
    {
     "index": 35, 
@@ -335,7 +342,10 @@
     "location":  "Location: Boerne", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
-    "type": "Boerne" 
+    "type": "Boerne",
+    "latitude": 29.7903378,
+    "longitude":  -98.73096699999996,
+    "distance":  26.412914209128846
    },
    {
     "index": 36, 
@@ -344,7 +354,10 @@
     "location":  "Location: Boerne", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
-    "type": "Boerne" 
+    "type": "Boerne",
+    "latitude": 29.7926996,
+    "longitude":  -98.730141,
+    "distance": 26.370176498759733
    },
    {
     "index": 37, 
@@ -353,7 +366,10 @@
     "location":  "Location: Boerne", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
-    "type": "Boerne" 
+    "type": "Boerne",
+    "latitude": 29.7927696,
+    "longitude":  -98.7299643,
+    "distance":  26.37673529543624
    },
    {
     "index": 38, 
@@ -362,7 +378,10 @@
     "location":  "Location: Boerne", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
-    "type": "Boerne" 
+    "type": "Boerne",
+    "latitude": 29.790346,
+    "longitude":  -98.731851,
+    "distance": 26.367456092852944
    },
    {
     "index": 39, 
@@ -380,7 +399,10 @@
     "location":  "Location: Boerne", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
-    "type": "Boerne" 
+    "type": "Boerne",
+    "latitude": 29.7927106,
+    "longitude":  -98.73192549999999,
+    "distance": 26.278298930767935
    },
    {
     "index": 41, 
@@ -398,7 +420,10 @@
     "location":  "Location: Camp Verde", 
     "shortText": "Maintenance", 
     "longText": "Used for carpentry, electrical, HVAC, landscape, plumbing, and any other maintenance", 
-    "type": "Camp Verde" 
+    "type": "Camp Verde",
+    "latitude": 29.8941297,
+    "longitude":  -99.1047251,
+    "distance": 6.619770226577311
    },
    {
     "index": 43, 
