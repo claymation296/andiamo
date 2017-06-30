@@ -1,4 +1,4 @@
-﻿<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
@@ -123,7 +123,6 @@
         this.fire('job-names-list-selected-item', {selected}); 
       },
 
-
       _sortByGeoLocation(start, res) {
         const hasGeoData   = obj => obj.hasOwnProperty('latitude');
         const getDist      = ({latitude, longitude}) => 
@@ -131,9 +130,7 @@
         const nearestFirst = (a, b) => getDist(a) - getDist(b);
         const sortedData   = res.filter(hasGeoData).sort(nearestFirst);
 
-
         console.log('distances: ', sortedData.map(obj => obj.distance));
-
 
         return sortedData;
       },
