@@ -1,238 +1,150 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
-<link rel="import" href="../../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
-<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
 <link rel="import" href="../../bower_components/paper-styles/typography.html">
-<link rel="import" href="../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../../bower_components/paper-badge/paper-badge.html" >
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../shared-styles.html">
-<link rel="import" href="../../bower_components/neon-animation/neon-animatable.html">
-<link rel="import" href="../../bower_components/neon-animation/neon-animation-runner-behavior.html">
-<link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html">
 <link rel="import" href="../../bower_components/geo-location/geo-location.html">
+<link rel="import" href="../shared-styles.html">
 <link rel="import" href="haversine-api.html">
 
 
 
-<dom-module id="job-names-list" >
-    <template>
-        <style>
-            :host {
-              display: block;
-              @apply(--paper-font-common-base);
-              font-family: sans-serif;
-            }
+<dom-module id="job-names-list">
+  <template>
+    <style>
 
-            .content {
-              @apply(--layout-vertical);
-              height: 100%;
-            }
+      :host {
+        display: block;
+        @apply(--paper-font-common-base);
+        font-family: sans-serif;
+      }
 
-            #search{
-              width: 120px;
-              padding-bottom: 10px;
-            }
+      #itemsList {
+        @apply(--layout-flex);
+      }
 
-            .main-toolbar {
-              background: var(--light-primary-color);
-              color: white;
-              height: 50px;
-              box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
-              font-size: 18px;
-            }
+      .item {
+        @apply(--layout-horizontal);
+        cursor: pointer;
+        padding: 16px 22px;
+        background-color: white;
+        border-bottom: 1px solid #D7CCC8;
+      }
 
-            #itemsList,
-            #selectedItemsList {
-              @apply(--layout-flex);
-            }
+      .avatar {
+        height: 50px;
+        width: 50px;
+        border-radius: 20px;
+        box-sizing: border-box;
+        background-color: #ddd;
+      }
 
-            .item {
-              @apply(--layout-horizontal);
-              cursor: pointer;
-              padding: 16px 22px;
-              background-color: white;
-              border-bottom: 1px solid #D7CCC8;
-            }
+      .pad {
+        @apply(--layout-flex);
+        @apply(--layout-vertical);
+        padding: 0 16px;
+      }
 
-            .avatar {
-              height: 50px;
-              width: 50px;
-              border-radius: 20px;
-              box-sizing: border-box;
-              background-color: #ddd;
-            }
+      .primary {
+        font-size: 16px;
+      }
 
-            .pad {
-              @apply(--layout-flex);
-              @apply(--layout-vertical);
-              padding: 0 16px;
-            }
+      .secondary {
+        font-size: 12px;
+      }
 
-            .primary {
-              font-size: 16px;
-            }
+      iron-list {
+          @apply(--layout-flex);
+      }
 
-            .secondary {
-              font-size: 12px;
-            }
-
-            paper-item {
-              white-space: nowrap;
-              cursor: pointer;
-              position: relative;
-            }
-
-    
-            paper-item:hover::after {
-              content: "－";
-              width: 16px;
-              height: 16px;
-              display: block;
-              border-radius: 50% 50%;
-              background-color: var(--google-red-300);
-              margin-left: 10px;
-              line-height: 16px;
-              text-align: center;
-              color: white;
-              font-weight: bold;
-              text-decoration: none;
-              position: absolute;
-              right: 15px;
-              top: calc(50% - 8px);
-            }
-   
-            iron-list {
-                @apply(--layout-flex);
-            }
-
-        </style>
+    </style>
 
 
-        <geo-location id="geo" 
-                      latitude="{{lat}}"
-                      longitude="{{lng}}" 
-                      on-geo-error="_geoError">
-        </geo-location>
+    <geo-location id="geo" 
+                  latitude="{{lat}}"
+                  longitude="{{lng}}">
+    </geo-location>
 
-        <iron-ajax id="jobData" url="../../data/jobs.json" last-response="{{response}}" auto></iron-ajax>
-
-
-
-        <app-drawer-layout fullbleed>
-          <div class="content">
-            <app-toolbar  class="main-toolbar">
-              <div main-title>Job Names</div>
-              <paper-dropdown-menu id="search" label="Filter:">
-                <paper-listbox class="dropdown-content" selected="{{filter}}" attr-for-selected="value">
-                  <paper-item value="All">All</paper-item>
-                  <paper-item value="Near Me">Near Me</paper-item>
-                  <paper-item value="Camp Verde">Camp Verde</paper-item>
-                  <paper-item value="Boerne">Boerne</paper-item>
-                  <paper-item value="Dominion">Dominion</paper-item>
-                </paper-listbox>
-              </paper-dropdown-menu>
-            </app-toolbar>
-                
-            <!-- Main List for the items -->
-            <iron-list id="itemsList" items="[[_computeFilteredList(filter, response)]]" selected-item="{{selectedItem}}" selection-enabled>
-              <template>
-                <div tabindex$="[[tabIndex]]" aria-label$="Select/Deselect [[item.name]]" class$="item [[_computedClass(selected)]]">
-                  <img class="avatar" src="[[item.image]]">
-                    <div class="pad">
-                      <div class="primary">[[item.name]]</div>
-                      <div class="secondary dim">[[item.shortText]]</div>
-                  </div>
-                </div>
-                <div class="border"></div>
-              </template>
-            </iron-list>
+    <iron-ajax id="jobData" url="../../data/jobs.json" last-response="{{response}}" auto></iron-ajax>
+            
+    <!-- Main List for the items -->
+    <iron-list id="itemsList" items="[[_computeFilteredList(filter, response)]]" selected-item="{{selectedItem}}" selection-enabled>
+      <template>
+        <div tabindex$="[[tabIndex]]" aria-label$="Select/Deselect [[item.name]]" class$="item [[_computedClass(selected)]]">
+          <img class="avatar" src="[[item.image]]">
+            <div class="pad">
+              <div class="primary">[[item.name]]</div>
+              <div class="secondary dim">[[item.shortText]]</div>
           </div>
-        </app-drawer-layout>
+        </div>
+        <div class="border"></div>
+      </template>
+    </iron-list>
 
 
-    </template>
+  </template>
 
-    <script>
-      Polymer({
-        is: 'job-names-list',
-          
-        properties: {
-          selectedItem: {
-            type: Object,
-            observer: '_selectedItemChanged'
-          },
+  <script>
+    Polymer({
+      is: 'job-names-list',
+        
+      properties: {
 
-          filter: {
-            type: String,
-            value: 'All'
-          },
-
-          lat: Number,
-
-          lng: Number,
-
-          start: {
-            type: Object,
-            computed: '_computedStart(lat, lng)'
-          }
+        selectedItem: {
+          type: Object,
+          observer: '_selectedItemChanged'
         },
 
-
-        _computedStart: (lat, lng) => ({latitude: lat, longitude: lng}),
-
-
-        _computedClass: isSelected => isSelected ? 'selected' : '',
-
-
-        _selectedItemChanged(selected) {
-          if (!selected) { return; }
-          this.fire('job-names-list-selected-item', {selected}); 
+        filter: {
+          type: String,
+          value: 'All'
         },
 
+        lat: Number,
 
-        _geoError(event) {
-          if (event.detail.code === 3) { return; }
-          console.log('geo error: ', event);
-        },
+        lng: Number,
 
-
-        _sortByGeoLocation(start, res) {
-          const hasGeoData  = obj => obj.hasOwnProperty('latitude');
-
-          const getDist     = ({latitude, longitude}) => haversine(start, {latitude, longitude}, {unit: 'mile'});
-                               
-          const compareDist = (a, b) => getDist(a) - getDist(b);
-
-          const sortedData  = res.filter(hasGeoData).sort(compareDist);
-
-          console.log('distatance: ', sortedData.map(obj => obj.distance));
-          // console.log('sortedData: ', sortedData);
-          // console.log('data: ', this.data);
-
-          return sortedData;
-        },
-
-        _computeFilteredList(filter, response) {
-
-          console.log('_computeFilteredList: ', filter, response);
-
-          if (filter === 'All') {
-            return response;         
-          } else if (filter === 'Near Me') {
-            return this._sortByGeoLocation(this.start, response);
-          } else {
-            return response.filter(job => job.type === filter);
-          }
+        start: {
+          type: Object,
+          computed: '_computedStart(lat, lng)'
         }
+      },
 
-      });
-    </script>
+
+      _computedStart: (lat, lng) => ({latitude: lat, longitude: lng}),
+
+
+      _computedClass: isSelected => isSelected ? 'selected' : '',
+
+
+      _selectedItemChanged(selected) {
+        if (!selected) { return; }
+        this.fire('job-names-list-selected-item', {selected}); 
+      },
+
+      _sortByGeoLocation(start, res) {
+        const hasGeoData   = obj => obj.hasOwnProperty('latitude');
+        const getDist      = ({latitude, longitude}) => 
+                               haversine(start, {latitude, longitude}, {unit: 'mile'});
+        const nearestFirst = (a, b) => getDist(a) - getDist(b);
+        const sortedData   = res.filter(hasGeoData).sort(nearestFirst);
+
+        console.log('distances: ', sortedData.map(obj => obj.distance));
+
+        return sortedData;
+      },
+
+      _computeFilteredList(filter, response) {
+        if (filter === 'All') {
+          return response;         
+        } else if (filter === 'Near Me') {
+          return this._sortByGeoLocation(this.start, response);
+        } else {
+          return response.filter(job => job.type === filter);
+        }
+      }
+
+    });
+  </script>
 </dom-module>
