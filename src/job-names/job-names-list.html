@@ -1,4 +1,4 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
+﻿nk rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
@@ -67,8 +67,8 @@
     </geo-location>
 
     <iron-ajax id="jobData" url="../../data/jobs.json" last-response="{{response}}" auto></iron-ajax>
+    
             
-    <!-- Main List for the items -->
     <iron-list id="itemsList" items="[[_computeFilteredList(filter, response)]]" selected-item="{{selectedItem}}" selection-enabled>
       <template>
         <div tabindex$="[[tabIndex]]" aria-label$="Select/Deselect [[item.name]]" class$="item [[_computedClass(selected)]]">
@@ -123,6 +123,7 @@
         this.fire('job-names-list-selected-item', {selected}); 
       },
 
+
       _sortByGeoLocation(start, res) {
         const hasGeoData   = obj => obj.hasOwnProperty('latitude');
         const getDist      = ({latitude, longitude}) => 
@@ -130,10 +131,9 @@
         const nearestFirst = (a, b) => getDist(a) - getDist(b);
         const sortedData   = res.filter(hasGeoData).sort(nearestFirst);
 
-        console.log('distances: ', sortedData.map(obj => obj.distance));
-
         return sortedData;
       },
+
 
       _computeFilteredList(filter, response) {
         if (filter === 'All') {
