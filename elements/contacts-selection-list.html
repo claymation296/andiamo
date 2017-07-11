@@ -8,7 +8,7 @@
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../bower_components/paper-badge/paper-badge.html" />
+<link rel="import" href="../bower_components/paper-badge/paper-badge.html">
 <link rel="import" href="../behaviors/utilities.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animatable.html">
@@ -18,9 +18,12 @@
 <link rel="import" href="../bower_components/neon-animation/animations/cascaded-animation.html">
 <link rel="import" href="../animations/bouncing-animation.html">
 
+
+
 <dom-module id="contacts-selection-list">
     <template>
         <style>
+
             :host {
               display: block;
               @apply(--paper-font-common-base);
@@ -186,10 +189,10 @@
           <app-drawer-layout fullbleed>
             <div class="content">
               <app-toolbar class="main-toolbar">
-                <paper-icon-button  id="backButton"
-                                    class="back"
-                                    icon="my-icons:arrow-back"
-                                    on-tap="_backButtonTapped">
+                <paper-icon-button id="backButton"
+                                   class="back"
+                                   icon="my-icons:arrow-back"
+                                   on-tap="_backButtonTapped">
                 </paper-icon-button>
                 <div main-title>Select Contacts</div>
                   <div>
@@ -198,14 +201,14 @@
                   </div>
               </app-toolbar>
 
-                  <!-- Main List for the items -->
+              <!-- Main List for the items -->
               <iron-list id="itemsList" items="[[data]]" selected-items="{{selectedContacts}}" selection-enabled multi-selection>
                 <template>
                   <div>
-                    <div tabindex$="[[tabIndex]]" aria-label$="Select/Deselect [[item.name]]" class$="sliders [[_computedClass(selected)]]">
+                    <div tabindex$="[[tabIndex]]" aria-label$="Select/Deselect [[item.name]]" class$="item [[_computedClass(selected)]]">
                       <img class="avatar" src="[[item.image]]">
                       <div class="pad">
-                        <div class="primary" >[[item.name]]</div>
+                        <div class="primary">[[item.name]]</div>
                         <div class="secondary dim">[[item.shortText]]</div>
                       </div>
                       <iron-icon icon$="[[iconForItem(selected)]]" class="star"></iron-icon>
@@ -236,10 +239,10 @@
           </app-drawer-layout>
 
           <!-- Fab that animates when a selection is made -->
-          <paper-fab  id="nextButton"
-                      class="hiddenBeforeAnimation"
-                      icon="my-icons:arrow-forward" 
-                      on-tap="_nextButtonTapped">
+          <paper-fab id="nextButton"
+                     class="hiddenBeforeAnimation"
+                     icon="my-icons:arrow-forward" 
+                     on-tap="_nextButtonTapped">
           </paper-fab>
 
     </template>
@@ -249,17 +252,17 @@
         is: 'contacts-selection-list',
 
         behaviors: [
-        Polymer.NeonAnimatableBehavior,
-        Polymer.NeonAnimationRunnerBehavior,
-        window.BCDEV.Behaviors.OnTapBehavior,
-        window.BCDEV.Behaviors.FullscreenBehavior,
-        window.BCDEV.Behaviors.Utilities
+          Polymer.NeonAnimatableBehavior,
+          Polymer.NeonAnimationRunnerBehavior,
+          window.BCDEV.Behaviors.OnTapBehavior,
+          window.BCDEV.Behaviors.FullscreenBehavior,
+          window.BCDEV.Behaviors.Utilities
         ],
 
         properties: {
-          selectedContacts: {
-            type: Object
-          },
+
+          selectedContacts: Object,
+
           animationConfig: {
             value() {
               return {
@@ -290,33 +293,22 @@
                 }],
               };
             }
-          },
+          }
         },
         
         listeners: {
-          'neon-animation-finish':  '_fabExitAnimationComplete'
+          'neon-animation-finish': '_fabExitAnimationComplete'
         },
 
 
         init() {
           this.$.itemsList.style.opacity = '0';
           this.$.itemsList.fire('iron-resize');
-
-          // const slide = () => {
-          //   const sliders = Polymer.dom(this.root).querySelectorAll('.sliders');
-          //   this.animationConfig.slidersAnimation[0].nodes = sliders;
-          //   this.animationConfig.slidersAnimation[1].nodes = sliders;
-          //   this.$.itemsList.style.opacity = '1';
-          //   this.cancelAnimation();
-          //   this.playAnimation('slidersAnimation', 'slidersAnimation');
-          // };
-
-          // this.schedule(slide);
         },
 
 
         enter() {
-          const sliders = Polymer.dom(this.root).querySelectorAll('.sliders');
+          const sliders = Polymer.dom(this.root).querySelectorAll('.item');
           this.animationConfig.slidersAnimation[0].nodes = sliders;
           this.animationConfig.slidersAnimation[1].nodes = sliders;
 
@@ -331,35 +323,32 @@
 
 
         resetData() {
-            this.$.itemsList.clearSelection();
+          this.$.itemsList.clearSelection();
         },
         
 
-        iconForItem: function(isSelected) {
-          return isSelected ? 'star' : 'star-border';
-        },
-        
+        iconForItem: isSelected => isSelected ? 'star' : 'star-border',
 
-        _computedClass: function(isSelected) {
-          var classes = 'item';
+
+        _computedClass(isSelected) {
           if (isSelected) {
-            classes += ' selected';
             if (!this.isDisplayed(this.$.nextButton)){
               this.$.nextButton.style.display='block';
               this.cancelAnimation();
               this.playAnimation('fabEntry');
             }
+            return 'selected';
           }
-          return classes;
+          return '';
         },
  
 
-        _unselect: function(e) {
-          this.$.itemsList.deselectItem(e.model.item);
+        _unselect(event) {
+          this.$.itemsList.deselectItem(event.model.item);
         },
         
 
-        _getFormattedCount: function(count) {
+        _getFormattedCount(count) {
           if (count < 1) {
             this.cancelAnimation();
             this.playAnimation('fabExit', 'fabExit');
@@ -385,7 +374,7 @@
 
         _nextButtonTapped() {
           this.onTap = this.fire.bind(this, 'verify-contacts-overlay', {selectedContacts: this.selectedContacts});
-          console.log(this.selectedContacts);
+          // console.log(this.selectedContacts);
         }
 
       });

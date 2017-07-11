@@ -6,57 +6,57 @@
 <link rel="import" href="../../bower_components/paper-styles/color.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/neon-animation/neon-animatable.html">
-<link rel="import" href="../../bower_components/geo-location/geo-location.html">
 <link rel="import" href="../../bower_components/neon-animation/neon-animation-runner-behavior.html">
 <link rel="import" href="../../bower_components/neon-animation/animations/fade-in-animation.html">
 <link rel="import" href="../../bower_components/neon-animation/animations/scale-up-animation.html">
-<link rel="import" href="haversine-api.html">
+
+
+
 <dom-module id="job-name-details">
-
   <template>
-
     <style include="shared-styles">
+
       :host {
         @apply(--fullscreen-overlays);
         background-color: #eeeeee;
         background-image: url("../../images/locationPics/backGround.jpg");
       }
 
-            .avatar {
-                width: 80%;
-                border-radius: 20px;
-                box-sizing: border-box;
-                background-color: #ddd;
-                display: block;
-                margin: 10px auto;
-                border:4px solid  yellowgreen;
-                max-height: 400px;
-                max-width: 600px;
-            }
+      .avatar {
+          width: 80%;
+          border-radius: 20px;
+          box-sizing: border-box;
+          background-color: #ddd;
+          display: block;
+          margin: 10px auto;
+          border: 4px solid yellowgreen;
+          max-height: 400px;
+          max-width: 600px;
+      }
 
-            .secondary {
-              font-size: 12px;
-            }
-     
-            .jobUse {
-              font-size: 24px;
-            }
+      .secondary {
+        font-size: 12px;
+      }
 
-            .jobName {
-              text-align: center;
-              font-weight: 900;
-              color: #5D4037;
-            }
+      .jobUse {
+        font-size: 24px;
+      }
 
-            .card{
-              border:2px solid  yellowgreen;
-              padding: 4px;
-              background-color: white;
-            }
+      .jobName {
+        text-align: center;
+        font-weight: 900;
+        color: #5D4037;
+      }
+
+      .card {
+        border:2px solid yellowgreen;
+        padding: 4px;
+        background-color: white;
+      }
 
     </style>
 
-    <div on-tap="_closePage" >
+    <div on-tap="_closePage">
       <img class="avatar" src="[[data.image]]"> 
       <div class="jobName">[[data.name]]</div>
       <div class="card">
@@ -64,20 +64,17 @@
         <div class="secondary dim">[[data.shortText]]</div>
       </div>
       <div class="card">
-      <div class="jobUse">Use job name for:</div>
+        <div class="jobUse">Use job name for:</div>
         [[data.longText]]
       </div>
     </div>
- <geo-location watch-pos high-accuracy latitude="{{lat}}"
-               longitude="{{lng}}" on-geo-error="_error" on-geo-response="_geoResponse"></geo-location>
 
-<paper-button on-tap="_poop"></paper-button>
+
   </template>
 
   <script>
     Polymer({
       is: 'job-name-details',
-
 
       behaviors: [
         window.BCDEV.Behaviors.FullscreenBehavior,
@@ -88,6 +85,7 @@
       ],
 
       properties: {
+
         data: Object,
       
         animationConfig: {
@@ -105,57 +103,12 @@
               }],
             };
           }
-        },
-
-        lat: {
-          type: String,
-          observer: '_latChanged',
-        },
+        }
       },
 
-_error(event){
-// this.message(`My Lat:${this.lat} Lng:${start.longitude}`)
-    this.message('warning')
-    console.log(event.detail)
-},
-
-_latChanged(lat){
-  if (!this.message){
- 
-    this.message(`My Lat:${lat}`)
-  }
-},
-
-_geoResponse(){
-//   console.log('poop');
-
-},
-     _poop(){
-
-      // const haversine = require('haversine')
-
-const start = {
-  latitude: this.lat,
-  longitude:this.lng
-}
-
-const end = {
-  latitude: this.data.latitude,
-  longitude: this.data.longitude
-}
-// this.message(`My Lat:${this.lat} Lng:${start.longitude}`)
-
-console.log(start)
-this.message(haversine(start, end, {unit: 'mile'}))
-// console.log(haversine(start, end, {unit: 'meter'}))
-// console.log(haversine(start, end, {threshold: 1}))
-// console.log(haversine(start, end, {threshold: 42, unit: 'mile'}))
-// console.log(haversine(start, end, {threshold: 1, unit: 'meter'}))
-     },
-
-      _closePage(){
+      _closePage() {
         this.close();
-      },
+      }
      
     });
   </script>

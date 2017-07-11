@@ -16,14 +16,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../shared-styles.html">
-<link rel="import" href="../../elements/contacts-selection-list.html" />
-<link rel="import" href="../../elements/dropdown-list-array.html" />
-<link rel="import" href="../../behaviors/on-tap-behavior.html"/>
-<link rel="import" href="../../behaviors/utilities.html"/>
+<link rel="import" href="../../elements/contacts-selection-list.html">
+<link rel="import" href="../../elements/dropdown-list-array.html">
+<link rel="import" href="../../behaviors/on-tap-behavior.html">
+<link rel="import" href="../../behaviors/utilities.html">
 <link rel="import" href="../overlays/out-date-overlay/start-date.html">
+
+
+
 <dom-module id="work-request">
   <template>
     <style include="shared-styles">
+
       :host {
         display: block;
         height: 84vh;
@@ -68,7 +72,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <paper-card id="workCard" class="options">
         <paper-dropdown-menu label="Type of Work:">
-          <paper-listbox  class="dropdown-content"  selected="{{selectedWork}}" attr-for-selected="value" >
+          <paper-listbox class="dropdown-content" selected="{{selectedWork}}" attr-for-selected="value">
             <paper-item value="Electrical">Electrical</paper-item>
             <paper-item value="Framing">Framing</paper-item>
             <paper-item value="Landscape">Landscape</paper-item>
@@ -91,93 +95,87 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
       is: 'work-request',
 
-        properties: {
-          selectedWork: {
+      properties: {
+        selectedWork: {
           type: String,
-          observer: '_selectedWorkChanged',
-          },
-
-          datePicked: {
-            type: String,
-            value: 'Choose Date',
-          }
+          observer: '_selectedWorkChanged'
         },
 
-        behaviors: [window.BCDEV.Behaviors.OnTapBehavior,
-                    window.BCDEV.Behaviors.Utilities,     
-        ],
+        datePicked: {
+          type: String,
+          value: 'Choose Date'
+        }
+      },
 
-        listeners: {
-          'dropdown-list-array-selected-item': '_selectedLocation',
-          'start-date-fab-tapped': '_selectedDate'
-        },
-      
+      behaviors: [
+        window.BCDEV.Behaviors.OnTapBehavior,
+        window.BCDEV.Behaviors.Utilities     
+      ],
 
-        _contactsButtonTapped() {
-          if (!this.selectedWork) {
-            this.message('Please input type of work');
-          } else if (!this.selectedLocation) {
-            this.message('Please input location');
-          } else if (!this.selectedDate) {
-            this.message('Please input date and time');
-          } else {
-            const open = () => {
-              const callback = () => {
-                window.BCDEV.contactsOverlay.init();
-                this.fire('contacts-button-tapped', {
-                  selectedWork:     this.selectedWork,
-                  selectedLocation: this.selectedLocation, 
-                  selectedDate:     this.selectedDate
-                }); 
-              };
-              window.BCDEV.contactsOverlay.open(callback);
-            };
-            this.onTap = open;
-          }
-        },
+      listeners: {
+        'dropdown-list-array-selected-item': '_selectedLocation',
+        'start-date-fab-tapped':             '_selectedDate'
+      },
+    
 
-
-        _chooseDate(datePicked) {
-          if(datePicked) {
-            return datePicked;
-          } 
-        },
-
-
-        _chooseDateButtonTapped() {
+      _contactsButtonTapped() {
+        if (!this.selectedWork) {
+          this.message('Please input type of work');
+        } else if (!this.selectedLocation) {
+          this.message('Please input location');
+        } else if (!this.selectedDate) {
+          this.message('Please input date and time');
+        } else {
           const open = () => {
-          	this.$.pickStartDate.init();
- 
+            window.BCDEV.contactsOverlay.init();
+            this.fire('contacts-button-tapped', {
+              selectedWork:     this.selectedWork,
+              selectedLocation: this.selectedLocation, 
+              selectedDate:     this.selectedDate
+            }); 
           };
+
           this.onTap = open;
-           this.$.dateButton.style.fontSize = "small";
-        },
+        }
+      },
 
 
-        _selectedDate(event){
-        	this.selectedDate = event.detail.start;
-        	this.$.pickStartDate.resetAll();
-          this.datePicked = event.detail.start.date.toLocaleDateString() + ' ' + event.detail.start.time;
-          // date => date.toLocaleDateString();
-        },
+      _chooseDate(datePicked) {
+        if (datePicked) {
+          return datePicked;
+        } 
+      },
 
 
-        _selectedWorkChanged: function(selected){
-          if (!selected) {
-            return;
-          }
-            else{
-            Polymer.dom(this.$.workCard).classList.add('selected');
-            this.updateStyles();
-            } 
-        },
+      _chooseDateButtonTapped() {
+        const open = () => {
+        	this.$.pickStartDate.init();
+        };
+
+        this.$.dateButton.style.fontSize = "small";
+        this.onTap = open;
+      },
 
 
-        _selectedLocation (event){
-          this.selectedLocation = event.detail.selected;
-        },
+      _selectedDate(event) {
+      	this.selectedDate = event.detail.start;
+        this.datePicked   = event.detail.start.date.toLocaleDateString() + ' ' + event.detail.start.time;
+        this.$.pickStartDate.resetAll();
+      },
+
+
+      _selectedWorkChanged(selected) {
+        if (!selected) { return; } 
+
+        Polymer.dom(this.$.workCard).classList.add('selected');
+        this.updateStyles();
+      },
+
+
+      _selectedLocation(event) {
+        this.selectedLocation = event.detail.selected;
+      }
 
     });
-
   </script>
 </dom-module>

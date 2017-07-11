@@ -63,15 +63,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-weight: bold;
       }
 
-
     </style>
 
     <app-location route="{{route}}"></app-location>
-    <app-route
-        route="{{route}}"
-        pattern="/:page"
-        data="{{routeData}}"
-        tail="{{subroute}}"></app-route>
+    <app-route route="{{route}}"
+               pattern="/:page"
+               data="{{routeData}}"
+               tail="{{subroute}}">
+    </app-route>
 
     <app-drawer-layout fullbleed>
       <!-- Drawer content -->
@@ -95,11 +94,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </app-toolbar>
         </app-header>
 
-        <iron-pages
-            selected="[[page]]"
-            attr-for-selected="name"
-            fallback-selection="view404"
-            role="main">
+        <iron-pages selected="[[page]]"
+                    attr-for-selected="name"
+                    fallback-selection="view404"
+                    role="main">
           <home-view name="home-view"></home-view>
           <out-of-office name="out-of-office"></out-of-office>
           <work-request name="work-request"></work-request>
@@ -139,7 +137,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         page: {
           type: String,
           reflectToAttribute: true,
-          observer: '_pageChanged',
+          observer: '_pageChanged'
         }
         
       },
@@ -151,15 +149,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
       listeners: {
-       'job-names-list-selected-item' :        '_jobNamesListItemEvent',
-       'home-open-out-of-office':          '_openOutDateOverlay',
-       'out-of-office-open-overlay':       '_openOutDateOverlay',
-       'home-open-work-request':          '_openWorkRequest',
-       'home-open-job-names':             '_openJobNames',
-       'verify-contacts-overlay':          '_openVerifyContactsOverlay',
-       'contacts-button-tapped' :          '_selectedWorkAndItem',
-       'out-date-mediator-dates-selected': '_outDatesSelected',
-       'verify-contacts-close-button-tapped': '_verifyContactsCloseAll',
+       'job-names-list-selected-item' :       '_jobNamesListItemEvent',
+       'home-open-out-of-office':             '_openOutDateOverlay',
+       'out-of-office-open-overlay':          '_openOutDateOverlay',
+       'home-open-work-request':              '_openWorkRequest',
+       'home-open-job-names':                 '_openJobNames',
+       'verify-contacts-overlay':             '_openVerifyContactsOverlay',
+       'contacts-button-tapped' :             '_selectedWorkAndItem',
+       'out-date-mediator-dates-selected':    '_outDatesSelected',
+       'verify-contacts-close-button-tapped': '_verifyContactsCloseAll'
       },
 
 
@@ -168,23 +166,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.$.contacts.init();
       },
 
-      _openWorkRequest(){
-        this.set('routeData.page',  'work-request');;
+
+      _openWorkRequest() {
+        this.set('routeData.page', 'work-request');;
       },
 
-      _openJobNames(){
-        this.set('routeData.page',  'job-names');
+
+      _openJobNames() {
+        this.set('routeData.page', 'job-names');
       },
+      
 
       _jobNamesListItemEvent(event) {
         this.selectedItem = event.detail.selected;
         window.BCDEV.jobNameDetails.open('entry');
-
       }, 
 
 
       _openOutDateOverlay() {
-        this.set('routeData.page',  'out-of-office');
+        this.set('routeData.page', 'out-of-office');
         this.$.outDateMediator.init();
       },
 
@@ -203,10 +203,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       
       
-      _selectedWorkAndItem(event){
-        this.selectedWork = event.detail.selectedWork;
+      _selectedWorkAndItem(event) {
+        this.selectedWork     = event.detail.selectedWork;
         this.selectedLocation = event.detail.selectedLocation;
-        this.selectedDate = event.detail.selectedDate;
+        this.selectedDate     = event.detail.selectedDate;
       },
 
 
@@ -222,8 +222,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           outDateMediator: 'outDateMediator',
           contactsOverlay: 'contacts',
           verifyOverlay:   'verifyOverlay',
-          message: 'message', 
-          warning: 'warning',
+          message:         'message', 
+          warning:         'warning',
         }; 
 
         for (const key in customElements) {
@@ -232,7 +232,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
 
-      _routePageChanged: function(page) {
+      _routePageChanged(page) {
         this.page = page || 'home-view';
         if (!this.$.drawer.persistent) {
           this.$.drawer.close();
@@ -240,17 +240,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
 
-      _pageChanged: function(page) {
+      _pageChanged(page) {
         // Load page import on demand. Show 404 page if fails
         var resolvedPageUrl = this.resolveUrl(`${page}/${page}.html`);
         this.importHref(resolvedPageUrl, null, this._showPage404, true);
       },
 
 
-      _showPage404: function() {
+      _showPage404() {
         this.page = 'my-view404';
       }
-
       
     });
   </script>
