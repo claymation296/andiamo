@@ -45,7 +45,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .content {
-        margin-top: 64px;
+        margin: 64px 0px;
         padding: 16px;
       }
 
@@ -159,16 +159,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       
 
       <div class="content">
-
-
         <template is="dom-if" if="[[selectedWork]]">
-          <span>[[selectedWork]] crew will be at [[selectedLocation]] on [[formattedSelectedDate]] at [[selectedDate.time]]</span>
-          <!-- <p>Sending email to :[[_formatSelectedContacts(selectedContacts)]]</p> -->
-          <!-- <paper-fab id="nextButton"
-                     class="hidden-before-animation"
-                     icon="my-icons:arrow-forward" 
-                     on-tap="_formatSelectedContacts">
-          </paper-fab> -->
+          <paper-card id="request" class="hidden-before-animation" heading="Request">
+            <iron-icon class="card-header-icon" icon="my-icons:build"></iron-icon>
+            <div class="card-content">
+              [[selectedWork]] crew will be at [[selectedLocation]] on [[formattedSelectedDate]] at [[selectedDate.time]]
+            </div>
+          </paper-card>
         </template>
 
         <paper-card id="recipients" class="hidden-before-animation" heading="To">
@@ -315,7 +312,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // collection of contact objs
         selectedContacts: Array,
 
-        selectedWork: String,
+        selectedWork: {
+          type: String,
+          observer: '_selectedWorkChanged'
+        },
 
         selectedLocation: String,
 
@@ -399,20 +399,39 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       // cut out the year and seconds
-      _computeFormattedDate: date => date.toString().split(' ').slice(0, 3).join(' '), 
+      _computeFormattedDate: date => date ? date.toString().split(' ').slice(0, 3).join(' ') : '', 
 
 
       _formatSelectedDate: date => date.toLocaleDateString(),
       
 
-      _formatSelectedContacts(array){
-        const names = array.map((contact) => contact.name);
+      _formatSelectedContacts(array) {
+        const names = array.map(contact => contact.name);
         return names.join(', ');
       },
 
 
       init() {
+
+
+        // TODO:
+        //      pass in args to init from caller in order to properly reset
+        //      data that is not being used, which determines what nodes 
+        //      get stamped and what animation nodes are selected
+        //      ie, if out-of-office opens this element, reset work request data
+        //      and visa-versa
+        //      Also remove _selectedWorkChanged once complete
+
+
+
         this.$.selectedItemsList.fire('iron-resize');
+      },
+
+      // must reset outDates so correct dom-if template stamps for work reqest workflow
+      _selectedWorkChanged(str) {
+        if (str) {
+          this.outDates = undefined;
+        }
       },
 
 
@@ -431,21 +450,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (animationType && typeof animationType === 'object') {
           if (animationType.type === 'entry') {
 
-            if (this.selectedWork) { 
-              Polymer.dom(this.$$('#recipients')).classList.add('show-for-animation');
-              Polymer.dom(this.$$('#message')).classList.add('show-for-animation');
-              Polymer.dom(this.$$('#btn-container')).classList.add('show-for-animation');
+            const getNodes = () => {
+              if (this.selectedWork) {
+                return [
+                  this.$$('#request'),
+                  this.$$('#recipients'),
+                  this.$$('#message'),
+                  this.$$('#btn-container')
+                ];
+              }
 
-              return; 
-            }
+              return [
+                this.$$('#recipients'),
+                this.$$('#dates'),
+                this.$$('#message'),
+                this.$$('#btn-container')
+              ];
+            };
 
-            const nodes = [
-              this.$$('#recipients'),
-              this.$$('#dates'),
-              this.$$('#message'),
-              this.$$('#btn-container')
-            ];
-
+            const nodes = getNodes();
             this.animationConfig.startCascade[0].nodes = nodes;
             this.animationConfig.startCascade[1].nodes = nodes;
 
@@ -548,22 +571,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _sendButtonTapped() {
         // pass multiple recipients as comma seporated email addresses
-        const addresses     = this.selectedContacts.map(contact => contact.email.trim()).join(', ');
+        // const addresses     = this.selectedContacts.map(contact => contact.email.trim()).join(', ');
+
+        const addresses = 'bforrester@andiamobuilders.com'; // testing/demo
+
+
         const subject       = this.selectedWork ? 'Selected Work' : 'Out of the office';
         const body          = this._getBody();
-
         const email         = this._createEmail(addresses, subject, body);
         const successString = this.selectedContacts.length === 1 ? 'Email Sent' : 'Emails Sent';
-
-
-
-        console.log('email: ', email);
 
         const callback = () => {
           this.message(successString);
         };
 
-//        this._sendEmail(email, callback);
+        this._sendEmail(email, callback);
       }
 
     });

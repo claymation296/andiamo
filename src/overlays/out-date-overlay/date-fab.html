@@ -47,29 +47,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		  }
 
 		  .shaft {
-			  fill: var(--dark-text-color);;
+			  fill: var(--dark-text-color);
 			}
 
 			.topFin {
 			  fill: var(--dark-text-color);
-
-
-			  transform-origin-x: 38px;
-			  transform-origin-y: 27px;
-
-
-			  /*transform-origin: bottom 1px;*/
+			  transform-origin-x: 0%;
+			  transform-origin-y: 100%;
 			}
 
 			.bottomFin {
 			  fill: var(--dark-text-color);
-
-
-			  transform-origin-x: 38px;
-			  transform-origin-y: 22px;
-
-
-			  /*transform-origin: top 1px;*/
+			  transform-origin-x: 100%;
+			  transform-origin-y: 0%;
 			}
 
     </style>
@@ -121,9 +111,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	        Polymer.NeonAnimationRunnerBehavior
 	      ],
 
-
 	      properties: {
-
 
 	      	animationConfig: {
 	      		value() {

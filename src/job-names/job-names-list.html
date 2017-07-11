@@ -1,4 +1,4 @@
-﻿nk rel="import" href="../../bower_components/polymer/polymer.html">
+﻿<link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
@@ -69,7 +69,10 @@
     <iron-ajax id="jobData" url="../../data/jobs.json" last-response="{{response}}" auto></iron-ajax>
     
             
-    <iron-list id="itemsList" items="[[_computeFilteredList(filter, response)]]" selected-item="{{selectedItem}}" selection-enabled>
+    <!-- <iron-list id="itemsList" items="[[_computeFilteredList(filter, response)]]" selected-item="{{selectedItem}}" selection-enabled> -->
+
+
+    <!-- <iron-list id="itemsList" items="[[list]]" selected-item="{{selectedItem}}" selection-enabled>
       <template>
         <div tabindex$="[[tabIndex]]" aria-label$="Select/Deselect [[item.name]]" class$="item [[_computedClass(selected)]]">
           <img class="avatar" src="[[item.image]]">
@@ -80,7 +83,19 @@
         </div>
         <div class="border"></div>
       </template>
-    </iron-list>
+    </iron-list> -->
+
+
+    <template is="dom-repeat" id="itemsList" items="[[list]]">
+      <div tabindex$="[[item.tabIndex]]" aria-label$="Select/Deselect [[item.name]]" class$="item [[item.selected]]" on-tap="_itemTapped">
+        <img class="avatar" src="[[item.image]]">
+          <div class="pad">
+            <div class="primary">[[item.name]]</div>
+            <div class="secondary dim">[[item.shortText]]</div>
+        </div>
+      </div>
+      <div class="border"></div>
+    </template>
 
 
   </template>
@@ -96,10 +111,26 @@
           observer: '_selectedItemChanged'
         },
 
+        // filter: {
+        //   type: String,
+        //   value: 'All'
+        // },
+
         filter: {
           type: String,
-          value: 'All'
+          value: 'All',
+          observer: '_filterChanged'
         },
+
+        list: Array,
+
+        response: {
+          type: Array,
+          observer: '_responseChanged'
+        },
+
+
+
 
         lat: Number,
 
@@ -110,6 +141,42 @@
           computed: '_computedStart(lat, lng)'
         }
       },
+
+
+
+      _responseChanged(array) {
+        if (array) {
+          this.set('list', array); 
+        }
+      },
+
+
+
+      _filterChanged(filter) {
+        if (filter === 'All') {
+          this.set('list', this.response);         
+        } else if (filter === 'Near Me') {
+          this.set('list', this._sortByGeoLocation(this.start, this.response));
+        } else {
+          this.set('list', this.response.filter(job => job.type === filter));
+        }
+      },
+
+
+      _itemTapped(event) {
+
+
+        const model = event.model;
+
+        model.set('item.selected', 'selected');
+
+        this.selectedItem = null;
+        this.set('selectedItem', model.item);
+
+        console.log('item tapped: ', event);
+      },
+
+
 
 
       _computedStart: (lat, lng) => ({latitude: lat, longitude: lng}),
@@ -135,15 +202,15 @@
       },
 
 
-      _computeFilteredList(filter, response) {
-        if (filter === 'All') {
-          return response;         
-        } else if (filter === 'Near Me') {
-          return this._sortByGeoLocation(this.start, response);
-        } else {
-          return response.filter(job => job.type === filter);
-        }
-      }
+      // _computeFilteredList(filter, response) {
+      //   if (filter === 'All') {
+      //     return response;         
+      //   } else if (filter === 'Near Me') {
+      //     return this._sortByGeoLocation(this.start, response);
+      //   } else {
+      //     return response.filter(job => job.type === filter);
+      //   }
+      // }
 
     });
   </script>
