@@ -26,6 +26,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="job-names/job-name-details.html">
 <link rel="import" href="overlays/email-overlay/email-contacts.html">
 <link rel="import" href="overlays/email-overlay/verify-contacts.html">
+<link rel="import" href="overlays/job-names-overlay/job-names-overlay.html">
 <link rel="import" href="overlays/out-date-overlay/out-date-mediator.html">
 
 
@@ -107,12 +108,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </app-header-layout>
     </app-drawer-layout>
 
+    <job-names-overlay id="jobNamesOverlay"></job-names-overlay>
+
     <job-name-details id="details" data="[[selectedItem]]"></job-name-details>
 
     <out-date-mediator id="outDateMediator"></out-date-mediator>
 
     <email-contacts id="contacts"></email-contacts>
-
 
     <verify-contacts id="verifyOverlay" 
                      selected-work="[[selectedWork]]" 
@@ -149,14 +151,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
       listeners: {
-       'job-names-list-selected-item' :       '_jobNamesListItemEvent',
        'home-open-out-of-office':             '_openOutDateOverlay',
-       'out-of-office-open-overlay':          '_openOutDateOverlay',
        'home-open-work-request':              '_openWorkRequest',
-       'home-open-job-names':                 '_openJobNames',
+       'home-open-job-names':                 '_openJobNamesOverlay',
+       'job-names-open-overlay':              '_openJobNamesOverlay',
+       'job-names-list-selected-item' :       '_jobNamesListItemEvent',
+       'out-of-office-open-overlay':          '_openOutDateOverlay',
+       'out-date-mediator-dates-selected':    '_outDatesSelected',
        'verify-contacts-overlay':             '_openVerifyContactsOverlay',
        'contacts-button-tapped' :             '_selectedWorkAndItem',
-       'out-date-mediator-dates-selected':    '_outDatesSelected',
        'verify-contacts-close-button-tapped': '_verifyContactsCloseAll'
       },
 
@@ -170,17 +173,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _openWorkRequest() {
         this.set('routeData.page', 'work-request');;
       },
-
-
-      _openJobNames() {
-        this.set('routeData.page', 'job-names');
-      },
       
 
       _jobNamesListItemEvent(event) {
         this.selectedItem = event.detail.selected;
         window.BCDEV.jobNameDetails.open('entry');
       }, 
+
+
+      _openJobNamesOverlay() {
+        this.set('routeData.page', 'job-names');
+        this.$.jobNamesOverlay.open();
+      },
 
 
       _openOutDateOverlay() {
