@@ -1,0 +1,152 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../../bower_components/paper-styles/color.html">
+<link rel="import" href="../../../bower_components/paper-styles/typography.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/geo-location/geo-location.html">
+<link rel="import" href="../../../behaviors/on-tap-behavior.html">
+<link rel="import" href="../../shared-styles.html">
+<link rel="import" href="haversine-api.html">
+
+
+
+<dom-module id="job-names-list">
+  <template>
+    <style>
+
+      :host {
+        display: block;
+        @apply(--paper-font-common-base);
+        font-family: sans-serif;
+      }
+
+      #itemsList {
+        @apply(--layout-flex);
+      }
+
+      .item {
+        @apply(--layout-horizontal);
+        cursor: pointer;
+        padding: 16px 22px;
+        background-color: white;
+        border-bottom: 1px solid #D7CCC8;
+      }
+
+      .avatar {
+        height: 50px;
+        width: 50px;
+        border-radius: 20px;
+        box-sizing: border-box;
+        background-color: #ddd;
+      }
+
+      .pad {
+        @apply(--layout-flex);
+        @apply(--layout-vertical);
+        padding: 0 16px;
+      }
+
+      .primary {
+        font-size: 16px;
+      }
+
+      .secondary {
+        font-size: 12px;
+      }
+
+    </style>
+
+
+    <geo-location id="geo" 
+                  latitude="{{lat}}"
+                  longitude="{{lng}}">
+    </geo-location>
+
+    <iron-ajax id="jobData" url="../../../data/jobs.json" last-response="{{response}}" auto></iron-ajax>
+
+
+    <template is="dom-repeat" id="itemsList" items="[[_computeFilteredList(filter, response)]]">
+      <div tabindex$="[[item.tabIndex]]" aria-label$="Select/Deselect [[item.name]]" class$="item [[item.selected]]" on-tap="_itemTapped">
+        <img class="avatar" src="[[item.image]]">
+          <div class="pad">
+            <div class="primary">[[item.name]]</div>
+            <div class="secondary dim">[[item.shortText]]</div>
+        </div>
+      </div>
+      <div class="border"></div>
+    </template>
+
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'job-names-list',
+
+      behaviors: [ window.BCDEV.Behaviors.OnTapBehavior ],
+        
+      properties: {
+
+        selectedItem: {
+          type: Object,
+          observer: '_selectedItemChanged'
+        },
+        // bound from job-names.html
+        filter: {
+          type: String,
+          value: 'All'
+        },
+
+        lat: Number,
+
+        lng: Number,
+
+        start: {
+          type: Object,
+          computed: '_computedStart(lat, lng)'
+        }
+      },
+
+
+      _computedStart: (lat, lng) => ({latitude: lat, longitude: lng}),
+
+
+      _computedClass: isSelected => isSelected ? 'selected' : '',
+
+
+      _sortByGeoLocation(start, res) {
+        const hasGeoData   = obj => obj.hasOwnProperty('latitude');
+        const getDist      = ({latitude, longitude}) => 
+                               haversine(start, {latitude, longitude}, {unit: 'mile'});
+        const nearestFirst = (a, b) => getDist(a) - getDist(b);
+        const sortedData   = res.filter(hasGeoData).sort(nearestFirst);
+
+        return sortedData;
+      },
+
+
+      _computeFilteredList(filter, response) {
+        if (filter === 'All') {
+          return response;         
+        } else if (filter === 'Near Me') {
+          return this._sortByGeoLocation(this.start, response);
+        } else {
+          return response.filter(job => job.type === filter);
+        }
+      },
+
+
+      _itemTapped(event) {
+        const select = () => {
+          const selected = event.model.item;
+          this.fire('job-names-list-selected-item', {selected});
+        };
+
+        this.onTap = select;
+      }
+
+
+    });
+  </script>
+</dom-module>
