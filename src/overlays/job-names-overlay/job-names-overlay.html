@@ -28,6 +28,7 @@
         @apply(--fullscreen-overlays);
         @apply(--paper-font-common-base);
         font-family: sans-serif;
+        background-color: var(--primary-background-color);
       }
 
       app-toolbar {
@@ -81,14 +82,10 @@
         top: calc(50% - 8px);
       }
 
-      job-names-list {
-        padding-top: 128px;
-      }
-
     </style>
 
 
-    <app-header-layout has-scrolling-region>
+    <app-header-layout id="layout" has-scrolling-region>
         <app-header condenses reveals>
           <app-toolbar id="toolbar">
             <div id="title" 
@@ -159,6 +156,11 @@
       			};
       		}
       	}
+      },
+
+      // scroll region hidden by toolbar fix on ios
+      init() {
+        this.$.layout.fire('iron-resize');
       },
 
 

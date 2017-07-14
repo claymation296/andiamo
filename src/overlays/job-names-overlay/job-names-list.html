@@ -109,7 +109,9 @@
       },
 
 
-      _computedStart: (lat, lng) => ({latitude: lat, longitude: lng}),
+      _computedStart(lat, lng) {
+        return {latitude: lat, longitude: lng};
+      },
 
 
       _computedClass: isSelected => isSelected ? 'selected' : '',

@@ -102,7 +102,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <home-view name="home-view"></home-view>
           <out-of-office name="out-of-office"></out-of-office>
           <work-request name="work-request"></work-request>
-          <job-names name="job-names" on-click="_jobNamesTapped"></job-names>
+          <job-names name="job-names"></job-names>
           <my-view404 name="view404"></my-view404>
         </iron-pages>
       </app-header-layout>
@@ -163,9 +163,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        'verify-contacts-close-button-tapped': '_verifyContactsCloseAll'
       },
 
-      _jobNamesTapped(){
-        console.log("job names tapped");
-      },
 
       _outDatesSelected(event) {
         this.$.contacts.resetData();      
@@ -191,6 +188,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _openJobNamesOverlay() {
         this.set('routeData.page', 'job-names');
+        this.$.jobNamesOverlay.init();
         this.$.jobNamesOverlay.open();
       },
 
