@@ -73,38 +73,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <app-header-layout has-scrolling-region>
-        <app-header condenses reveals>
-          <app-toolbar id="toolbar">
-            <paper-icon-button id="backButton"
-                               class="hiddenBeforeAnimation"
-                               icon="my-icons:arrow-back"
-                               on-tap="_backButtonTapped">
-            </paper-icon-button>
-            <div id="title" 
-                 class="hiddenBeforeAnimation" 
-                 main-title>[[title]] Date
-            </div>
-            <span class="flex"></span>
-            <paper-icon-button id="closeButton"
-                               class="hiddenBeforeAnimation"
-                               icon="my-icons:close"
-                               on-tap="_closeButtonTapped">
-            </paper-icon-button>
-          </app-toolbar>
-        </app-header>
+      <app-header condenses reveals>
+        <app-toolbar id="toolbar">
+          <paper-icon-button id="backButton"
+                             class="hiddenBeforeAnimation"
+                             icon="my-icons:arrow-back"
+                             on-tap="_backButtonTapped">
+          </paper-icon-button>
+          <div id="title" 
+               class="hiddenBeforeAnimation" 
+               main-title>[[title]] Date
+          </div>
+          <span class="flex"></span>
+          <paper-icon-button id="closeButton"
+                             class="hiddenBeforeAnimation"
+                             icon="my-icons:close"
+                             on-tap="_closeButtonTapped">
+          </paper-icon-button>
+        </app-toolbar>
+      </app-header>
 
-        <div class="date-container">
-          <div class="faux-toolbar"></div>
-          <paper-date-picker id="datePicker" 
-                             date="{{date}}" 
-                             min-date="[[minDate]]">
-          </paper-date-picker>
+      <div class="date-container">
+        <div class="faux-toolbar"></div>
+        <paper-date-picker id="datePicker" 
+                           date="{{date}}" 
+                           min-date="[[minDate]]">
+        </paper-date-picker>
 
-          <time-picker id="timePicker" time="{{time}}"></time-picker>
+        <time-picker id="timePicker" time="{{time}}"></time-picker>
 
-        </div>        
-      </app-header-layout>
-    </app-drawer-layout>
+      </div>        
+    </app-header-layout>
 
     <date-fab id="fab" on-tap="_fabTapped"></date-fab>
 

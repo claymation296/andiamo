@@ -71,19 +71,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <paper-card id="card" image="../images/andiamoBuilders.png"></paper-card>
 
     <paper-card id="workCard" class="options">
-        <paper-dropdown-menu label="Type of Work:">
-          <paper-listbox class="dropdown-content" selected="{{selectedWork}}" attr-for-selected="value">
-            <paper-item value="Electrical">Electrical</paper-item>
-            <paper-item value="Framing">Framing</paper-item>
-            <paper-item value="Landscape">Landscape</paper-item>
-            <paper-item value="Roofing">Roofing</paper-item>
-          </paper-listbox>
-        </paper-dropdown-menu>
+      <paper-dropdown-menu label="Type of Work:">
+        <paper-listbox class="dropdown-content" selected="{{selectedWork}}" attr-for-selected="value">
+          <paper-item value="Electrical">Electrical</paper-item>
+          <paper-item value="Framing">Framing</paper-item>
+          <paper-item value="Landscape">Landscape</paper-item>
+          <paper-item value="Roofing">Roofing</paper-item>
+        </paper-listbox>
+      </paper-dropdown-menu>
     </paper-card>
 
     <paper-card class="options">
-        <dropdown-list-array contacts="../data/locations.json"></dropdown-list-array>
+      <dropdown-list-array contacts="../data/locations.json"></dropdown-list-array>
     </paper-card>
+
 
     <start-date id="pickStartDate"></start-date>
     <paper-button raised id="dateButton" on-tap="_chooseDateButtonTapped">[[_chooseDate(datePicked)]]</paper-button>
