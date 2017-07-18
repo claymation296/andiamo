@@ -1,5 +1,5 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/neon-animation/neon-animation.html">
+<!-- <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animation.html"> -->
 
 <!--
 @license
@@ -26,7 +26,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	  const OpenCloseFullscreenImp = {
 	    properties: {
 	    	// ref to paper-scroll-header-panel for measureHeaderHeight() bug fix
-	    	panel: Object
+	    	panelToMeasure: Object
 	    },
 
 	    listeners: {
@@ -36,7 +36,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       attached() {
       	this.async(() => {
-      		this.panel = this.$$('paper-scroll-header-panel');
+      		this.panelToMeasure = this.$$('paper-scroll-header-panel');
       	});
       },
 
@@ -50,8 +50,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       open(callback) {
     		this.style.display = 'block';
         this.style.zIndex = '50';
-        if (this.panel) {
-          this.panel.measureHeaderHeight();
+        if (this.panelToMeasure) {
+          this.panelToMeasure.measureHeaderHeight();
         }
         this.cancelAnimation();
         // playAnimation only passes two args so make second one an object

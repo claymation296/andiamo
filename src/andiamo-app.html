@@ -20,9 +20,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
-<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="job-names/job-name-details.html">
 <link rel="import" href="overlays/email-overlay/email-contacts.html">
 <link rel="import" href="overlays/email-overlay/verify-contacts.html">
@@ -86,8 +86,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </app-drawer>
 
       <!-- Main content -->
-      <app-header-layout has-scrolling-region>
-          <!--BEN: need to mess with to get pink header-->
+      <!-- deleting app-header-layout as an ios scroll fix -->
+      <!-- <app-header-layout has-scrolling-region> -->
         <app-header fixed>
           <app-toolbar>
             <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
@@ -105,7 +105,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <job-names name="job-names"></job-names>
           <my-view404 name="view404"></my-view404>
         </iron-pages>
-      </app-header-layout>
+      <!-- </app-header-layout> -->
     </app-drawer-layout>
 
     <job-names-overlay id="jobNamesOverlay"></job-names-overlay>
